@@ -1,3 +1,3 @@
 # Datum
 
-Datum is a network cloud built for software and backed by open source.
+Datum is a network cloud you can take anywhere, backed by open source.
