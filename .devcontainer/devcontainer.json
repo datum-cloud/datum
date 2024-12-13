@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/go
+{
+	"name": "Go",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/go:1-1.23-bookworm",
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils": {
+			"installOhMyZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZshConfig": true,
+			"installZsh": true,
+			"upgradePackages": true
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker": {},
+		"ghcr.io/dhoeric/features/act": {},
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"patbenatar.advanced-new-file",
+				"stkb.rewrap",
+				"github.vscode-github-actions",
+				"yzhang.markdown-all-in-one"
+			],
+			"settings": {
+				"rewrap.autoWrap.enabled": true
+			},
+			"editor.tabSize": 2
+		}
+	},
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "go version",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+}
