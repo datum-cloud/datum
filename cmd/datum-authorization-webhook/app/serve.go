@@ -33,8 +33,8 @@ import (
 )
 
 func serveCommand() *cobra.Command {
-	var iamEndpoint, tracingEndpoint, certDir, certFile, keyFile string
-	var iamInsecure, tracingInsecure bool
+	var iamEndpoint, certDir, certFile, keyFile string
+	var iamInsecure bool
 
 	var serveCmd = &cobra.Command{
 		Use:   "serve",
@@ -44,32 +44,23 @@ func serveCommand() *cobra.Command {
 				return fmt.Errorf("`--iam-endpoint` is required")
 			}
 
-			if tracingEndpoint != "" {
-				opts := []otlptracegrpc.Option{
-					otlptracegrpc.WithEndpoint(tracingEndpoint),
-				}
-				if tracingInsecure {
-					opts = append(opts, otlptracegrpc.WithInsecure())
-				}
-
-				exporter, err := otlptrace.New(cmd.Context(), otlptracegrpc.NewClient(opts...))
-				if err != nil {
-					return err
-				}
-
-				otel.SetTracerProvider(trace.NewTracerProvider(
-					trace.WithSampler(trace.AlwaysSample()),
-					trace.WithResource(resource.NewWithAttributes(
-						semconv.SchemaURL,
-						semconv.ServiceName("authorization-webhook.datumapis.com"),
-					)),
-					trace.WithBatcher(exporter),
-				))
-				otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(
-					propagation.TraceContext{},
-					propagation.Baggage{},
-				))
+			exporter, err := otlptrace.New(cmd.Context(), otlptracegrpc.NewClient())
+			if err != nil {
+				return err
 			}
+
+			otel.SetTracerProvider(trace.NewTracerProvider(
+				trace.WithSampler(trace.AlwaysSample()),
+				trace.WithResource(resource.NewWithAttributes(
+					semconv.SchemaURL,
+					semconv.ServiceName("authorization-webhook.datumapis.com"),
+				)),
+				trace.WithBatcher(exporter),
+			))
+			otel.SetTextMapPropagator(propagation.NewCompositeTextMapPropagator(
+				propagation.TraceContext{},
+				propagation.Baggage{},
+			))
 
 			dialOptions := []grpc.DialOption{
 				grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
@@ -147,8 +138,6 @@ func serveCommand() *cobra.Command {
 	serveCmd.Flags().StringVar(&iamEndpoint, "iam-endpoint", "", "Endpoint to use for connecting to the datum gRPC API endpoint")
 	serveCmd.Flags().BoolVar(&iamInsecure, "iam-endpoint-insecure", false, "Whether the use an insecure connection when export")
 
-	serveCmd.Flags().StringVar(&tracingEndpoint, "tracing-endpoint", "", "Endpoint to send OpenTelemetry traces too. Tracing is disabled if not provided.")
-	serveCmd.Flags().BoolVar(&tracingInsecure, "tracing-insecure", false, "Whether the use an insecure connection when exporting traces")
 	serveCmd.Flags().StringVar(&certDir, "cert-dir", "", "Directory that contains the TLS certs to use for serving the webhook")
 	serveCmd.Flags().StringVar(&certFile, "cert-file", "", "Filename in the directory that contains the TLS cert")
 	serveCmd.Flags().StringVar(&keyFile, "key-file", "", "Filename in the directory that contains the TLS private key")
