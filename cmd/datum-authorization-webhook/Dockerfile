@@ -12,10 +12,10 @@ RUN go mod download
 COPY . .
 
 # Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o datum .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o datum-authorization-webhook ./cmd/datum-authorization-webhook
 
 # Use a minimal image for the final container
 FROM gcr.io/distroless/static
 WORKDIR /app
-COPY --from=builder /app/datum .
-ENTRYPOINT ["/app/datum"]
+COPY --from=builder /app/datum-authorization-webhook .
+ENTRYPOINT ["/app/datum-authorization-webhook"]

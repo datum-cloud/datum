@@ -1,12 +1,12 @@
-package cmd
+package app
 
 import (
 	"context"
 	"fmt"
 
 	"buf.build/gen/go/datum-cloud/iam/grpc/go/datum/iam/v1alpha/iamv1alphagrpc"
-	"go.datumapis.com/datum/internal/authorization-webhook/internal/iam"
-	authwebhook "go.datumapis.com/datum/internal/authorization-webhook/internal/webhook"
+	"go.datumapis.com/datum/cmd/datum-authorization-webhook/app/internal/iam"
+	authwebhook "go.datumapis.com/datum/cmd/datum-authorization-webhook/app/internal/webhook"
 
 	"github.com/spf13/cobra"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"

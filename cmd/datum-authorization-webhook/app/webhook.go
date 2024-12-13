@@ -1,8 +1,8 @@
-package cmd
+package app
 
 import "github.com/spf13/cobra"
 
-func Webhook() *cobra.Command {
+func NewWebhook() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "authorization-webhook",
 		Short: "An authorization webhook backed by the Datum IAM service",
