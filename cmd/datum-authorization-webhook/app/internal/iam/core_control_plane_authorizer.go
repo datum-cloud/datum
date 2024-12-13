@@ -11,6 +11,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apiserver/pkg/authorization/authorizer"
 )
 
@@ -20,17 +21,13 @@ type CoreControlPlaneAuthorizer struct {
 	IAMClient iamv1alphagrpc.AccessCheckClient
 }
 
+const organizationUIDLabelKey = "resourcemanager.datumapis.com/organization-uid"
+
 // Authorize implements authorizer.Authorizer.
 func (o *CoreControlPlaneAuthorizer) Authorize(ctx context.Context, attributes authorizer.Attributes) (authorizer.Decision, string, error) {
-	req := &iampb.CheckAccessRequest{
-		Resource:   fmt.Sprintf("resourcemanager.datumapis.com/%s/%s", attributes.GetResource(), attributes.GetName()),
-		Subject:    "user:" + attributes.GetUser().GetName(),
-		Permission: attributes.GetVerb(),
-	}
 	ctx, span := otel.Tracer("go.datum.net/k8s-authz-webhook").Start(ctx, "datum.k8s-authz-webhook.global.Authorize", trace.WithAttributes(
-		attribute.String("subject", req.Subject),
-		attribute.String("resource", req.Resource),
-		attribute.String("permission", req.Permission),
+		attribute.String("api_group", attributes.GetAPIGroup()),
+		attribute.String("resource_kind", attributes.GetResource()),
 	))
 	defer span.End()
 
@@ -38,6 +35,25 @@ func (o *CoreControlPlaneAuthorizer) Authorize(ctx context.Context, attributes a
 		slog.DebugContext(ctx, "No opinion on auth webhook request since API Group is not managed by webhook", slog.String("api_group", attributes.GetAPIGroup()))
 		return authorizer.DecisionNoOpinion, "", nil
 	}
+
+	labelSelector, err := attributes.GetLabelSelector()
+	if err != nil {
+		span.SetStatus(codes.Error, err.Error())
+		return authorizer.DecisionNoOpinion, "", fmt.Errorf("failed to get label selector: %w", err)
+	}
+
+	organizationID, err := getOrganizationID(labelSelector)
+	if err != nil {
+		return authorizer.DecisionNoOpinion, "", err
+	}
+
+	req := getCheckAccessRequest(attributes, organizationID)
+
+	span.SetAttributes(
+		attribute.String("subject", req.Subject),
+		attribute.String("resource", req.Resource),
+		attribute.String("permission", req.Permission),
+	)
 
 	resp, err := o.IAMClient.CheckAccess(ctx, req)
 	if err != nil {
@@ -53,4 +69,49 @@ func (o *CoreControlPlaneAuthorizer) Authorize(ctx context.Context, attributes a
 	}
 
 	return authorizer.DecisionDeny, "", nil
+}
+
+func getCheckAccessRequest(attributes authorizer.Attributes, organizationID string) *iampb.CheckAccessRequest {
+	req := &iampb.CheckAccessRequest{
+		Subject:    "user:" + attributes.GetUser().GetName(),
+		Permission: fmt.Sprintf("%s/%s.%s", attributes.GetAPIGroup(), attributes.GetResource(), attributes.GetVerb()),
+	}
+
+	// We want to perform the check against the organization resource when listing
+	// the projects from the server.
+	if attributes.GetVerb() == "list" {
+		req.Resource = "resourcemanager.datumapis.com/organizations/" + organizationID
+	} else {
+		req.Resource = fmt.Sprintf("resourcemanager.datumapis.com/%s/%s", attributes.GetResource(), attributes.GetName())
+		req.Context = []*iampb.CheckContext{{
+			ContextType: &iampb.CheckContext_ParentRelationship{
+				ParentRelationship: &iampb.ParentRelationship{
+					ParentResource: "resourcemanager.datumapis.com/organizations/" + organizationID,
+					ChildResource:  req.Resource,
+				},
+			},
+		}}
+	}
+
+	return req
+}
+
+func getOrganizationID(selector labels.Requirements) (string, error) {
+	if len(selector) == 0 {
+		return "", fmt.Errorf("a label selector with `%s` is required to liist projects", organizationUIDLabelKey)
+	}
+
+	var orgId string
+	for _, requirement := range selector {
+		if requirement.Key() != organizationUIDLabelKey {
+			continue
+		}
+		if len(requirement.Values()) != 1 {
+			return "", fmt.Errorf("the label selector for `%s` must have only one organization ID", organizationUIDLabelKey)
+		}
+		orgId = requirement.Values().List()[0]
+		break
+	}
+
+	return orgId, nil
 }
