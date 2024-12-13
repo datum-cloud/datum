@@ -108,14 +108,19 @@ func (wh *Webhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	slog.InfoContext(ctx, "received SubjectAccessReview webhook request", slog.Any("subject_access_review", req))
-
 	if projectName := strings.TrimPrefix(r.RequestURI, "/v1alpha/"); strings.HasPrefix(projectName, "projects/") {
 		span.SetAttributes(attribute.String("project", projectName))
 		ctx = context.WithValue(ctx, "resourcemanager.datumapis.com/project-name", projectName)
 	}
 
 	reviewResponse = wh.Handle(ctx, req)
+
+	slog.InfoContext(
+		ctx,
+		"handled SubjectAccessReview webhook request",
+		slog.Any("request", req),
+		slog.Any("response", reviewResponse),
+	)
 	wh.writeResponse(w, &req, reviewResponse)
 }
 
