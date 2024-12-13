@@ -26,7 +26,7 @@ func (o *ProjectControlPlaneAuthorizer) Authorize(
 	ctx context.Context, attributes authorizer.Attributes,
 ) (authorizer.Decision, string, error) {
 
-	ctx, span := otel.Tracer("go.datum.net/k8s-authz-webhook").Start(ctx, "datum.k8s-authz-webhook.Authorize", trace.WithAttributes(
+	ctx, span := otel.Tracer("go.datum.net/datum/cmd/datum-authorization-webhook").Start(ctx, "datum.authz-webhook.Authorize", trace.WithAttributes(
 		attribute.String("subject", attributes.GetUser().GetName()),
 	))
 	defer span.End()

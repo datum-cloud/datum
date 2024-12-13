@@ -68,7 +68,7 @@ func (wh *Webhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var body []byte
 	var err error
 
-	ctx, span := otel.Tracer("go.datum.net/k8s-authz-webhook").Start(r.Context(), "datum.k8s-authz-webhook.HandleRequest")
+	ctx, span := otel.Tracer("go.datum.net/datum/cmd/datum-authorization-webhook").Start(r.Context(), "datum.authz-webhook.HandleRequest")
 	defer span.End()
 
 	if wh.WithContextFunc != nil {
