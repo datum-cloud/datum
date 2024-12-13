@@ -35,13 +35,15 @@ func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 				attrs.Subresource = resourceAttrs.Subresource
 				attrs.Name = resourceAttrs.Name
 				attrs.ResourceRequest = true
-				for _, requirement := range r.Spec.ResourceAttributes.LabelSelector.Requirements {
-					req, _ := labels.NewRequirement(
-						requirement.Key,
-						selection.Operator(requirement.Operator),
-						requirement.Values,
-					)
-					attrs.LabelSelectorRequirements = append(attrs.LabelSelectorRequirements, *req)
+				if resourceAttrs.LabelSelector != nil {
+					for _, requirement := range resourceAttrs.LabelSelector.Requirements {
+						req, _ := labels.NewRequirement(
+							requirement.Key,
+							selection.Operator(requirement.Operator),
+							requirement.Values,
+						)
+						attrs.LabelSelectorRequirements = append(attrs.LabelSelectorRequirements, *req)
+					}
 				}
 			}
 
