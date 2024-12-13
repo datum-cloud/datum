@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	authorizationv1 "k8s.io/api/authorization/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apiserver/pkg/authentication/user"
 	"k8s.io/apiserver/pkg/authorization/authorizer"
 )
@@ -33,6 +34,11 @@ func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 				attrs.Subresource = resourceAttrs.Subresource
 				attrs.Name = resourceAttrs.Name
 				attrs.ResourceRequest = true
+				selector, err := labels.ParseToRequirements(r.Spec.ResourceAttributes.LabelSelector.RawSelector)
+				if err != nil {
+					attrs.LabelSelectorParsingErr = err
+				}
+				attrs.LabelSelectorRequirements = selector
 			}
 
 			if nonResourceAttrs := r.Spec.NonResourceAttributes; nonResourceAttrs != nil {

@@ -98,7 +98,7 @@ func getCheckAccessRequest(attributes authorizer.Attributes, organizationID stri
 
 func getOrganizationID(selector labels.Requirements) (string, error) {
 	if len(selector) == 0 {
-		return "", fmt.Errorf("a label selector with `%s` is required to liist projects", organizationUIDLabelKey)
+		return "", fmt.Errorf("a label selector with `%s` is required to list projects", organizationUIDLabelKey)
 	}
 
 	var orgId string
