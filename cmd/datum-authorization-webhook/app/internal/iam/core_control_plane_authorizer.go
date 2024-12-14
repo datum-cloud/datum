@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"slices"
 
 	"buf.build/gen/go/datum-cloud/iam/grpc/go/datum/iam/v1alpha/iamv1alphagrpc"
 	iampb "buf.build/gen/go/datum-cloud/iam/protocolbuffers/go/datum/iam/v1alpha"
@@ -74,7 +75,7 @@ func getCheckAccessRequest(attributes authorizer.Attributes, organizationID stri
 
 	// We want to perform the check against the organization resource when listing
 	// the projects from the server.
-	if attributes.GetVerb() == "list" {
+	if slices.Contains([]string{"list", "create"}, attributes.GetVerb()) {
 		req.Resource = "resourcemanager.datumapis.com/organizations/" + organizationID
 	} else {
 		req.Resource = fmt.Sprintf("resourcemanager.datumapis.com/%s/%s", attributes.GetResource(), attributes.GetName())
