@@ -13,7 +13,6 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
-	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apiserver/pkg/authorization/authorizer"
 )
 
@@ -22,8 +21,6 @@ var _ authorizer.Authorizer = &CoreControlPlaneAuthorizer{}
 type CoreControlPlaneAuthorizer struct {
 	IAMClient iamv1alphagrpc.AccessCheckClient
 }
-
-const organizationUIDLabelKey = "resourcemanager.datumapis.com/organization-uid"
 
 // Authorize implements authorizer.Authorizer.
 func (o *CoreControlPlaneAuthorizer) Authorize(ctx context.Context, attributes authorizer.Attributes) (authorizer.Decision, string, error) {
@@ -90,24 +87,4 @@ func getCheckAccessRequest(attributes authorizer.Attributes, organizationID stri
 	}
 
 	return req
-}
-
-func getOrganizationID(selector labels.Requirements) (string, error) {
-	if len(selector) == 0 {
-		return "", fmt.Errorf("a label selector with `%s` is required to list projects", organizationUIDLabelKey)
-	}
-
-	var orgId string
-	for _, requirement := range selector {
-		if requirement.Key() != organizationUIDLabelKey {
-			continue
-		}
-		if len(requirement.Values()) != 1 {
-			return "", fmt.Errorf("the label selector for `%s` must have only one organization ID", organizationUIDLabelKey)
-		}
-		orgId = requirement.Values().List()[0]
-		break
-	}
-
-	return orgId, nil
 }
