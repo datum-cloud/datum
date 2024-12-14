@@ -70,9 +70,8 @@ func getCheckAccessRequest(attributes authorizer.Attributes, organizationID stri
 		Permission: fmt.Sprintf("%s/%s.%s", attributes.GetAPIGroup(), attributes.GetResource(), attributes.GetVerb()),
 	}
 
-	// We want to perform the check against the organization resource when listing
-	// the projects from the server.
-	if slices.Contains([]string{"list", "create"}, attributes.GetVerb()) {
+	// Use the organization resource URL when acting on resource collections.
+	if slices.Contains([]string{"list", "create", "watch"}, attributes.GetVerb()) {
 		req.Resource = "resourcemanager.datumapis.com/organizations/" + organizationID
 	} else {
 		req.Resource = fmt.Sprintf("resourcemanager.datumapis.com/%s/%s", attributes.GetResource(), attributes.GetName())
