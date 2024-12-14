@@ -7,6 +7,7 @@ import (
 
 	"buf.build/gen/go/datum-cloud/iam/grpc/go/datum/iam/v1alpha/iamv1alphagrpc"
 	iampb "buf.build/gen/go/datum-cloud/iam/protocolbuffers/go/datum/iam/v1alpha"
+	"go.datumapis.com/datum/cmd/datum-authorization-webhook/app/internal/webhook"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -36,13 +37,7 @@ func (o *CoreControlPlaneAuthorizer) Authorize(ctx context.Context, attributes a
 		return authorizer.DecisionNoOpinion, "", nil
 	}
 
-	labelSelector, err := attributes.GetLabelSelector()
-	if err != nil {
-		span.SetStatus(codes.Error, err.Error())
-		return authorizer.DecisionNoOpinion, "", fmt.Errorf("failed to get label selector: %w", err)
-	}
-
-	organizationID, err := getOrganizationID(labelSelector)
+	organizationID, err := webhook.GetOrganizationUID(ctx)
 	if err != nil {
 		return authorizer.DecisionNoOpinion, "", err
 	}

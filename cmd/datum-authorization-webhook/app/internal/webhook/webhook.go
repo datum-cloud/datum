@@ -2,20 +2,41 @@ package webhook
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	authorizationv1 "k8s.io/api/authorization/v1"
-	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/apimachinery/pkg/selection"
 	"k8s.io/apiserver/pkg/authentication/user"
 	"k8s.io/apiserver/pkg/authorization/authorizer"
 )
+
+type ContextKey string
+
+const OrganizationUIDContextKey ContextKey = "resourcemanager.datumapis.com/organization-uid"
+
+func GetOrganizationUID(ctx context.Context) (string, error) {
+	value := ctx.Value(OrganizationUIDContextKey)
+	if value == nil {
+		return "", fmt.Errorf("organization UID not set in context")
+	}
+
+	orgID, ok := value.(string)
+	if !ok {
+		return "", fmt.Errorf("invalid organization ID set in context")
+	}
+
+	return orgID, nil
+}
 
 func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 	return &Webhook{
 		Handler: HandlerFunc(func(ctx context.Context, r Request) Response {
 			if r.Spec.ResourceAttributes != nil && r.Spec.NonResourceAttributes != nil {
 				return Denied("must specify oneof resource or non-resource attributes, not both")
+			}
+
+			if orgID := r.Spec.Extra["datum-organization-uid"]; len(orgID) > 0 {
+				ctx = context.WithValue(ctx, OrganizationUIDContextKey, orgID[0])
 			}
 
 			attrs := authorizer.AttributesRecord{
@@ -35,16 +56,6 @@ func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 				attrs.Subresource = resourceAttrs.Subresource
 				attrs.Name = resourceAttrs.Name
 				attrs.ResourceRequest = true
-				if resourceAttrs.LabelSelector != nil {
-					for _, requirement := range resourceAttrs.LabelSelector.Requirements {
-						req, _ := labels.NewRequirement(
-							requirement.Key,
-							selection.Operator(requirement.Operator),
-							requirement.Values,
-						)
-						attrs.LabelSelectorRequirements = append(attrs.LabelSelectorRequirements, *req)
-					}
-				}
 			}
 
 			if nonResourceAttrs := r.Spec.NonResourceAttributes; nonResourceAttrs != nil {
