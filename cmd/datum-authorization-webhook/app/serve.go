@@ -124,7 +124,7 @@ func serveCommand() *cobra.Command {
 
 			entryLog.Info("registering webhooks to the webhook server")
 
-			hookServer.Register("/project/v1alpha/{project...}/webhook", authwebhook.NewAuthorizerWebhook(&iam.ProjectControlPlaneAuthorizer{
+			hookServer.Register("/project/v1alpha/projects/{project}/webhook", authwebhook.NewAuthorizerWebhook(&iam.ProjectControlPlaneAuthorizer{
 				IAMClient: iamClient,
 			}))
 			hookServer.Register("/core/v1alpha/webhook", authwebhook.NewAuthorizerWebhook(&iam.CoreControlPlaneAuthorizer{
