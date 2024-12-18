@@ -8,7 +8,6 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
-	"strings"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -108,9 +107,10 @@ func (wh *Webhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if projectName := strings.TrimPrefix(r.RequestURI, "/v1alpha/"); strings.HasPrefix(projectName, "projects/") {
+	if projectID := r.PathValue("project"); projectID != "" {
+		projectName := "projects/" + projectID
 		span.SetAttributes(attribute.String("project", projectName))
-		ctx = context.WithValue(ctx, "resourcemanager.datumapis.com/project-name", projectName)
+		ctx = context.WithValue(ctx, ProjectContextKey, projectName)
 	}
 
 	reviewResponse = wh.Handle(ctx, req)

@@ -13,6 +13,7 @@ import (
 type ContextKey string
 
 const OrganizationUIDContextKey ContextKey = "resourcemanager.datumapis.com/organization-uid"
+const ProjectContextKey ContextKey = "resourcemanager.datumapis.com/project-name"
 
 func GetOrganizationUID(ctx context.Context) (string, error) {
 	value := ctx.Value(OrganizationUIDContextKey)

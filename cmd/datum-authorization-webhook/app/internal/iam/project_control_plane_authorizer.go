@@ -7,6 +7,7 @@ import (
 
 	"buf.build/gen/go/datum-cloud/iam/grpc/go/datum/iam/v1alpha/iamv1alphagrpc"
 	iampb "buf.build/gen/go/datum-cloud/iam/protocolbuffers/go/datum/iam/v1alpha"
+	"go.datumapis.com/datum/cmd/datum-authorization-webhook/app/internal/webhook"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -31,7 +32,7 @@ func (o *ProjectControlPlaneAuthorizer) Authorize(
 	))
 	defer span.End()
 
-	projectNameContext := ctx.Value("resourcemanager.datumapis.com/project-name")
+	projectNameContext := ctx.Value(webhook.ProjectContextKey)
 	projectName, ok := projectNameContext.(string)
 	if !ok {
 		span.SetStatus(codes.Error, "no project ID present in webhook request")
