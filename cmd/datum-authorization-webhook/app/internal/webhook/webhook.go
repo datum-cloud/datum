@@ -36,7 +36,7 @@ func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 				return Denied("must specify oneof resource or non-resource attributes, not both")
 			}
 
-			if orgID := r.Spec.Extra["datum-organization-uid"]; len(orgID) > 0 {
+			if orgID := r.Spec.Extra["authentication.datum.net/datum-organization-uid"]; len(orgID) > 0 {
 				ctx = context.WithValue(ctx, OrganizationUIDContextKey, orgID[0])
 			}
 
