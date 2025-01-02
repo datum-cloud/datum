@@ -13,7 +13,7 @@ Kubernetes clusters.
 
 ## Documentation
 
-Datum documentation is available at [docs.datum.net](https://docs.datum.net/).
+Our documentation is available at [docs.datum.net](https://docs.datum.net/). If you want to learn more about what's under development or suggest features, please visit our [feedback site](https://feedback.datum.net).
 
 ## Key Components
 
@@ -90,10 +90,9 @@ Controller responsibilities:
 
 ## Get involved
 
-If you choose to contribute to any of our projects, we would love to work with
-you to ensure a great experience.
+If you choose to contribute to any of our projects, we would love to work with you to ensure a great experience.
 
-- Follow [us on LinkedIn](https://www.linkedin.com/company/datum-cloud/).
+- Check out our [roadmap and changelog](https://feedback.datum.net).
 - Read and subscribe to the [Datum blog](https://www.datum.net/blog/).
-- For general discussions, join us on the [Datum Community
-  Slack](https://inviter.co/datum) team.
+- For general discussions, join us on the [Datum Community Slack](https://slack.datum.net) team.
+- Follow [us on LinkedIn](https://www.linkedin.com/company/datum-cloud/).
