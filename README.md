@@ -8,12 +8,14 @@ Kubernetes clusters.
 
 ## Get started
 
-- Quick Start with GCP - Coming Soon!
-- Development Guide - Coming Soon!
+- [Quick Start with GCP](https://docs.datum.net/docs/tutorials/infra-provider-gcp/)
+- [Development Guide](https://docs.datum.net/docs/tasks/developer-guide/)
 
 ## Documentation
 
-Our documentation is available at [docs.datum.net](https://docs.datum.net/). If you want to learn more about what's under development or suggest features, please visit our [feedback site](https://feedback.datum.net).
+Our documentation is available at [docs.datum.net](https://docs.datum.net/). If
+you want to learn more about what's under development or suggest features,
+please visit our [feedback site](https://feedback.datum.net).
 
 ## Key Components
 
