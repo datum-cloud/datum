@@ -12,7 +12,7 @@ import (
 
 type ContextKey string
 
-const OrganizationUIDContextKey ContextKey = "resourcemanager.datumapis.com/organization-uid"
+const OrganizationUIDContextKey ContextKey = "resourcemanager.datumapis.com/organization-id"
 const ProjectContextKey ContextKey = "resourcemanager.datumapis.com/project-name"
 
 func GetOrganizationUID(ctx context.Context) (string, error) {
@@ -36,7 +36,7 @@ func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 				return Denied("must specify oneof resource or non-resource attributes, not both")
 			}
 
-			if orgID := r.Spec.Extra["authentication.datum.net/datum-organization-uid"]; len(orgID) > 0 {
+			if orgID := r.Spec.Extra[string(OrganizationUIDContextKey)]; len(orgID) > 0 {
 				ctx = context.WithValue(ctx, OrganizationUIDContextKey, orgID[0])
 			}
 
