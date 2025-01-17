@@ -35,7 +35,7 @@ func (o *CoreControlPlaneAuthorizer) Authorize(ctx context.Context, attributes a
 		return authorizer.DecisionNoOpinion, "", nil
 	}
 
-	organizationID, err := webhook.GetOrganizationUID(ctx)
+	organizationID, err := webhook.GetOrganizationID(ctx)
 	if err != nil {
 		return authorizer.DecisionNoOpinion, "", err
 	}
