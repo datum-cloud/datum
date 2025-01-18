@@ -20,8 +20,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/proto"
 	"k8s.io/api/authentication/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
@@ -64,15 +62,6 @@ func serveCommand() *cobra.Command {
 
 			dialOptions := []grpc.DialOption{
 				grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
-				grpc.WithChainUnaryInterceptor(
-					func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-						logger := log.Log.WithName("grpc_client")
-						logger.Info(method, ".request: ", protojson.Format(req.(proto.Message)))
-						err := invoker(ctx, method, req, reply, cc, opts...)
-						logger.Info(method, ".response: ", protojson.Format(reply.(proto.Message)))
-						return err
-					},
-				),
 			}
 
 			if iamInsecure {
