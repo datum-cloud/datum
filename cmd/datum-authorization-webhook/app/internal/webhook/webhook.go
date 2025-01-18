@@ -9,8 +9,6 @@ import (
 	"k8s.io/apiserver/pkg/authorization/authorizer"
 )
 
-type ContextKey string
-
 const OrganizationIDExtraKey = "resourcemanager.datumapis.com/organization-id"
 const ProjectExtraKey = "resourcemanager.datumapis.com/project-name"
 

@@ -118,8 +118,6 @@ func (wh *Webhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	slog.InfoContext(
 		ctx,
 		"handled SubjectAccessReview webhook request",
-		slog.Any("request", req),
-		slog.Any("response", reviewResponse),
 	)
 	wh.writeResponse(w, &req, reviewResponse)
 }
