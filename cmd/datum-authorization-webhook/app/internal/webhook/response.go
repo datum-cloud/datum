@@ -5,18 +5,6 @@ import (
 	authorizationv1 "k8s.io/api/authorization/v1"
 )
 
-// Allowed constructs a response indicating that the given user is authorized
-// to perform the given action. The reason parameter is optional.
-func Allowed(reason string) Response {
-	return AuthorizationResponse(true, false, reason, "")
-}
-
-// NoOpinion constructs a response indicating that the authorizer has no rule
-// allowing the request, but also no rule specifically denying the request
-func NoOpinion() Response {
-	return AuthorizationResponse(false, false, "", "")
-}
-
 // Denied constructs a response indicating that the given user is denied
 // to perform the given action. The reason parameter is optional.
 func Denied(reason string) Response {
