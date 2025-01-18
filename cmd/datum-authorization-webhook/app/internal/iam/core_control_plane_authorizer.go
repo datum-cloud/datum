@@ -39,7 +39,7 @@ func (o *CoreControlPlaneAuthorizer) Authorize(ctx context.Context, attributes a
 	if orgIDs, set := attributes.GetUser().GetExtra()[webhook.OrganizationIDExtraKey]; !set {
 		return authorizer.DecisionDeny, "", fmt.Errorf("extra '%s' is required by core control plane authorizer", webhook.OrganizationIDExtraKey)
 	} else if len(orgIDs) > 1 {
-		return authorizer.DecisionDeny, "", fmt.Errorf("extra '%s' only supports one value, but multiple were provided: %v", orgIDs)
+		return authorizer.DecisionDeny, "", fmt.Errorf("extra '%s' only supports one value, but multiple were provided: %v", webhook.OrganizationIDExtraKey, orgIDs)
 	} else {
 		organizationID = orgIDs[0]
 	}
