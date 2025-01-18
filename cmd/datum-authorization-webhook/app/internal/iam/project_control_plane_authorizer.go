@@ -32,12 +32,15 @@ func (o *ProjectControlPlaneAuthorizer) Authorize(
 	))
 	defer span.End()
 
-	projectNameContext := ctx.Value(webhook.ProjectContextKey)
-	projectName, ok := projectNameContext.(string)
-	if !ok {
+	var projectName string
+	if projectNames, set := attributes.GetUser().GetExtra()[webhook.ProjectExtraKey]; !set {
 		span.SetStatus(codes.Error, "no project ID present in webhook request")
-		slog.WarnContext(ctx, "no project name was present in the webhook authorize request")
-		return authorizer.DecisionNoOpinion, "", nil
+		return authorizer.DecisionDeny, "", fmt.Errorf("extra '%s' is required by core control plane authorizer", webhook.ProjectExtraKey)
+	} else if len(projectNames) > 1 {
+		span.SetStatus(codes.Error, "multiple project IDs present in webhook request")
+		return authorizer.DecisionDeny, "", fmt.Errorf("extra '%s' only supports one value, but multiple were provided: %v", webhook.ProjectExtraKey, projectNames)
+	} else {
+		projectName = projectNames[0]
 	}
 
 	resourceURL := "resourcemanager.datumapis.com/" + projectName

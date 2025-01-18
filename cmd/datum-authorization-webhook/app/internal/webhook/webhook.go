@@ -2,7 +2,6 @@ package webhook
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	authorizationv1 "k8s.io/api/authorization/v1"
@@ -12,22 +11,8 @@ import (
 
 type ContextKey string
 
-const OrganizationIDContextKey ContextKey = "resourcemanager.datumapis.com/organization-id"
-const ProjectContextKey ContextKey = "resourcemanager.datumapis.com/project-name"
-
-func GetOrganizationID(ctx context.Context) (string, error) {
-	value := ctx.Value(OrganizationIDContextKey)
-	if value == nil {
-		return "", fmt.Errorf("organization UID not set in context")
-	}
-
-	orgID, ok := value.(string)
-	if !ok {
-		return "", fmt.Errorf("invalid organization ID set in context")
-	}
-
-	return orgID, nil
-}
+const OrganizationIDExtraKey = "resourcemanager.datumapis.com/organization-id"
+const ProjectExtraKey = "resourcemanager.datumapis.com/project-name"
 
 func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 	return &Webhook{
@@ -36,8 +21,9 @@ func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 				return Denied("must specify oneof resource or non-resource attributes, not both")
 			}
 
-			if orgID := r.Spec.Extra[string(OrganizationIDContextKey)]; len(orgID) > 0 {
-				ctx = context.WithValue(ctx, OrganizationIDContextKey, orgID[0])
+			extra := map[string][]string{}
+			for key, val := range r.Spec.Extra {
+				extra[key] = []string(val)
 			}
 
 			attrs := authorizer.AttributesRecord{
@@ -45,6 +31,7 @@ func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 					Name:   r.Spec.User,
 					UID:    r.Spec.UID,
 					Groups: r.Spec.Groups,
+					Extra:  extra,
 				},
 			}
 

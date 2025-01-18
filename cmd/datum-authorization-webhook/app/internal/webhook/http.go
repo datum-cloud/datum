@@ -110,7 +110,7 @@ func (wh *Webhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if projectID := r.PathValue("project"); projectID != "" {
 		projectName := "projects/" + projectID
 		span.SetAttributes(attribute.String("project", projectName))
-		ctx = context.WithValue(ctx, ProjectContextKey, projectName)
+		req.Spec.Extra[ProjectExtraKey] = []string{projectName}
 	}
 
 	reviewResponse = wh.Handle(ctx, req)
