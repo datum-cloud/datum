@@ -2,6 +2,7 @@ package webhook
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 
 	authorizationv1 "k8s.io/api/authorization/v1"
@@ -55,6 +56,7 @@ func NewAuthorizerWebhook(authzer authorizer.Authorizer) *Webhook {
 				attrs,
 			)
 			if err != nil {
+				slog.ErrorContext(ctx, "error authorizing request", slog.String("error", err.Error()))
 				return Errored(err)
 			}
 
