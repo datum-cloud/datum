@@ -114,6 +114,15 @@ func (wh *Webhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	reviewResponse = wh.Handle(ctx, req)
+	if reviewResponse.Status.EvaluationError != "" {
+		span.RecordError(errors.New(reviewResponse.Status.EvaluationError))
+		span.SetStatus(codes.Error, reviewResponse.Status.EvaluationError)
+	}
+
+	span.SetAttributes(
+		attribute.Bool("denied", reviewResponse.Status.Denied),
+		attribute.Bool("allowed", reviewResponse.Status.Allowed),
+	)
 
 	slog.InfoContext(
 		ctx,
