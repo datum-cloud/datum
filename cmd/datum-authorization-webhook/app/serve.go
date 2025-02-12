@@ -10,6 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
@@ -113,12 +114,18 @@ func serveCommand() *cobra.Command {
 
 			entryLog.Info("registering webhooks to the webhook server")
 
-			hookServer.Register("/project/v1alpha/projects/{project}/webhook", authwebhook.NewAuthorizerWebhook(&iam.ProjectControlPlaneAuthorizer{
-				IAMClient: iamClient,
-			}))
-			hookServer.Register("/core/v1alpha/webhook", authwebhook.NewAuthorizerWebhook(&iam.CoreControlPlaneAuthorizer{
-				IAMClient: iamClient,
-			}))
+			hookServer.Register("/project/v1alpha/projects/{project}/webhook", otelhttp.NewHandler(
+				authwebhook.NewAuthorizerWebhook(&iam.ProjectControlPlaneAuthorizer{
+					IAMClient: iamClient,
+				}),
+				"datum.project-control-plane.AuthorizerWebhook",
+			))
+			hookServer.Register("/core/v1alpha/webhook", otelhttp.NewHandler(
+				authwebhook.NewAuthorizerWebhook(&iam.CoreControlPlaneAuthorizer{
+					IAMClient: iamClient,
+				}),
+				"datum.core-control-plane.AuthorizerWebhook",
+			))
 
 			return mgr.Start(context.Background())
 		},
