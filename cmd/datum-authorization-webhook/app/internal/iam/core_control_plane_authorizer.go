@@ -24,9 +24,10 @@ type CoreControlPlaneAuthorizer struct {
 
 // Authorize implements authorizer.Authorizer.
 func (o *CoreControlPlaneAuthorizer) Authorize(ctx context.Context, attributes authorizer.Attributes) (authorizer.Decision, string, error) {
-	ctx, span := otel.Tracer("go.datum.net/k8s-authz-webhook").Start(ctx, "datum.k8s-authz-webhook.global.Authorize", trace.WithAttributes(
+	ctx, span := otel.Tracer("go.datum.net/k8s-authz-webhook").Start(ctx, "datum.core-control-plane.Authorize", trace.WithAttributes(
 		attribute.String("api_group", attributes.GetAPIGroup()),
 		attribute.String("resource_kind", attributes.GetResource()),
+		attribute.String("subject", attributes.GetUser().GetName()),
 	))
 	defer span.End()
 
