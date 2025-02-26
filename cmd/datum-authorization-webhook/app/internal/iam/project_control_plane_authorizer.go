@@ -22,6 +22,13 @@ type ProjectControlPlaneAuthorizer struct {
 	IAMClient iamv1alphagrpc.AccessCheckClient
 }
 
+// Contains a mapping of Kubernetes APIGroups to the service name that should be
+// used by the webhook to perform authorization checks.
+var serviceNameMapping = map[string]string{
+	// An empty APIGroup is used for the core/v1 Kubernetes API Group.
+	"": "core.datumapis.com",
+}
+
 // Authorize implements authorizer.Authorizer.
 func (o *ProjectControlPlaneAuthorizer) Authorize(
 	ctx context.Context, attributes authorizer.Attributes,
@@ -43,8 +50,13 @@ func (o *ProjectControlPlaneAuthorizer) Authorize(
 		projectName = projectNames[0]
 	}
 
+	serviceName := attributes.GetAPIGroup()
+	if override, set := serviceNameMapping[serviceName]; set {
+		serviceName = override
+	}
+
 	resourceURL := "resourcemanager.datumapis.com/" + projectName
-	permissionName := fmt.Sprintf("%s/%s.%s", attributes.GetAPIGroup(), attributes.GetResource(), attributes.GetVerb())
+	permissionName := fmt.Sprintf("%s/%s.%s", serviceName, attributes.GetResource(), attributes.GetVerb())
 
 	span.SetAttributes(
 		attribute.String("resource", resourceURL),
