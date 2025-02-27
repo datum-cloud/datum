@@ -110,6 +110,9 @@ func (wh *Webhook) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if projectID := r.PathValue("project"); projectID != "" {
 		projectName := "projects/" + projectID
 		span.SetAttributes(attribute.String("project", projectName))
+		if req.Spec.Extra == nil {
+			req.Spec.Extra = map[string]authorizationv1.ExtraValue{}
+		}
 		req.Spec.Extra[ProjectExtraKey] = []string{projectName}
 	}
 
