@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         bundles:
-          - name: ghcr.io/datum-cloud/datum-api-server
+          - name: ghcr.io/datum-cloud/api-server
             path: config/api-server
           - name: ghcr.io/datum-cloud/controller-manager
             path: config/controller-manager
