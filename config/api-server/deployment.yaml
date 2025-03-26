@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: datum-apiserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: datum-apiserver
+      app.kubernetes.io/part-of: datum-control-plane
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: datum-apiserver
+        app.kubernetes.io/part-of: datum-control-plane
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - args:
+        - --authorization-mode=RBAC,Webhook
+        - --authentication-config=/etc/kubernetes/config/authentication-config.yaml
+        - --authentication-token-webhook-version=v1
+        - --authorization-webhook-config-file=/etc/kubernetes/config/authorization-config.yaml
+        - --authorization-webhook-version=v1
+        - --bind-address=0.0.0.0
+        - --secure-port=6443
+        - --etcd-servers=https://etcd-headless.etcd-system.svc.cluster.local:2379
+        - --etcd-cafile=/etc/kubernetes/pki/trust/etcd/ca.crt
+        - --etcd-certfile=/etc/kubernetes/pki/etcd/tls.crt
+        - --etcd-keyfile=/etc/kubernetes/pki/etcd/tls.key
+        - --etcd-prefix=/project-094c0c4b-6067-4bec-a5b8-2b08d5ad2a22
+        - --tls-cert-file=/etc/kubernetes/pki/apiserver/tls.crt
+        - --tls-private-key-file=/etc/kubernetes/pki/apiserver/tls.key
+        - --service-account-key-file=/etc/kubernetes/pki/trust/cp/ca.crt
+        - --service-account-issuer=TODO
+        - --client-ca-file=/etc/kubernetes/pki/trust/cp/ca.crt
+        - --tracing-config-file=/etc/kubernetes/config/tracing-config.yaml
+        image: us-east4-docker.pkg.dev/datum-cloud-prod/datum-internal-images/datum-apiserver:v0.0.1-v1alpha12-amd64
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /livez
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+        name: datum-apiserver
+        ports:
+        - containerPort: 6443
+          name: https
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /readyz
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+        resources: {}
+        startupProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /livez
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 15
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/kubernetes/pki/apiserver
+          name: datum-apiserver-tls
+        - mountPath: /etc/kubernetes/pki/etcd
+          name: etcd-client-tls
+        - mountPath: /etc/kubernetes/pki/trust/etcd
+          name: etcd-trust-bundle
+        - mountPath: /etc/kubernetes/pki/trust/cp
+          name: cp-trust-bundle
+        - mountPath: /etc/kubernetes/config
+          name: datum-apiserver-config
+        - mountPath: /etc/ssl/certs/
+          name: system-trust-bundle
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - csi:
+          driver: csi.cert-manager.io
+          readOnly: true
+          volumeAttributes:
+            csi.cert-manager.io/common-name: datum-apiserver
+            csi.cert-manager.io/issuer-kind: ClusterIssuer
+            csi.cert-manager.io/issuer-name: staging-etcd-clients
+            csi.cert-manager.io/key-usages: client auth
+        name: etcd-client-tls
+      - configMap:
+          defaultMode: 420
+          name: staging-etcd-clients-trust-bundle
+        name: etcd-trust-bundle
+      - configMap:
+          defaultMode: 420
+          name: staging-datum-control-plane-trust-bundle
+        name: cp-trust-bundle
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: ca.crt
+            path: ca-certificates.crt
+          name: staging-datum-control-plane-system-trust-bundle
+        name: system-trust-bundle
+      - csi:
+          driver: csi.cert-manager.io
+          readOnly: true
+          volumeAttributes:
+            csi.cert-manager.io/common-name: datum-apiserver
+            csi.cert-manager.io/dns-names: datum-apiserver.project-094c0c4b-6067-4bec-a5b8-2b08d5ad2a22.svc.cluster.local
+            csi.cert-manager.io/issuer-kind: ClusterIssuer
+            csi.cert-manager.io/issuer-name: staging-datum-control-plane
+            csi.cert-manager.io/key-usages: client auth,server auth
+        name: datum-apiserver-tls
+      - configMap:
+          defaultMode: 420
+          name: datum-apiserver
+        name: datum-apiserver-config
