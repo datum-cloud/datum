@@ -1,0 +1,20 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: datum-apiserver
+  labels:
+    app: datum-apiserver
+spec:
+  ingressClassName: contour
+  routes:
+  - conditions:
+    - prefix: /apis/resourcemanager.datumapis.com/v1alpha/projects/
+    pathRewritePolicy:
+      replacePrefix:
+      - replacement: /
+    services:
+    - name: datum-apiserver
+      port: 6443
+      protocol: tls
+    timeoutPolicy:
+      response: infinity

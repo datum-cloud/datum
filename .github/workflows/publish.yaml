@@ -1,0 +1,25 @@
+name: Publish Artifacts
+
+on:
+  push:
+  release:
+    types: ['published']
+
+jobs:
+  publish-kustomize-bundles:
+    permissions:
+      id-token: write
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        bundles:
+          - name: ghcr.io/datum-cloud/apiserver
+            path: config/apiserver
+          - name: ghcr.io/datum-cloud/controller-manager
+            path: config/controller-manager
+    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.1.0
+    with:
+      bundle-name: ${{ matrix.bundles.name }}
+      bundle-path: ${{ matrix.bundles.path }}
+    secrets: inherit

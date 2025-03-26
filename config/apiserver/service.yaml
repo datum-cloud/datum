@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: datum-apiserver
+  labels:
+    app: datum-apiserver
+spec:
+  type: ClusterIP
+  selector:
+    app: datum-apiserver
+  ports:
+  - name: https
+    port: 6443
+    protocol: TCP
+    targetPort: https
