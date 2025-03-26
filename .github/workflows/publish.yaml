@@ -14,8 +14,8 @@ jobs:
     strategy:
       matrix:
         bundles:
-          - name: ghcr.io/datum-cloud/api-server
-            path: config/api-server
+          - name: ghcr.io/datum-cloud/apiserver
+            path: config/apiserver
           - name: ghcr.io/datum-cloud/controller-manager
             path: config/controller-manager
     uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.1.0
