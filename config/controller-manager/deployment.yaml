@@ -24,14 +24,6 @@ spec:
       - name: datum-controller-manager
         image: us-east4-docker.pkg.dev/datum-cloud-prod/datum-internal-images/datum-controller-manager:v0.0.1-v1alpha2-amd64
         imagePullPolicy: IfNotPresent
-        args:
-        - --kubeconfig=/etc/kubernetes/auth/datum-controller-manager.kubeconfig
-        - --bind-address=0.0.0.0
-        - --secure-port=6443
-        - --leader-elect=true
-        - --leader-elect-resource-namespace=datum-system
-        - --requestheader-client-ca-file=/etc/kubernetes/pki/trust/ca.crt
-        - --authentication-skip-lookup=true
         ports:
         - containerPort: 6443
           name: https
@@ -57,28 +49,4 @@ spec:
             scheme: HTTPS
           initialDelaySeconds: 10
           periodSeconds: 10
-        volumeMounts:
-        - mountPath: /etc/kubernetes/pki/trust
-          name: trust-bundle
-        - mountPath: /etc/kubernetes/auth/
-          name: kubeconfig
-        - mountPath: /etc/kubernetes/pki/client
-          name: client-cert
       restartPolicy: Always
-      volumes:
-      - configMap:
-          name: staging-datum-control-plane-trust-bundle
-        name: trust-bundle
-      - secret:
-          secretName: datum-controller-manager-kubeconfig
-        name: kubeconfig
-      - name: client-cert
-        csi:
-          driver: csi.cert-manager.io
-          readOnly: true
-          volumeAttributes:
-            csi.cert-manager.io/common-name: datum-controller-manager
-            csi.cert-manager.io/issuer-kind: ClusterIssuer
-            csi.cert-manager.io/issuer-name: staging-datum-control-plane
-            csi.cert-manager.io/key-usages: client auth
-            csi.cert-manager.io/organizations: system:masters
