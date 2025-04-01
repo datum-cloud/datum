@@ -21,7 +21,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-        image: us-east4-docker.pkg.dev/datum-cloud-prod/datum-internal-images/datum-apiserver:v0.0.1-v1alpha12-amd64
+      - image: us-east4-docker.pkg.dev/datum-cloud-prod/datum-internal-images/datum-apiserver:v0.0.1-v1alpha12-amd64
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
