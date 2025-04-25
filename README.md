@@ -1,100 +1,172 @@
-# Datum
+# Datum: Connectivity infrastructure to power your unique advantage
 
-Datum is a network cloud you can take anywhere, backed by open source.
+<p align="center">
+  <a href="https://cloud.datum.net">Cloud Platform</a> -
+  <a href="https://docs.datum.net">Docs</a> -
+  <a href="https://slack.datum.net">Community Slack</a> -
+  <a href="https://www.datum.net/blog/">Blog</a>
+</p>
 
-The Datum control plane is a collection of multiple projects developed with
-Kubernetes control plane technology, most of which can be installed into native
-Kubernetes clusters.
+- [Simplify Distributed Infrastructure Management](#simplify-distributed-infrastructure-management)
+- [Future Directions: Enhanced Connectivity](#future-directions-enhanced-connectivity)
+- [Kubernetes Native](#kubernetes-native)
+- [Getting Started](#getting-started)
+  - [Datum Cloud (Recommended)](#datum-cloud-recommended)
+  - [Self-hosting Datum Operators (Advanced)](#self-hosting-datum-operators-advanced)
+- [Core Concepts](#core-concepts)
+  - [Declarative Management](#declarative-management)
+  - [Pluggable Infrastructure Providers](#pluggable-infrastructure-providers)
+  - [Workloads](#workloads)
+  - [Gateways](#gateways)
+- [Key Features \& Components](#key-features--components)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Get started
+## Simplify Distributed Infrastructure Management
 
-- [Quick Start with GCP](https://docs.datum.net/docs/tutorials/infra-provider-gcp/)
-- [Development Guide](https://docs.datum.net/docs/tasks/developer-guide/)
+Datum is an open platform designed to **unify and simplify** how you connect and
+manage distributed infrastructure, wherever it runs. Whether you're using public
+clouds, private data centers, or edge locations, Datum aims to provide a
+**consistent, declarative control plane** built on Kubernetes principles.
 
-## Documentation
+Instead of managing each environment separately, Datum allows you to define your
+desired infrastructure state using familiar Kubernetes APIs. This declarative
+approach means you focus on *what* you want, and Datum works with its pluggable
+providers to make it happen.
 
-Our documentation is available at [docs.datum.net](https://docs.datum.net/). If
-you want to learn more about what's under development or suggest features,
-please visit our [feedback site](https://feedback.datum.net).
+## Future Directions: Enhanced Connectivity
 
-## Key Components
+Datum aims to further simplify global infrastructure management by building out
+a robust edge network and expanding connectivity options. Future goals include:
 
-### API Server
+- **Global Edge Network**: Providing optimized ingress and egress points closer
+  to users worldwide using Anycast IPs, advanced load balancing, and traffic
+  management capabilities.
+- **Seamless Interconnect**: Enabling flexible and secure connections between
+  Datum VPC Networks and external environments (public clouds, private data
+  centers) using various standard and modern tunneling technologies.
+- **Integrated Network Services**: Offering built-in services like global load
+  balancing and DNS integrated across the entire managed infrastructure fabric.
 
-The Datum API server leverages Kubernetes API server libraries to enable
-compatibility with existing Kubernetes ecosystems tooling such as kubectl, helm,
-kustomize, Terraform, Pulumi, Ansible, kubebuilder, operator-sdk, and more.
+## Kubernetes Native
 
-While the Datum API server exposes a handful of existing Kubernetes API types
-such as Secrets and ConfigMaps, you will not find definitions for Pods,
-Deployments, Services, etc. This approach takes advantage of recent developments
-in the Kubernetes project to build a [generic control plane][kep-4080], exposing
-libraries that external software can depend on and build upon.
+Datum embraces the Kubernetes ecosystem. By using Custom Resource Definitions
+(CRDs) and standard APIs:
 
-[kep-4080]: https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/4080-generic-controlplane
+- **Declarative Configuration**: Define your entire infrastructure topology in
+  code.
+- **Ecosystem Compatibility**: Integrate seamlessly with existing Kubernetes
+  tools like `kubectl`, Kustomize, Helm, GitOps controllers (Argo CD, Flux), and
+  more.
+- **Extensibility**: Build on standard Kubernetes constructs and APIs.
 
-### Kubernetes Operators
+Get started quickly with [Datum Cloud](https://cloud.datum.net), or run the
+Datum operators directly within your own Kubernetes clusters for maximum
+control.
 
-Datum leverages the [operator pattern][operator-pattern] to define APIs and implement
-controllers via the use of [kubebuilder][kubebuilder]. Each Datum operator can
-be deployed into any native Kubernetes cluster that meets minimum API version
-requirements, and does not rely on specific functionality provided by the Datum
-API server.
+## Getting Started
 
-[operator-pattern]: https://kubernetes.io/docs/concepts/extend-kubernetes/operator/
-[kubebuilder]: https://github.com/kubernetes-sigs/kubebuilder
+### Datum Cloud (Recommended)
 
-#### [Network Services Operator](https://github.com/datum-cloud/network-services-operator)
+The easiest way to leverage Datum is via the hosted [Datum
+Cloud](https://cloud.datum.net) platform. Sign up and follow the [Getting
+Started Guide](https://docs.datum.net/docs/get-started/) to begin connecting and
+managing your infrastructure.
 
-APIs:
+### Self-hosting Datum Operators (Advanced)
 
-- Networks, NetworkContexts, NetworkBindings, and NetworkPolicies
-- SubnetClaims and Subnets
-- IP Address Management (IPAM)
+For users who prefer to manage their own control plane, Datum's core components
+are available as Kubernetes operators. You can install these operators
+(`workload-operator`, `network-services-operator`, relevant `infra-provider-*`
+operators) into any existing Kubernetes cluster. A set of Kustomizations are
+maintained for each component, which Datum builds upon internally for operating
+the platform.
 
-Controller responsibilities:
+- **Quick Start (GCP Example):** [Set up a Datum managed Location backed by
+  GCP](https://docs.datum.net/docs/tutorials/infra-provider-gcp/)
+- **Development Guide:** [General Development
+  Setup](https://docs.datum.net/docs/tasks/developer-guide/)
 
-- Creating NetworkContexts as required by NetworkBindings.
-- Allocating Subnets to SubnetClaims
+## Core Concepts
 
-#### [Workload Operator](https://github.com/datum-cloud/workload-operator)
+Datum extends the Kubernetes API to provide a unified infrastructure control
+plane.
 
-APIs:
+### Declarative Management
 
-- Workloads, WorkloadDeployments, and Instances
+Define your desired infrastructure state using Kubernetes manifests. Datum
+controllers continuously work to reconcile the actual state with your declared
+configuration. This enables infrastructure-as-code practices and GitOps
+workflows.
 
-Controller responsibilities:
+### Pluggable Infrastructure Providers
 
-- Creating one or more WorkloadDeployments for candidate locations based on
-  Workload placement intent.
-- Scheduling WorkloadDeployments onto Locations.
+Datum uses a provider model to interact with different underlying infrastructure
+environments (e.g., GCP, AWS, bare metal). Specific provider operators (like
+`infra-provider-gcp`) translate the abstract Datum API resources (`Workload`,
+`Gateway`) into concrete resources managed by the target provider. This allows
+for consistent management across heterogeneous environments.
 
-The [Workloads RFC][workload-rfc] is recommended reading for those interested in
-the design goals of this system.
+### Workloads
 
-[workload-rfc]: https://github.com/datum-cloud/workload-operator/blob/integration/datum-poc/docs/compute/development/rfcs/workloads/README.md
+The `Workload` resource provides a provider-agnostic way to manage groups of
+compute instances (VMs or containers). Define instance templates, placement
+rules (where instances should run across locations/providers), scaling behavior,
+network attachments, and volume mounts. The responsible infrastructure provider
+operator handles the provisioning.
 
-#### [GCP Infrastructure Provider](https://github.com/datum-cloud/infra-provider-gcp)
+### Gateways
 
-Integrates with the Network Services and Workload Operators to provision
-resources within Google Cloud Platform (GCP). This operator connects to:
+Leveraging the standard Kubernetes Gateway API (`GatewayClass`, `Gateway`,
+`HTTPRoute`, etc.), Datum allows you to define how external or internal traffic
+should connect to your services. Manage TLS certificates, configure routing
+logic, and control network ingress/egress across the infrastructure managed by
+Datum.
 
-- An upstream control plane hosting Datum entities
-- An infrastructure control plane running [GCP Config
-  Connector](https://github.com/GoogleCloudPlatform/k8s-config-connector)
+## Key Features & Components
 
-Controller responsibilities:
+Datum consists of several core components, primarily implemented as Kubernetes
+Operators:
 
-- Maintaining instances as Virtual Machines in GCP.
-- Maintaining VPC related entities such as networks and subnets.
-- Discovering instances provisioned by GCP controllers, such as managed instance
-  groups.
+- **API Server**: Built using Kubernetes API server libraries for compatibility
+  with ecosystem tools (`kubectl`, Helm, etc.), but focused on Datum-specific
+  resources, not standard Kubernetes workload types (like Pods or Deployments).
+  This approach takes advantage of recent developments in the Kubernetes project
+  to build a [generic control plane
+  (KEP-4080)](https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/4080-generic-controlplane).
+- **[Network Services
+  Operator](https://github.com/datum-cloud/network-services-operator)**: Manages
+  networking primitives like Datum VPC Networks (`Network`, `NetworkContext`),
+  Subnets (`SubnetClaim`, `Subnet`), IP Address Management (IPAM), and network
+  policy concepts (`NetworkBinding`, `NetworkPolicy`).
+- **[Workload Operator](https://github.com/datum-cloud/workload-operator)**:
+  Manages the lifecycle of `Workload` resources, handling placement logic and
+  the creation of compute instances (`WorkloadDeployment`, `Instance`) via
+  infrastructure providers. See the [Workloads RFC](https://github.com/datum-cloud/enhancements/tree/main/enhancements/compute/workloads)
+  for design details.
+- **Infrastructure Providers** (e.g.,
+  [`infra-provider-gcp`](https://github.com/datum-cloud/infra-provider-gcp)):
+  Pluggable operators that translate abstract Datum resource definitions
+  (`Workload`, network configurations) into concrete actions and resources
+  within a specific target environment (like GCP, AWS, etc.). They often
+  integrate with provider-specific tooling (e.g., GCP Config Connector).
 
-## Get involved
+Leverage standard Kubernetes APIs and patterns to manage these components and
+define your infrastructure.
 
-If you choose to contribute to any of our projects, we would love to work with you to ensure a great experience.
+## Contributing
 
-- Check out our [roadmap and enhancements](https://github.com/orgs/datum-cloud/projects/22) board.
-- Read and subscribe to the [Datum blog](https://www.datum.net/blog/).
-- For general discussions, join us on the [Datum Community Slack](https://slack.datum.net) team.
+We welcome contributions!
+
+Get involved:
+
+- **Development Setup:** See the [Development Guide](https://docs.datum.net/docs/tasks/developer-guide/).
+- **Roadmap & Enhancements:** Visit our [enhancements repo](https://github.com/orgs/datum-cloud/projects/22).
+- **General Discussion:** Join us on the [Datum Community Slack](https://slack.datum.net).
 - Follow [us on LinkedIn](https://www.linkedin.com/company/datum-cloud/).
+
+## License
+
+Datum is primarily licensed under the [AGPL v3.0](https://www.gnu.org/licenses/agpl-3.0.en.html).
+Specific components mayhave different licenses; please check individual
+repositories for details.
