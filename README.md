@@ -4,7 +4,8 @@
   <a href="https://cloud.datum.net">Cloud Platform</a> -
   <a href="https://docs.datum.net">Docs</a> -
   <a href="https://slack.datum.net">Community Slack</a> -
-  <a href="https://www.datum.net/blog/">Blog</a>
+  <a href="https://www.datum.net/blog/">Blog</a> -
+  <a href="https://www.linkedin.com/company/datum-cloud/">LinkedIn</a>
 </p>
 
 - [Simplify Distributed Infrastructure Management](#simplify-distributed-infrastructure-management)
@@ -163,7 +164,6 @@ Get involved:
 - **Development Setup:** See the [Development Guide](https://docs.datum.net/docs/tasks/developer-guide/).
 - **Roadmap & Enhancements:** Visit our [enhancements repo](https://github.com/orgs/datum-cloud/projects/22).
 - **General Discussion:** Join us on the [Datum Community Slack](https://slack.datum.net).
-- Follow [us on LinkedIn](https://www.linkedin.com/company/datum-cloud/).
 
 ## License
 
