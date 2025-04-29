@@ -23,6 +23,8 @@ jobs:
       matrix:
         service:
           - datum-authorization-webhook
+          - datum-apiserver
+          - datum-controller-manager
 
     steps:
     - name: Checkout repository
@@ -41,12 +43,12 @@ jobs:
       with:
         images: ghcr.io/datum-cloud/${{ matrix.service }}
         tags: |
-          type=schedule
-          type=ref,event=branch
           type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=semver,pattern={{major}}
+          type=ref,event=branch
+          type=ref,event=branch,suffix=-{{commit_date 'YYYYMMDD-HHmmss'}}
+          type=semver,pattern=v{{version}}
+          type=semver,pattern=v{{major}}.{{minor}}
+          type=semver,pattern=v{{major}}
           type=sha
 
     - name: Build ${{ matrix.service }}
