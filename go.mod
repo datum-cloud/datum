@@ -6,6 +6,8 @@ require (
 	buf.build/gen/go/datum-cloud/iam/grpc/go v1.5.1-20250214190629-505d1ed65f22.2
 	buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.1-20250214190629-505d1ed65f22.1
 	github.com/blang/semver/v4 v4.0.0
+	github.com/go-logr/logr v1.4.2
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/google/go-cmp v0.7.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.6
@@ -16,6 +18,7 @@ require (
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.32.0
 	go.opentelemetry.io/otel/sdk v1.34.0
 	go.opentelemetry.io/otel/trace v1.35.0
+	golang.org/x/oauth2 v0.25.0
 	google.golang.org/grpc v1.71.0
 	gopkg.in/square/go-jose.v2 v2.6.0
 	k8s.io/api v0.32.0
@@ -34,6 +37,7 @@ require (
 require (
 	buf.build/gen/go/datum-cloud/datum-os/protocolbuffers/go v1.36.1-20250214190629-249284998450.1 // indirect
 	cel.dev/expr v0.19.1 // indirect
+	cloud.google.com/go/compute/metadata v0.6.0 // indirect
 	cloud.google.com/go/longrunning v0.6.3 // indirect
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/NYTimes/gziphandler v1.1.1 // indirect
@@ -52,7 +56,6 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
-	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-logr/zapr v1.3.0 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
@@ -104,7 +107,6 @@ require (
 	golang.org/x/crypto v0.33.0 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
 	golang.org/x/net v0.35.0 // indirect
-	golang.org/x/oauth2 v0.25.0 // indirect
 	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/term v0.29.0 // indirect
