@@ -9,11 +9,11 @@
 </p>
 
 - [Simplify Distributed Infrastructure Management](#simplify-distributed-infrastructure-management)
+- [Delivering Connectivity where the Clouds cannot reach](#delivering-connectivity-where-the-clouds-cannot-reach)
 - [Future Directions: Enhanced Connectivity](#future-directions-enhanced-connectivity)
 - [Getting Started](#getting-started)
   - [Datum Cloud (Recommended)](#datum-cloud-recommended)
   - [Self-hosting Datum Operators (Advanced)](#self-hosting-datum-operators-advanced)
-- [Delivering Connectivity where the Clouds cannot reach](#delivering-connectivity-where-the-clouds-cannot-reach)
 - [Features](#features)
   - [Declarative Management](#declarative-management)
   - [Workloads](#workloads)
@@ -38,6 +38,17 @@ Instead of managing each environment separately, Datum allows you to define your
 desired infrastructure state using familiar Kubernetes API concepts. This
 declarative approach means you focus on *what* you want, and Datum works with
 its pluggable providers to make it happen.
+
+## Delivering Connectivity where the Clouds cannot reach
+
+Whether you choose to leverage Datum in the Cloud via GCP or AWS, bring Datum to
+your datacenter, or host behind your home firewall, we know that connectivity
+always becomes the next problem to solve. To assist with modern connectivity
+needs, Datum has built a Global Edge Network providing optimized ingress and
+egress points closer to users worldwide using Anycast IPs, advanced load
+balancing, and traffic management capabilities. No matter where you run Datum,
+you have access to a global edge to accelerate, protect, and connect your
+projects.
 
 ## Future Directions: Enhanced Connectivity
 
@@ -73,17 +84,6 @@ the platform.
   GCP](https://docs.datum.net/docs/tutorials/infra-provider-gcp/)
 - **Development Guide:** [General Development
   Setup](https://docs.datum.net/docs/tasks/developer-guide/)
-
-## Delivering Connectivity where the Clouds cannot reach
-
-Whether you choose to leverage Datum in the Cloud via GCP or AWS, bring Datum to
-your datacenter, or host behind your home firewall, we know that connectivity
-always becomes the next problem to solve. To assist with modern connectivity
-needs, Datum has built a Global Edge Network providing optimized ingress and
-egress points closer to users worldwide using Anycast IPs, advanced load
-balancing, and traffic management capabilities. No matter where you run Datum,
-you have access to a global edge to accelerate, protect, and connect your
-projects.
 
 ## Features
 
