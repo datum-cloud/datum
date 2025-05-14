@@ -94,7 +94,7 @@ Controller responsibilities:
 
 If you choose to contribute to any of our projects, we would love to work with you to ensure a great experience.
 
-- Check out our [roadmap and changelog](https://feedback.datum.net).
+- Check out our [roadmap and enhancements](https://github.com/orgs/datum-cloud/projects/22) board.
 - Read and subscribe to the [Datum blog](https://www.datum.net/blog/).
 - For general discussions, join us on the [Datum Community Slack](https://slack.datum.net) team.
 - Follow [us on LinkedIn](https://www.linkedin.com/company/datum-cloud/).
