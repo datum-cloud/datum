@@ -1,49 +1,50 @@
-# Datum: Connectivity infrastructure to power your unique advantage
+# Datum is building the internet for AI.
 
-<p align="center">
-  <a href="https://cloud.datum.net">Cloud Platform</a> -
+<p align="left">
+  <a href="https://cloud.datum.net">Datum Cloud</a> -
   <a href="https://docs.datum.net">Docs</a> -
   <a href="https://slack.datum.net">Community Slack</a> -
   <a href="https://www.datum.net/blog/">Blog</a> -
   <a href="https://www.linkedin.com/company/datum-cloud/">LinkedIn</a>
 </p>
 
-## 🤝 Datum is an Open Network Cloud
+## 🤝 Overview
 
 We believe that AI is changing everything — not just how we compute, but how
 ecosystems form and interact. Digital leaders today must orchestrate a complex,
-fragmented web of clouds, specialty providers, customers, and data. That's why
-we're building Datum...to act as a **“meet-me room” for the internet’s next
+fragmented web of clouds, specialty providers, customers, and data. 
+
+That's why we're building Datum...to act as a **“meet-me room” for the internet’s next
 era** — a neutral, programmable middle layer where companies can
 programmatically connect without needing to build and operate the entire stack
 themselves.
 
-### 🧠 Built for an AI-Native World
+### 🧠 AI-native principles 
 
 - Developer and agent-friendly interfaces and workflows
 - Enables autonomous and programmatic interconnection between providers and
   services
 
-### 🌍 Neutral by Design
+### 🌍 Neutral by design
 
 - No allegiance to a single cloud, vendor, or region
 - Operates as a trusted, independent layer for alt clouds, incumbents, and
   digital-first enterprises
 
-### ⚙️ Fully Programmable
+### ⚙️ Fully programmable
 
 - Designed for developers, operators, and modern service providers
 - Built using Kubernetes API patterns for operator happiness and ecosystem
   tooling (`kubectl`, Helm, etc.)
 
-### 🛰 Bring Your Own Infra
+### 🛰 Bring your own infra
 
 - Use Datum’s cloud control plane along with its global network and distributed
   compute
 - Or run components in your own cloud or infra (e.g., GCP, AWS, NetActuate,
   Vultr, etc.)
 
-### 🔍 Observability & Determinism
+### 🔍 Observability & determinism
 
 - Feed full telemetry to your preferred tools (Grafana Cloud, Honeycomb,
   Datadog, etc.)
@@ -53,14 +54,14 @@ themselves.
 
 ## 🚀 Some of our Favorite Features
 
-### Declarative Management
+### Declarative management
 
 Define your desired infrastructure state using Kubernetes manifests. Datum
 controllers continuously work to reconcile the actual state with your declared
 configuration. This enables infrastructure-as-code practices and GitOps
 workflows.
 
-### Kubernetes Native
+### Kubernetes native
 
 The Datum control plane is natively compatible with tooling from the Kubernetes
 ecosystem. Datum APIs are defined as [Custom Resources][k8s-custom-resources],
@@ -95,7 +96,7 @@ internal traffic should connect to your services. Manage TLS certificates,
 configure routing logic, and control network ingress/egress across the
 infrastructure managed by Datum.
 
-### Pluggable Infrastructure Providers
+### Pluggable infrastructure providers
 
 Datum uses a provider model to interact with different underlying infrastructure
 environments (e.g., GCP, AWS, bare metal). Specific provider operators
@@ -105,7 +106,7 @@ This allows for consistent management across heterogeneous environments.
 
 ## Components
 
-### Datum API Server
+### Datum API server
 
 Built using Kubernetes API server libraries for compatibility with ecosystem
 tools (`kubectl`, Helm, etc.), but focused on Datum-specific resources, not
@@ -113,14 +114,14 @@ standard Kubernetes workload types (like Pods or Deployments). This approach
 takes advantage of recent developments in the Kubernetes project to build a
 [generic control plane (KEP-4080)][kep-4080].
 
-### [Network Services Operator](https://github.com/datum-cloud/network-services-operator)
+### [Network services operator](https://github.com/datum-cloud/network-services-operator)
 
 Manages networking primitives like Datum VPC Networks
 (`Network`,`NetworkContext`), Subnets (`SubnetClaim`, `Subnet`), IP Address
 Management(IPAM), and network policy concepts (`NetworkBinding`,
 `NetworkPolicy`).
 
-### [Workload Operator](https://github.com/datum-cloud/workload-operator)
+### [Workload operator](https://github.com/datum-cloud/workload-operator)
 
 Manages the lifecycle of `Workload` resources, handling placement logic and the
 creation of compute instances (`WorkloadDeployment`, `Instance`) via
