@@ -46,7 +46,7 @@ body:
         - Device (e.g., Laptop, iPhone 15 Pro):
         - Any relevant versions (e.g., App version, specific library versions):
     validations:
-      required: true
+      required: false
   - type: dropdown
     attributes:
       label: "Impact / Severity"
@@ -57,14 +57,14 @@ body:
         - "Medium: Causes inconvenience but I can still use the platform with workarounds."
         - "Low: Minor issue or cosmetic problem with minimal impact."
     validations:
-      required: true
+      required: false
   - type: textarea
     attributes:
       label: "Additional Context"
       description: "Add any links, references, or context you think is relevant. This could include error messages, logs, or specific data you were using."
       placeholder: "Provide URLs, doc references, error messages, or any other useful details."
     validations:
-      required: true
+      required: false
   - type: textarea
     attributes:
       label: "Attachments / Screenshots"
