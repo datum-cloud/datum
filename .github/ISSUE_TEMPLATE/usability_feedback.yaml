@@ -1,0 +1,57 @@
+name: Usability Feedback
+description: Report a usability issue or provide feedback on the user experience.
+labels:
+  - usability
+  - ux
+  - feedback
+type: "Feedback"
+body:
+  - type: textarea
+    attributes:
+      label: "What task were you trying to complete?"
+      description: "Please describe the goal you were trying to achieve when you encountered the usability issue."
+      placeholder: "e.g., I was trying to invite a new member to my team."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Describe the usability issue"
+      description: "Please detail the difficulty, confusion, or frustration you experienced. What happened, and where in the application did it occur?"
+      placeholder: "e.g., I couldn't find the option to change my notification settings on the profile page."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Why was this confusing or difficult for you?"
+      description: "Help us understand your thought process. What made this part of the experience challenging from your perspective?"
+      placeholder: "e.g., The labels were unclear, or I expected the setting to be in a different menu."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "What did you expect to happen instead? (Optional)"
+      description: "If you had a different expectation for how this should function or look, please describe it."
+      placeholder: "e.g., I expected a clear button labeled 'Notification Settings'."
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: "Do you have any suggestions for improvement? (Optional)"
+      description: "If you have ideas on how we could make this better, we'd love to hear them."
+      placeholder: "e.g., Perhaps group all settings under a single 'Settings' menu."
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: "Relevant URL or Section of the Application (Optional)"
+      description: "If applicable, please provide the URL or describe the specific part of the application."
+      placeholder: "e.g., /app/settings/notifications or 'the user profile dropdown'"
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: "Attachments / Screenshots (Optional)"
+      description: "You can drag and drop images or paste links to screenshots/recordings that illustrate the issue."
+      placeholder: "Drag and drop or paste links here."
+    validations:
+      required: false

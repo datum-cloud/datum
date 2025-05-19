@@ -1,0 +1,74 @@
+name: Bug Report
+description: Provide supporting details for a bug in the Datum Cloud Platform.
+labels:
+- bug
+type: Bug
+body:
+  - type: textarea
+    attributes:
+      label: "Overview"
+      description: "Provide a concise summary of the bug."
+      placeholder: "Include a short explanation of the gap or need."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Steps to Reproduce"
+      description: "Please provide detailed steps to reproduce the bug. Number each step."
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Actual Behavior"
+      description: "What actually happened when you followed the steps?"
+      placeholder: "Describe the problem you encountered."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Expected Behavior"
+      description: "What did you expect to happen?"
+      placeholder: "Describe what you thought should occur."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Environment Details"
+      description: "Please provide details about the environment where you experienced the bug."
+      placeholder: |
+        - Operating System (e.g., Windows 10, macOS Sonoma 14.2.1):
+        - Browser (e.g., Chrome 120.0.6099.129, Safari 17.2.1):
+        - Device (e.g., Laptop, iPhone 15 Pro):
+        - Any relevant versions (e.g., App version, specific library versions):
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: "Impact / Severity"
+      description: "How significantly is this bug impacting your ability to use the platform?"
+      options:
+        - "Critical: Prevents me from using essential features or a complete outage."
+        - "High: Significantly impairs my ability to use important features."
+        - "Medium: Causes inconvenience but I can still use the platform with workarounds."
+        - "Low: Minor issue or cosmetic problem with minimal impact."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Additional Context"
+      description: "Add any links, references, or context you think is relevant. This could include error messages, logs, or specific data you were using."
+      placeholder: "Provide URLs, doc references, error messages, or any other useful details."
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: "Attachments / Screenshots"
+      description: "If applicable, please provide screenshots, logs, or any other files that could help us understand the issue. You can drag and drop files here or paste links."
+      placeholder: "Drag and drop files or paste links to attachments."
+    validations:
+      required: false
