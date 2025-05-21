@@ -30,8 +30,6 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(GroupVersion,
 		&User{},
 		&UserList{},
-		&Group{},
-		&GroupList{},
 		&Service{},
 		&ServiceList{},
 		&Role{},

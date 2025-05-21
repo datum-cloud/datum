@@ -67,8 +67,12 @@ spec:
             description: ProjectStatus defines the observed state of Project.
             properties:
               conditions:
-                default: '[{"type": "Ready", "status": "Unknown", "reason": "Unknown",
-                  "message": "Waiting for control plane to reconcile"}]'
+                default:
+                - lastTransitionTime: "1970-01-01T00:00:00Z"
+                  message: Waiting for control plane to reconcile
+                  reason: Unknown
+                  status: Unknown
+                  type: Ready
                 description: |-
                   Represents the observations of a project's current state.
                   Known condition types are: "Ready"

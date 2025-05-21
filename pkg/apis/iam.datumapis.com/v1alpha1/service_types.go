@@ -13,23 +13,25 @@ type ServiceResource struct {
 	// This will be in the format `compute.datumapis.com/Workload`.
 	// +kubebuilder:validation:Required
 	Type string `json:"type"`
+
 	// The singular form for the resource type, e.g. 'workload'. Must follow
 	// camelCase format.
 	// +kubebuilder:validation:Required
 	Singular string `json:"singular"`
+
 	// The plural form for the resource type, e.g. 'workloads'. Must follow
 	// camelCase format.
 	// +kubebuilder:validation:Required
 	Plural string `json:"plural"`
+
 	// A list of resources that are registered with the platform that may be a
 	// parent to the resource. Permissions may be bound to a parent resource so
 	// they can be inherited down the resource hierarchy. The resource must use
 	// the fully qualified resource name (e.g. compute.datumapis.com/Workload).
-	// +kubebuilder:validation:Required
+	//
+	// +kubebuilder:validation:Optional
 	ParentResources []string `json:"parentResources"`
-	// A list of resource name patterns that may be present for the resource.
-	// +kubebuilder:validation:Required
-	ResourceNamePatterns []string `json:"resourceNamePatterns"`
+
 	// A list of permissions that are associated with the resource.
 	// +kubebuilder:validation:Required
 	Permissions []string `json:"permissions"`
@@ -43,7 +45,7 @@ type ServiceResource struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="Display Name",type="string",JSONPath=".spec.displayName"
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:resource:path=services,scope=Namespaced
+// +kubebuilder:resource:path=services,scope=Cluster
 type Service struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -62,7 +64,7 @@ type ServiceSpec struct {
 // ServiceStatus defines the observed state of Service
 type ServiceStatus struct {
 	// Conditions provide conditions that represent the current status of the Service.
-	// +kubebuilder:default=`[{"type": "Ready", "status": "Unknown", "reason": "Unknown", "message": "Waiting for control plane to reconcile"}]`
+	// +kubebuilder:default={{type: "Ready", status: "Unknown", reason: "Unknown", message: "Waiting for control plane to reconcile", lastTransitionTime: "1970-01-01T00:00:00Z"}}
 	// +kubebuilder:validation:Optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }

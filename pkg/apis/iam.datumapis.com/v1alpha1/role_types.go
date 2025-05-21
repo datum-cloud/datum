@@ -18,7 +18,9 @@ type Role struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   RoleSpec   `json:"spec,omitempty"`
+	Spec RoleSpec `json:"spec,omitempty"`
+
+	// +kubebuilder:default={conditions: {{type: "Ready", status: "Unknown", reason: "Unknown", message: "Waiting for control plane to reconcile", lastTransitionTime: "1970-01-01T00:00:00Z"}}}
 	Status RoleStatus `json:"status,omitempty"`
 }
 
@@ -45,7 +47,6 @@ type RoleStatus struct {
 	// +kubebuilder:validation:Optional
 	Parent string `json:"parent,omitempty"`
 	// Conditions provide conditions that represent the current status of the Role.
-	// +kubebuilder:default=`[{"type": "Ready", "status": "Unknown", "reason": "Unknown", "message": "Waiting for control plane to reconcile"}]`
 	// +kubebuilder:validation:Optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }

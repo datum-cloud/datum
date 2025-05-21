@@ -12,7 +12,7 @@ spec:
     listKind: ServiceList
     plural: services
     singular: service
-  scope: Namespaced
+  scope: Cluster
   versions:
   - additionalPrinterColumns:
     - jsonPath: .spec.displayName
@@ -74,12 +74,6 @@ spec:
                         The plural form for the resource type, e.g. 'workloads'. Must follow
                         camelCase format.
                       type: string
-                    resourceNamePatterns:
-                      description: A list of resource name patterns that may be present
-                        for the resource.
-                      items:
-                        type: string
-                      type: array
                     singular:
                       description: |-
                         The singular form for the resource type, e.g. 'workload'. Must follow
@@ -91,10 +85,8 @@ spec:
                         This will be in the format `compute.datumapis.com/Workload`.
                       type: string
                   required:
-                  - parentResources
                   - permissions
                   - plural
-                  - resourceNamePatterns
                   - singular
                   - type
                   type: object
@@ -106,8 +98,12 @@ spec:
             description: ServiceStatus defines the observed state of Service
             properties:
               conditions:
-                default: '[{"type": "Ready", "status": "Unknown", "reason": "Unknown",
-                  "message": "Waiting for control plane to reconcile"}]'
+                default:
+                - lastTransitionTime: "1970-01-01T00:00:00Z"
+                  message: Waiting for control plane to reconcile
+                  reason: Unknown
+                  status: Unknown
+                  type: Ready
                 description: Conditions provide conditions that represent the current
                   status of the Service.
                 items:

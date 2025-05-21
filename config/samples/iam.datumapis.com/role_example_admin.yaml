@@ -1,0 +1,9 @@
+apiVersion: iam.datumapis.com/v1alpha1
+kind: Role
+metadata:
+  name: iam.datumapis.com-user-creator
+spec:
+  launchStage: Beta
+  includedPermissions:
+    - iam.datumapis.com/users.create
+    - iam.datumapis.com/users.get

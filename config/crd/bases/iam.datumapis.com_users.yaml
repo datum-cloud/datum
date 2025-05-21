@@ -12,7 +12,7 @@ spec:
     listKind: UserList
     plural: users
     singular: user
-  scope: Namespaced
+  scope: Cluster
   versions:
   - additionalPrinterColumns:
     - jsonPath: .spec.email
@@ -65,8 +65,12 @@ spec:
             description: UserStatus defines the observed state of User
             properties:
               conditions:
-                default: '[{"type": "Ready", "status": "Unknown", "reason": "Unknown",
-                  "message": "Waiting for control plane to reconcile"}]'
+                default:
+                - lastTransitionTime: "1970-01-01T00:00:00Z"
+                  message: Waiting for control plane to reconcile
+                  reason: Unknown
+                  status: Unknown
+                  type: Ready
                 description: Conditions provide conditions that represent the current
                   status of the User.
                 items:

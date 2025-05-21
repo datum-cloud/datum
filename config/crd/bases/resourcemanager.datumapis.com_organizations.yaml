@@ -54,8 +54,12 @@ spec:
             description: OrganizationStatus defines the observed state of Organization
             properties:
               conditions:
-                default: '[{"type": "Ready", "status": "Unknown", "reason": "Unknown",
-                  "message": "Waiting for control plane to reconcile"}]'
+                default:
+                - lastTransitionTime: "1970-01-01T00:00:00Z"
+                  message: Waiting for control plane to reconcile
+                  reason: Unknown
+                  status: Unknown
+                  type: Ready
                 description: |-
                   Conditions represents the observations of an organization's current state.
                   Known condition types are: "Ready"

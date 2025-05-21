@@ -29,7 +29,7 @@ type UserInvitationSpec struct {
 // UserInvitationStatus defines the observed state of UserInvitation
 type UserInvitationStatus struct {
 	// Conditions provide conditions that represent the current status of the UserInvitation.
-	// +kubebuilder:default=`[{"type": "Ready", "status": "Unknown", "reason": "Unknown", "message": "Waiting for control plane to reconcile"}]`
+	// +kubebuilder:default={{type: "Ready", status: "Unknown", reason: "Unknown", message: "Waiting for control plane to reconcile", lastTransitionTime: "1970-01-01T00:00:00Z"}}
 	// +kubebuilder:validation:Optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }

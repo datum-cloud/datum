@@ -74,11 +74,16 @@ spec:
             - launchStage
             type: object
           status:
+            default:
+              conditions:
+              - lastTransitionTime: "1970-01-01T00:00:00Z"
+                message: Waiting for control plane to reconcile
+                reason: Unknown
+                status: Unknown
+                type: Ready
             description: RoleStatus defines the observed state of Role
             properties:
               conditions:
-                default: '[{"type": "Ready", "status": "Unknown", "reason": "Unknown",
-                  "message": "Waiting for control plane to reconcile"}]'
                 description: Conditions provide conditions that represent the current
                   status of the Role.
                 items:
