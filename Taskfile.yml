@@ -22,8 +22,8 @@ tasks:
       # - echo "Generating protobuf marshallers..."
       # - go-to-protobuf \
       #     --output-base="./" \
-      #     --output-package-root="go.datumapis.com/datum/pkg/apis" \
-      #     --input-dirs="go.datumapis.com/datum/pkg/apis/resourcemanager.datumapis.com/v1alpha1" \
+      #     --output-package-root="go.datum.net/datum/pkg/apis" \
+      #     --input-dirs="go.datum.net/datum/pkg/apis/resourcemanager.datumapis.com/v1alpha1" \
       #     --go-header-file="./hack/boilerplate.go.txt"
     silent: true
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"go.datumapis.com/datum/cmd/datum-authorization-webhook/app"
+	"go.datum.net/datum/cmd/datum-authorization-webhook/app"
 )
 
 func main() {

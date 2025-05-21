@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"go.datumapis.com/datum/cmd/datum-authorization-webhook/app/internal/webhook"
+	"go.datum.net/datum/cmd/datum-authorization-webhook/app/internal/webhook"
 	v1 "k8s.io/api/authorization/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apiserver/pkg/authorization/authorizer"

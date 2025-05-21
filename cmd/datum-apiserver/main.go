@@ -5,7 +5,7 @@ import (
 
 	"k8s.io/component-base/cli"
 
-	"go.datumapis.com/datum/cmd/datum-apiserver/app"
+	"go.datum.net/datum/cmd/datum-apiserver/app"
 )
 
 // Implementation approach follows work done in https://github.com/kubernetes/kubernetes/pull/126260

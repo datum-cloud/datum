@@ -5,7 +5,7 @@ import (
 	"log/slog"
 
 	"github.com/spf13/cobra"
-	"go.datumapis.com/datum/pkg/cmd"
+	"go.datum.net/datum/pkg/cmd"
 )
 
 func NewWebhook() *cobra.Command {
