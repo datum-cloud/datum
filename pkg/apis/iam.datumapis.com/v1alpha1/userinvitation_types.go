@@ -1,0 +1,44 @@
+package v1alpha1
+
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// UserInvitation is the Schema for the userinvitations API
+// +k8s:openapi-gen=true
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+// +kubebuilder:resource:path=userinvitations,scope=Namespaced
+type UserInvitation struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   UserInvitationSpec   `json:"spec,omitempty"`
+	Status UserInvitationStatus `json:"status,omitempty"`
+}
+
+// UserInvitationSpec defines the desired state of UserInvitation
+type UserInvitationSpec struct {
+	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
+	// Important: Run "make" to regenerate code after modifying this file
+}
+
+// UserInvitationStatus defines the observed state of UserInvitation
+type UserInvitationStatus struct {
+	// Conditions provide conditions that represent the current status of the UserInvitation.
+	// +kubebuilder:default=`[{"type": "Ready", "status": "Unknown", "reason": "Unknown", "message": "Waiting for control plane to reconcile"}]`
+	// +kubebuilder:validation:Optional
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// UserInvitationList contains a list of UserInvitation
+type UserInvitationList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []UserInvitation `json:"items"`
+}

@@ -1,0 +1,7 @@
+apiVersion: resourcemanager.datumapis.com/v1alpha1
+kind: Project
+metadata:
+  name: project-sample
+spec:
+  parent:
+    external: "organizations/example-organization"

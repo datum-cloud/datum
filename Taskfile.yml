@@ -1,0 +1,39 @@
+version: '3'
+
+tasks:
+  default:
+    desc: List all available tasks
+    cmds:
+      - task --list
+    silent: true
+
+  generate:
+    desc: Generate code including deepcopy, objects, CRDs, and potentially protobuf marshallers
+    deps: [install-tools]
+    cmds:
+      - echo "Generating deepcopy and object files..."
+      - controller-gen object paths="./pkg/apis/..."
+      - echo "Generating CRD manifests..."
+      # Output CRDs to config/crd/bases. You can change this path.
+      - controller-gen crd paths="./pkg/apis/..." output:crd:stdout > config/crd/generated_crds.yaml
+      # If you prefer individual files per CRD:
+      # - controller-gen crd paths="./pkg/apis/..." output:dir=./config/crd/bases
+      # Protobuf generation (if still needed for other parts, or if you decide to use it later for clients)
+      # - echo "Generating protobuf marshallers..."
+      # - go-to-protobuf \
+      #     --output-base="./" \
+      #     --output-package-root="go.datumapis.com/datum/pkg/apis" \
+      #     --input-dirs="go.datumapis.com/datum/pkg/apis/resourcemanager.datumapis.com/v1alpha1" \
+      #     --go-header-file="./hack/boilerplate.go.txt"
+    silent: true
+
+  install-tools:
+    desc: Install tools required for development
+    cmds:
+      - go install sigs.k8s.io/controller-tools/cmd/controller-gen@latest
+      # - go install k8s.io/code-generator/cmd/go-to-protobuf # Commented out
+    status:
+      # Check if controller-gen is present
+      - command -v controller-gen
+      # - sh -c "command -v controller-gen && command -v go-to-protobuf" # Adjusted status check
+    silent: true

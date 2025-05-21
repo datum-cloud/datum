@@ -1,0 +1,60 @@
+package v1alpha1
+
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// Role is the Schema for the roles API
+// +k8s:openapi-gen=true
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Display Name",type="string",JSONPath=".spec.displayName"
+// +kubebuilder:printcolumn:name="Launch Stage",type="string",JSONPath=".spec.launchStage"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+// +kubebuilder:resource:path=roles,scope=Namespaced
+type Role struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   RoleSpec   `json:"spec,omitempty"`
+	Status RoleStatus `json:"status,omitempty"`
+}
+
+// RoleSpec defines the desired state of Role
+type RoleSpec struct {
+	// The names of the permissions this role grants when bound in an IAM policy.
+	// All permissions must be in the format: `{service}.{resource}.{action}`
+	// (e.g. compute.workloads.create).
+	// +kubebuilder:validation:Required
+	IncludedPermissions []string `json:"includedPermissions"`
+	// Defines the launch stage of the IAM Role. Must be one of: Early Access,
+	// Alpha, Beta, Stable, Deprecated.
+	// +kubebuilder:validation:Required
+	LaunchStage string `json:"launchStage"`
+	// The list of roles from which this role inherits permissions.
+	// Each entry must be a valid role resource name, e.g. "services/resourcemanager.datumapis.com/roles/projectAdmin".
+	// +kubebuilder:validation:Optional
+	InheritedRoles []string `json:"inheritedRoles,omitempty"`
+}
+
+// RoleStatus defines the observed state of Role
+type RoleStatus struct {
+	// The resource name of the parent the role was created under.
+	// +kubebuilder:validation:Optional
+	Parent string `json:"parent,omitempty"`
+	// Conditions provide conditions that represent the current status of the Role.
+	// +kubebuilder:default=`[{"type": "Ready", "status": "Unknown", "reason": "Unknown", "message": "Waiting for control plane to reconcile"}]`
+	// +kubebuilder:validation:Optional
+	Conditions []metav1.Condition `json:"conditions,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// RoleList contains a list of Role
+type RoleList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []Role `json:"items"`
+}
