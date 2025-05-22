@@ -1,6 +1,5 @@
 apiVersion: resourcemanager.datumapis.com/v1alpha1
 kind: Organization
 metadata:
-  name: organization-sample
-spec:
-  # Add new fields here if they replaced DisplayName and Description
+  name: datum
+spec: {}

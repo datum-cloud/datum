@@ -71,6 +71,10 @@ spec:
                   name:
                     description: Name is the name of resource being referenced
                     type: string
+                  namespace:
+                    description: Namespace of the referenced Role. If empty, it is
+                      assumed to be in the PolicyBinding's namespace.
+                    type: string
                 required:
                 - apiGroup
                 - kind
@@ -85,17 +89,14 @@ spec:
                     This can be a User or Group.
                   properties:
                     apiGroup:
-                      description: |-
-                        APIGroup holds the API group of the referenced subject.
-                        Defaults to "" for ServiceAccount subjects.
-                        Defaults to "iam.datumapis.com" for User and Group subjects.
+                      description: APIGroup holds the API group of the referenced
+                        subject.
                       type: string
                     kind:
                       description: Kind of object being referenced. Values defined
                         in Kind constants.
                       enum:
                       - User
-                      - Group
                       type: string
                     name:
                       description: Name of the object being referenced.
@@ -105,9 +106,14 @@ spec:
                         Namespace of the referenced object. If DNE, then for an SA it refers to the PolicyBinding resource's namespace.
                         For a User or Group, it is ignored.
                       type: string
+                    uid:
+                      description: UID of the referenced object.
+                      type: string
                   required:
+                  - apiGroup
                   - kind
                   - name
+                  - uid
                   type: object
                 type: array
               targetRef:

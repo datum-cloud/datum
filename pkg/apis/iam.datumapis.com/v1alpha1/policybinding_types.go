@@ -16,6 +16,9 @@ type RoleReference struct {
 	// Name is the name of resource being referenced
 	// +kubebuilder:validation:Required
 	Name string `json:"name"`
+	// Namespace of the referenced Role. If empty, it is assumed to be in the PolicyBinding's namespace.
+	// +kubebuilder:validation:Optional
+	Namespace string `json:"namespace,omitempty"`
 }
 
 // Subject contains a reference to the object or user identities a role binding applies to.
@@ -24,20 +27,21 @@ type RoleReference struct {
 type Subject struct {
 	// Kind of object being referenced. Values defined in Kind constants.
 	// +kubebuilder:validation:Required
-	// +kubebuilder:validation:Enum=User;Group
+	// +kubebuilder:validation:Enum=User
 	Kind string `json:"kind"`
 	// Name of the object being referenced.
 	// +kubebuilder:validation:Required
 	Name string `json:"name"`
 	// APIGroup holds the API group of the referenced subject.
-	// Defaults to "" for ServiceAccount subjects.
-	// Defaults to "iam.datumapis.com" for User and Group subjects.
-	// +kubebuilder:validation:Optional
+	// +kubebuilder:validation:Required
 	APIGroup string `json:"apiGroup,omitempty"`
 	// Namespace of the referenced object. If DNE, then for an SA it refers to the PolicyBinding resource's namespace.
 	// For a User or Group, it is ignored.
 	// +kubebuilder:validation:Optional
 	Namespace string `json:"namespace,omitempty"`
+	// UID of the referenced object.
+	// +kubebuilder:validation:Required
+	UID string `json:"uid"`
 }
 
 // TargetReference contains enough information to let you identify an API resource.

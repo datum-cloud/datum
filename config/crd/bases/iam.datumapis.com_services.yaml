@@ -54,6 +54,11 @@ spec:
                     consumers. Resources can have actions registered that result in permissions
                     being created.
                   properties:
+                    kind:
+                      description: |-
+                        The kind of the resource.
+                        This will be in the format `Workload`.
+                      type: string
                     parentResources:
                       description: |-
                         A list of resources that are registered with the platform that may be a
@@ -79,16 +84,11 @@ spec:
                         The singular form for the resource type, e.g. 'workload'. Must follow
                         camelCase format.
                       type: string
-                    type:
-                      description: |-
-                        The fully qualified name of the resource.
-                        This will be in the format `compute.datumapis.com/Workload`.
-                      type: string
                   required:
+                  - kind
                   - permissions
                   - plural
                   - singular
-                  - type
                   type: object
                 type: array
             required:

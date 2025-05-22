@@ -1,83 +1,99 @@
 apiVersion: iam.datumapis.com/v1alpha1
-kind: Service
+kind: ProtectedResource
 metadata:
-  name: iam.datumapis.com
+  name: iam-role # Combining service and resource kind for a unique name
 spec:
-  resources:
-    - type: iam.datumapis.com/Role
-      plural: roles
-      singular: role
-      permissions:
-        - list
-        - get
-        - create
-        - update
-        - delete
-        - use
-        - patch
-        - watch
-      parentResources:
-        - iam.datumapis.com/Service
-    - type: iam.datumapis.com/Service
-      plural: services
-      singular: service
-      permissions:
-        - list
-        - get
-        - create
-        - update
-        - delete
-        - patch
-        - watch
-    - type: iam.datumapis.com/User
-      plural: users
-      singular: user
-      permissions:
-        - list
-        - get
-        - create
-        - update
-        - delete
-        - patch
-        - watch
-    - type: iam.datumapis.com/Group
-      plural: groups
-      singular: group
-      permissions:
-        - list
-        - get
-        - create
-        - update
-        - delete
-        - patch
-        - watch
+  serviceRef:
+    name: "iam.datumapis.com"
+  kind: Role
+  plural: roles
+  singular: role
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - use
+    - patch
+    - watch
 ---
 apiVersion: iam.datumapis.com/v1alpha1
-kind: Service
+kind: ProtectedResource
 metadata:
-  name: resourcemanager.datumapis.com
+  name: iam-user
 spec:
-  resources:
-    - type: resourcemanager.datumapis.com/Organization
-      plural: organizations
-      singular: organization
-      permissions:
-        - list
-        - get
-        - create
-        - update
-        - delete
-        - use
-        - patch
-        - watch
-    - type: resourcemanager.datumapis.com/Project
-      plural: projects
-      singular: project
-      permissions:
-        - list
-        - get
-        - create
-        - update
-        - delete
-        - patch
-        - watch
+  serviceRef:
+    name: "iam.datumapis.com"
+  kind: User
+  plural: users
+  singular: user
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - patch
+    - watch
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: iam-group
+spec:
+  serviceRef:
+    name: "iam.datumapis.com"
+  kind: Group
+  plural: groups
+  singular: group
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - patch
+    - watch
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: resourcemanager-organization
+spec:
+  serviceRef:
+    name: "resourcemanager.datumapis.com"
+  kind: Organization
+  plural: organizations
+  singular: organization
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - use
+    - patch
+    - watch
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: resourcemanager-project
+spec:
+  serviceRef:
+    name: "resourcemanager.datumapis.com"
+  kind: Project
+  plural: projects
+  singular: project
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - patch
+    - watch
+  parentResources:
+    - apiGroup: resourcemanager.datumapis.com # This now refers to another ProtectedResource's APIGroup
+      kind: Organization

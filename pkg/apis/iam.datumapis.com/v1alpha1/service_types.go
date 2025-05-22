@@ -4,15 +4,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// ServiceResource is an entity offered by services to provide functionality to service
-// consumers. Resources can have actions registered that result in permissions
-// being created.
+// ProtectedResourceSpec defines the desired state of ProtectedResource
 // +k8s:openapi-gen=true
-type ServiceResource struct {
-	// The fully qualified name of the resource.
-	// This will be in the format `compute.datumapis.com/Workload`.
+type ProtectedResourceSpec struct {
+	// ServiceRef references the service definition this protected resource belongs to.
 	// +kubebuilder:validation:Required
-	Type string `json:"type"`
+	ServiceRef ServiceReference `json:"serviceRef"`
+
+	// The kind of the resource.
+	// This will be in the format `Workload`.
+	// +kubebuilder:validation:Required
+	Kind string `json:"kind"`
 
 	// The singular form for the resource type, e.g. 'workload'. Must follow
 	// camelCase format.
@@ -26,54 +28,66 @@ type ServiceResource struct {
 
 	// A list of resources that are registered with the platform that may be a
 	// parent to the resource. Permissions may be bound to a parent resource so
-	// they can be inherited down the resource hierarchy. The resource must use
-	// the fully qualified resource name (e.g. compute.datumapis.com/Workload).
-	//
+	// they can be inherited down the resource hierarchy.
 	// +kubebuilder:validation:Optional
-	ParentResources []string `json:"parentResources"`
+	ParentResources []ParentResourceRef `json:"parentResources,omitempty"`
 
 	// A list of permissions that are associated with the resource.
 	// +kubebuilder:validation:Required
 	Permissions []string `json:"permissions"`
 }
 
-// +genclient
-// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-
-// Service is the Schema for the services API
-// +k8s:openapi-gen=true
-// +kubebuilder:subresource:status
-// +kubebuilder:printcolumn:name="Display Name",type="string",JSONPath=".spec.displayName"
-// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
-// +kubebuilder:resource:path=services,scope=Cluster
-type Service struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
-
-	Spec   ServiceSpec   `json:"spec,omitempty"`
-	Status ServiceStatus `json:"status,omitempty"`
-}
-
-// ServiceSpec defines the desired state of Service
-type ServiceSpec struct {
-	// List of resources offered by a service.
-	// +kubebuilder:validation:Required
-	Resources []ServiceResource `json:"resources"`
-}
-
-// ServiceStatus defines the observed state of Service
-type ServiceStatus struct {
-	// Conditions provide conditions that represent the current status of the Service.
+// ProtectedResourceStatus defines the observed state of ProtectedResource
+type ProtectedResourceStatus struct {
+	// Conditions provide conditions that represent the current status of the ProtectedResource.
 	// +kubebuilder:default={{type: "Ready", status: "Unknown", reason: "Unknown", message: "Waiting for control plane to reconcile", lastTransitionTime: "1970-01-01T00:00:00Z"}}
 	// +kubebuilder:validation:Optional
 	Conditions []metav1.Condition `json:"conditions,omitempty"`
 }
 
+// +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// ServiceList contains a list of Service
-type ServiceList struct {
+// ProtectedResource is the Schema for the protectedresources API
+// +k8s:openapi-gen=true
+// +kubebuilder:subresource:status
+// +kubebuilder:printcolumn:name="Kind",type="string",JSONPath=".spec.kind"
+// +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
+// +kubebuilder:resource:path=protectedresources,scope=Cluster,singular=protectedresource,shortName=pr
+type ProtectedResource struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   ProtectedResourceSpec   `json:"spec,omitempty"`
+	Status ProtectedResourceStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+// ProtectedResourceList contains a list of ProtectedResource
+type ProtectedResourceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []Service `json:"items"`
+	Items           []ProtectedResource `json:"items"`
+}
+
+// ParentResourceRef defines the reference to a parent resource
+// +k8s:openapi-gen=true
+type ParentResourceRef struct {
+	// APIGroup is the group for the resource being referenced.
+	// If APIGroup is not specified, the specified Kind must be in the core API group.
+	// For any other third-party types, APIGroup is required.
+	// +kubebuilder:validation:Optional
+	APIGroup string `json:"apiGroup,omitempty"`
+	// Kind is the type of resource being referenced.
+	// +kubebuilder:validation:Required
+	Kind string `json:"kind"`
+}
+
+// ServiceReference holds a reference to a service definition.
+// +k8s:openapi-gen=true
+type ServiceReference struct {
+	// Name is the resource name of the service definition.
+	// +kubebuilder:validation:Required
+	Name string `json:"name"`
 }
