@@ -1,0 +1,6 @@
+apiVersion: iam.datumapis.com/v1alpha1
+kind: User
+metadata:
+  name: scot.wells.datum.net
+spec:
+  email: scot.wells@datum.net

@@ -67,6 +67,30 @@ type ProjectParentReference struct {
 	// External is a reference to the parent of the project. Must be a valid
 	// resource name.
 	//
-	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Optional
 	External string `json:"external,omitempty"`
+
+	// Resource is a reference to the parent of the project. Must be a valid
+	// resource.
+	//
+	// +kubebuilder:validation:Required
+	ResourceRef ResourceReference `json:"resourceRef"`
+}
+
+type ResourceReference struct {
+	// Group is the group of the resource.
+	//
+	// +kubebuilder:validation:Required
+	APIGroup string `json:"apiGroup,omitempty"`
+
+	// Kind is the kind of the resource.
+	//
+	// +kubebuilder:validation:Required
+	// +kubebuilder:validation:Enum=Organization
+	Kind string `json:"kind,omitempty"`
+
+	// Name is the name of the resource.
+	//
+	// +kubebuilder:validation:Required
+	Name string `json:"name,omitempty"`
 }

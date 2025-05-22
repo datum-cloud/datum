@@ -141,6 +141,11 @@ spec:
                   - type
                   type: object
                 type: array
+              observedGeneration:
+                description: ObservedGeneration is the most recent generation observed
+                  by the controller.
+                format: int64
+                type: integer
               parent:
                 description: The resource name of the parent the role was created
                   under.

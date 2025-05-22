@@ -4,19 +4,21 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.18.0
-  name: services.iam.datumapis.com
+  name: protectedresources.iam.datumapis.com
 spec:
   group: iam.datumapis.com
   names:
-    kind: Service
-    listKind: ServiceList
-    plural: services
-    singular: service
+    kind: ProtectedResource
+    listKind: ProtectedResourceList
+    plural: protectedresources
+    shortNames:
+    - pr
+    singular: protectedresource
   scope: Cluster
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .spec.displayName
-      name: Display Name
+    - jsonPath: .spec.kind
+      name: Kind
       type: string
     - jsonPath: .metadata.creationTimestamp
       name: Age
@@ -24,7 +26,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Service is the Schema for the services API
+        description: ProtectedResource is the Schema for the protectedresources API
         properties:
           apiVersion:
             description: |-
@@ -44,58 +46,69 @@ spec:
           metadata:
             type: object
           spec:
-            description: ServiceSpec defines the desired state of Service
+            description: ProtectedResourceSpec defines the desired state of ProtectedResource
             properties:
-              resources:
-                description: List of resources offered by a service.
+              kind:
+                description: |-
+                  The kind of the resource.
+                  This will be in the format `Workload`.
+                type: string
+              parentResources:
+                description: |-
+                  A list of resources that are registered with the platform that may be a
+                  parent to the resource. Permissions may be bound to a parent resource so
+                  they can be inherited down the resource hierarchy.
                 items:
-                  description: |-
-                    ServiceResource is an entity offered by services to provide functionality to service
-                    consumers. Resources can have actions registered that result in permissions
-                    being created.
+                  description: ParentResourceRef defines the reference to a parent
+                    resource
                   properties:
+                    apiGroup:
+                      description: |-
+                        APIGroup is the group for the resource being referenced.
+                        If APIGroup is not specified, the specified Kind must be in the core API group.
+                        For any other third-party types, APIGroup is required.
+                      type: string
                     kind:
-                      description: |-
-                        The kind of the resource.
-                        This will be in the format `Workload`.
-                      type: string
-                    parentResources:
-                      description: |-
-                        A list of resources that are registered with the platform that may be a
-                        parent to the resource. Permissions may be bound to a parent resource so
-                        they can be inherited down the resource hierarchy. The resource must use
-                        the fully qualified resource name (e.g. compute.datumapis.com/Workload).
-                      items:
-                        type: string
-                      type: array
-                    permissions:
-                      description: A list of permissions that are associated with
-                        the resource.
-                      items:
-                        type: string
-                      type: array
-                    plural:
-                      description: |-
-                        The plural form for the resource type, e.g. 'workloads'. Must follow
-                        camelCase format.
-                      type: string
-                    singular:
-                      description: |-
-                        The singular form for the resource type, e.g. 'workload'. Must follow
-                        camelCase format.
+                      description: Kind is the type of resource being referenced.
                       type: string
                   required:
                   - kind
-                  - permissions
-                  - plural
-                  - singular
                   type: object
                 type: array
+              permissions:
+                description: A list of permissions that are associated with the resource.
+                items:
+                  type: string
+                type: array
+              plural:
+                description: |-
+                  The plural form for the resource type, e.g. 'workloads'. Must follow
+                  camelCase format.
+                type: string
+              serviceRef:
+                description: ServiceRef references the service definition this protected
+                  resource belongs to.
+                properties:
+                  name:
+                    description: Name is the resource name of the service definition.
+                    type: string
+                required:
+                - name
+                type: object
+              singular:
+                description: |-
+                  The singular form for the resource type, e.g. 'workload'. Must follow
+                  camelCase format.
+                type: string
             required:
-            - resources
+            - kind
+            - permissions
+            - plural
+            - serviceRef
+            - singular
             type: object
           status:
-            description: ServiceStatus defines the observed state of Service
+            description: ProtectedResourceStatus defines the observed state of ProtectedResource
             properties:
               conditions:
                 default:
@@ -105,7 +118,7 @@ spec:
                   status: Unknown
                   type: Ready
                 description: Conditions provide conditions that represent the current
-                  status of the Service.
+                  status of the ProtectedResource.
                 items:
                   description: Condition contains details for one aspect of the current
                     state of this API Resource.
@@ -161,6 +174,12 @@ spec:
                   - type
                   type: object
                 type: array
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the most recent generation observed for this ProtectedResource. It corresponds to the
+                  ProtectedResource's generation, which is updated on mutation by the API Server.
+                format: int64
+                type: integer
             type: object
         type: object
     served: true

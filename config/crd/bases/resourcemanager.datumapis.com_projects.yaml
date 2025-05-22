@@ -57,8 +57,29 @@ spec:
                       External is a reference to the parent of the project. Must be a valid
                       resource name.
                     type: string
+                  resourceRef:
+                    description: |-
+                      Resource is a reference to the parent of the project. Must be a valid
+                      resource.
+                    properties:
+                      apiGroup:
+                        description: Group is the group of the resource.
+                        type: string
+                      kind:
+                        description: Kind is the kind of the resource.
+                        enum:
+                        - Organization
+                        type: string
+                      name:
+                        description: Name is the name of the resource.
+                        type: string
+                    required:
+                    - apiGroup
+                    - kind
+                    - name
+                    type: object
                 required:
-                - external
+                - resourceRef
                 type: object
             required:
             - parent

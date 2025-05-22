@@ -1,7 +1,7 @@
 apiVersion: iam.datumapis.com/v1alpha1
 kind: ProtectedResource
 metadata:
-  name: iam-role # Combining service and resource kind for a unique name
+  name: iam-role
 spec:
   serviceRef:
     name: "iam.datumapis.com"
@@ -95,5 +95,5 @@ spec:
     - patch
     - watch
   parentResources:
-    - apiGroup: resourcemanager.datumapis.com # This now refers to another ProtectedResource's APIGroup
+    - apiGroup: resourcemanager.datumapis.com
       kind: Organization

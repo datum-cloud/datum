@@ -31,10 +31,12 @@ type RoleSpec struct {
 	// (e.g. compute.workloads.create).
 	// +kubebuilder:validation:Required
 	IncludedPermissions []string `json:"includedPermissions"`
+
 	// Defines the launch stage of the IAM Role. Must be one of: Early Access,
 	// Alpha, Beta, Stable, Deprecated.
 	// +kubebuilder:validation:Required
 	LaunchStage string `json:"launchStage"`
+
 	// The list of roles from which this role inherits permissions.
 	// Each entry must be a valid role resource name, e.g. "services/resourcemanager.datumapis.com/roles/projectAdmin".
 	// +kubebuilder:validation:Optional
@@ -46,9 +48,14 @@ type RoleStatus struct {
 	// The resource name of the parent the role was created under.
 	// +kubebuilder:validation:Optional
 	Parent string `json:"parent,omitempty"`
+
 	// Conditions provide conditions that represent the current status of the Role.
 	// +kubebuilder:validation:Optional
-	Conditions []metav1.Condition `json:"conditions,omitempty"`
+	Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
+
+	// ObservedGeneration is the most recent generation observed by the controller.
+	// +optional
+	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

@@ -2,6 +2,14 @@ apiVersion: resourcemanager.datumapis.com/v1alpha1
 kind: Project
 metadata:
   name: project-sample
+  ownerReferences:
+    - apiVersion: resourcemanager.datumapis.com/v1alpha1
+      kind: Organization
+      name: "datum"
+      uid: 0d5ae615-3466-4cc8-945f-dad7ed7f1992
 spec:
   parent:
-    external: "organizations/example-organization"
+    resourceRef:
+      apiGroup: resourcemanager.datumapis.com
+      kind: Organization
+      name: "datum"
