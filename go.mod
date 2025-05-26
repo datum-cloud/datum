@@ -4,7 +4,7 @@ go 1.23.1
 
 require (
 	buf.build/gen/go/datum-cloud/iam/grpc/go v1.5.1-20250214190629-505d1ed65f22.2
-	buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.1-20250214190629-505d1ed65f22.1
+	buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.6-20250526132531-88375b7f8360.1
 	github.com/blang/semver/v4 v4.0.0
 	github.com/google/go-cmp v0.7.0
 	github.com/spf13/cobra v1.8.1
@@ -112,9 +112,10 @@ require (
 	golang.org/x/time v0.7.0 // indirect
 	golang.org/x/tools v0.26.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
+	google.golang.org/genproto v0.0.0-20241015192408-796eee8c2d53 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250106144421-5f5ef82da422 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250218202821-56aae31c358a // indirect
-	google.golang.org/protobuf v1.36.5 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect

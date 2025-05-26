@@ -4,6 +4,8 @@ buf.build/gen/go/datum-cloud/iam/grpc/go v1.5.1-20250214190629-505d1ed65f22.2 h1
 buf.build/gen/go/datum-cloud/iam/grpc/go v1.5.1-20250214190629-505d1ed65f22.2/go.mod h1:kc1ou2fMU2fGegrXTX4Knhiy3VjRVkXVIPedtrSM12I=
 buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.1-20250214190629-505d1ed65f22.1 h1:JzhUIsVcoNCVtFNC2M0nW0lfk59lvUikfM9u+z1FUUk=
 buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.1-20250214190629-505d1ed65f22.1/go.mod h1:FIvO376l+H+t7E0WYyELtU4QwvxmST7L9gfh+qv5RBQ=
+buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.6-20250526132531-88375b7f8360.1 h1:JwfwveXc1+vbQF7bjqkR11KWYND9iwmzqlthoDVo8zg=
+buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.6-20250526132531-88375b7f8360.1/go.mod h1:mBNXMGhmoM4v2WU3Ocr2xvv5E4UUopEGt6dYDMp7huc=
 cel.dev/expr v0.18.0 h1:CJ6drgk+Hf96lkLikr4rFf19WrU0BOWEihyZnI2TAzo=
 cel.dev/expr v0.18.0/go.mod h1:MrpN08Q+lEBs+bGYdLxxHkZoUSsCp0nSKTs0nTymJgw=
 cel.dev/expr v0.19.1 h1:NciYrtDRIR0lNCnH1LFJegdjspNx9fI59O7TWcua/W4=
@@ -338,6 +340,8 @@ google.golang.org/protobuf v1.36.1 h1:yBPeRvTftaleIgM3PZ/WBIZ7XM/eEYAaEyCwvyjq/g
 google.golang.org/protobuf v1.36.1/go.mod h1:9fA7Ob0pmnwhb644+1+CVWFRbNajQ6iRojtC/QF5bRE=
 google.golang.org/protobuf v1.36.5 h1:tPhr+woSbjfYvY6/GPufUoYizxw1cF/yFoxJ2fmpwlM=
 google.golang.org/protobuf v1.36.5/go.mod h1:9fA7Ob0pmnwhb644+1+CVWFRbNajQ6iRojtC/QF5bRE=
+google.golang.org/protobuf v1.36.6 h1:z1NpPI8ku2WgiWnf+t9wTPsn6eP1L7ksHUlkfLvd9xY=
+google.golang.org/protobuf v1.36.6/go.mod h1:jduwjTPXsFjZGTmRluh+L6NjiWu7pchiJ2/5YcXBHnY=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=
 gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c/go.mod h1:JHkPIbrfpd72SG/EVd6muEfDQjcINNoR0C8j2r3qZ4Q=
