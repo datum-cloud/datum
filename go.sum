@@ -2,8 +2,12 @@ buf.build/gen/go/datum-cloud/datum-os/protocolbuffers/go v1.36.1-20250214190629-
 buf.build/gen/go/datum-cloud/datum-os/protocolbuffers/go v1.36.1-20250214190629-249284998450.1/go.mod h1:oJZ1dK0lOxvkFEYPFqF6fiead/Sm7EXOaajXAgu8L+A=
 buf.build/gen/go/datum-cloud/iam/grpc/go v1.5.1-20250214190629-505d1ed65f22.2 h1:suOMS2oFYVUmt7GL1Kf+0Y0QfCZDAN/2DU56G/Qoa5g=
 buf.build/gen/go/datum-cloud/iam/grpc/go v1.5.1-20250214190629-505d1ed65f22.2/go.mod h1:kc1ou2fMU2fGegrXTX4Knhiy3VjRVkXVIPedtrSM12I=
+buf.build/gen/go/datum-cloud/iam/grpc/go v1.5.1-20250526132531-88375b7f8360.2 h1:MYhrpRR7iTkanBdWqCBYLLcoSPzkORWGhVjD6S/G4Xo=
+buf.build/gen/go/datum-cloud/iam/grpc/go v1.5.1-20250526132531-88375b7f8360.2/go.mod h1:s1AMSbQ+5iM4DUXuLU/8if1IdF6xl5hy8trUzWcRB74=
 buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.1-20250214190629-505d1ed65f22.1 h1:JzhUIsVcoNCVtFNC2M0nW0lfk59lvUikfM9u+z1FUUk=
 buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.1-20250214190629-505d1ed65f22.1/go.mod h1:FIvO376l+H+t7E0WYyELtU4QwvxmST7L9gfh+qv5RBQ=
+buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.1-20250526132531-88375b7f8360.1 h1:AS5jqWTfUAXu9Bi6zsjEhe9Ct5Szy+QPr6aTDCMENfs=
+buf.build/gen/go/datum-cloud/iam/protocolbuffers/go v1.36.1-20250526132531-88375b7f8360.1/go.mod h1:RgC9FCNdn8pXU7tlIJDpFa/ZmW8wgSVrSB1WrD68xgg=
 cel.dev/expr v0.18.0 h1:CJ6drgk+Hf96lkLikr4rFf19WrU0BOWEihyZnI2TAzo=
 cel.dev/expr v0.18.0/go.mod h1:MrpN08Q+lEBs+bGYdLxxHkZoUSsCp0nSKTs0nTymJgw=
 cel.dev/expr v0.19.1 h1:NciYrtDRIR0lNCnH1LFJegdjspNx9fI59O7TWcua/W4=
