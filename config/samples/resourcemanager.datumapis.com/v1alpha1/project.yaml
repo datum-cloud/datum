@@ -1,0 +1,10 @@
+apiVersion: resourcemanager.datumapis.com/v1alpha1
+kind: Project
+metadata:
+  name: project-sample
+spec:
+  parent:
+    resourceRef:
+      apiGroup: resourcemanager.datumapis.com
+      kind: Organization
+      name: "datum"

@@ -1,0 +1,52 @@
+apiVersion: iam.datumapis.com/v1alpha1
+kind: Role
+metadata:
+  name: iam.datumapis.com-user-creator
+spec:
+  launchStage: Beta
+  includedPermissions:
+    - iam.datumapis.com/users.create
+    - iam.datumapis.com/users.get
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: Role
+metadata:
+  name: resourcemanager.datumapis.com-organizationowner
+  namespace: datum-system
+spec:
+  launchStage: Beta
+  includedPermissions:
+    - resourcemanager.datumapis.com/organizations.delete
+    - resourcemanager.datumapis.com/organizations.get
+    - resourcemanager.datumapis.com/organizations.update
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: Role
+metadata:
+  name: resourcemanager.datumapis.com-projectowner
+  namespace: datum-system
+spec:
+  launchStage: Beta
+  inheritedRoles:
+    - name: compute.datumapis.com-workload-admin
+      namespace: datum-system
+  includedPermissions:
+    - resourcemanager.datumapis.com/projects.delete
+    - resourcemanager.datumapis.com/projects.get
+    - resourcemanager.datumapis.com/projects.update
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: Role
+metadata:
+  name: compute.datumapis.com-workload-admin
+  namespace: datum-system
+spec:
+  launchStage: Beta
+  includedPermissions:
+    - compute.datumapis.com/workloads.create
+    - compute.datumapis.com/workloads.get
+    - compute.datumapis.com/workloads.update
+    - compute.datumapis.com/workloads.delete
+    - compute.datumapis.com/workloads.list
+    - compute.datumapis.com/workloads.watch
+    - compute.datumapis.com/workloads.patch

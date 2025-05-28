@@ -1,0 +1,6 @@
+apiVersion: iam.datumapis.com/v1alpha1
+kind: User
+metadata:
+  name: kubernetes-admin
+spec:
+  email: kubernetes-admin@datum.net

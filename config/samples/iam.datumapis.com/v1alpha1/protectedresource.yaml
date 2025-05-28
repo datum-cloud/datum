@@ -1,0 +1,121 @@
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: iam-role
+spec:
+  serviceRef:
+    name: "iam.datumapis.com"
+  kind: Role
+  plural: roles
+  singular: role
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - use
+    - patch
+    - watch
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: iam-user
+spec:
+  serviceRef:
+    name: "iam.datumapis.com"
+  kind: User
+  plural: users
+  singular: user
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - patch
+    - watch
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: iam-group
+spec:
+  serviceRef:
+    name: "iam.datumapis.com"
+  kind: Group
+  plural: groups
+  singular: group
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - patch
+    - watch
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: resourcemanager-organization
+spec:
+  serviceRef:
+    name: "resourcemanager.datumapis.com"
+  kind: Organization
+  plural: organizations
+  singular: organization
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - use
+    - patch
+    - watch
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: resourcemanager-project
+spec:
+  serviceRef:
+    name: "resourcemanager.datumapis.com"
+  kind: Project
+  plural: projects
+  singular: project
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - patch
+    - watch
+  parentResources:
+    - apiGroup: resourcemanager.datumapis.com
+      kind: Organization
+---
+apiVersion: iam.datumapis.com/v1alpha1
+kind: ProtectedResource
+metadata:
+  name: compute-workloads
+spec:
+  serviceRef:
+    name: "compute.datumapis.com"
+  kind: Workload
+  plural: workloads
+  singular: workload
+  permissions:
+    - list
+    - get
+    - create
+    - update
+    - delete
+    - patch
+    - watch
+  parentResources:
+    - apiGroup: resourcemanager.datumapis.com
+      kind: Project

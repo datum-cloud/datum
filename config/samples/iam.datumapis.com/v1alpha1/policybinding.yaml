@@ -1,0 +1,20 @@
+# apiVersion: iam.datumapis.com/v1alpha1
+# kind: PolicyBinding
+# metadata:
+#   name: sample-org-admin-binding
+#   namespace: default
+# spec:
+#   roleRef:
+#     apiGroup: iam.datumapis.com
+#     kind: Role
+#     name: organization-admin-role
+#   subjects:
+#     - kind: User
+#       name: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+#       apiGroup: iam.datumapis.com
+#       uid: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
+#   targetRef:
+#     apiGroup: "resourcemanager.datumapis.com"
+#     kind: Organization
+#     name: "datum"
+#     uid: "a1b2c3d4-e5f6-7890-1234-567890abcdef"

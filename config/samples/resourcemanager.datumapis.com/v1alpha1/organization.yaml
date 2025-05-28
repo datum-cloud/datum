@@ -1,0 +1,5 @@
+apiVersion: resourcemanager.datumapis.com/v1alpha1
+kind: Organization
+metadata:
+  name: datum
+spec: {}
