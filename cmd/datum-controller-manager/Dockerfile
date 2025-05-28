@@ -7,6 +7,8 @@ COPY go.sum go.sum
 RUN go mod download
 
 COPY cmd/datum-controller-manager/ cmd/datum-controller-manager/
+COPY internal/ internal/
+COPY pkg/ pkg/
 
 RUN --mount=type=cache,target=/go/pkg/mod/ \
   --mount=type=cache,target="/root/.cache/go-build" \
