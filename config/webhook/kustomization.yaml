@@ -1,0 +1,3 @@
+resources:
+- resourcemanager-mutating-webhook.yaml
+- resourcemanager-validating-webhook.yaml

@@ -38,6 +38,12 @@ func init() {
 	utilruntime.Must(logsapi.AddFeatureGates(utilfeature.DefaultMutableFeatureGate))
 }
 
+var (
+	// Configure the namespace that is used for system components and resources
+	// automatically bootstrapped by the control plane.
+	SystemNamespace string
+)
+
 // NewCommand creates a *cobra.Command object with default parameters
 func NewCommand() *cobra.Command {
 	s := NewOptions()
@@ -66,7 +72,7 @@ which are compatible with Kubernetes clients.`,
 				return err
 			}
 			cliflag.PrintFlags(fs)
-			s.SystemNamespaces = []string{metav1.NamespaceSystem, metav1.NamespaceDefault, "datum-system"}
+			s.SystemNamespaces = []string{metav1.NamespaceSystem, metav1.NamespaceDefault, SystemNamespace}
 
 			completedOptions, err := s.Complete(cmd.Context(), namedFlagSets, []string{}, []net.IP{})
 			if err != nil {
@@ -124,6 +130,8 @@ which are compatible with Kubernetes clients.`,
 
 	fs.StringVar(&s.ServiceAccountSigningEndpoint, "service-account-signing-endpoint", s.ServiceAccountSigningEndpoint, ""+
 		"Path to socket where a external JWT signer is listening. This flag is mutually exclusive with --service-account-signing-key-file and --service-account-key-file. Requires enabling feature gate (ExternalServiceAccountTokenSigner)")
+
+	fs.StringVar(&SystemNamespace, "system-namespace", "milo-system", "The namespace to use for system components and resources that are automatically created to run the system.")
 
 	cols, _, _ := term.TerminalSize(cmd.OutOrStdout())
 	cliflag.SetUsageAndHelpFunc(cmd, namedFlagSets, cols)

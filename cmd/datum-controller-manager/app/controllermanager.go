@@ -18,6 +18,7 @@ import (
 	coordinationv1 "k8s.io/api/coordination/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -30,7 +31,7 @@ import (
 	"k8s.io/client-go/informers"
 	v1core "k8s.io/client-go/kubernetes/typed/core/v1"
 	"k8s.io/client-go/metadata"
-	"k8s.io/client-go/metadata/metadatainformer"
+	metadatainformer "k8s.io/client-go/metadata/metadatainformer"
 	restclient "k8s.io/client-go/rest"
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/tools/leaderelection"
@@ -62,11 +63,36 @@ import (
 	kubectrlmgrconfig "k8s.io/kubernetes/pkg/controller/apis/config"
 	garbagecollector "k8s.io/kubernetes/pkg/controller/garbagecollector"
 	kubefeatures "k8s.io/kubernetes/pkg/features"
+
+	// Datum webhook and API type imports
+	resourcemanagerwebhook "go.datum.net/datum/internal/webhooks/resourcemanager.datumapis.com"
+	iamv1alpha1 "go.datum.net/datum/pkg/apis/iam.datumapis.com/v1alpha1"
+	resourcemanagerv1alpha1 "go.datum.net/datum/pkg/apis/resourcemanager.datumapis.com/v1alpha1"
+	"sigs.k8s.io/controller-runtime/pkg/log"
+)
+
+var (
+	// Scheme is the runtime Scheme to which all API types are registered.
+	Scheme = runtime.NewScheme()
+
+	// SystemNamespace is the namespace to use for system components and resources
+	// that are automatically created to run the system.
+	SystemNamespace string
+
+	// OrganizationOwnerRoleName is the name of the role that will be used to grant organization owner permissions.
+	OrganizationOwnerRoleName string
+
+	// ProjectOwnerRoleName is the name of the role that will be used to grant project owner permissions.
+	ProjectOwnerRoleName string
 )
 
 func init() {
 	utilruntime.Must(logsapi.AddFeatureGates(utilfeature.DefaultMutableFeatureGate))
 	utilruntime.Must(metricsfeatures.AddFeatureGates(utilfeature.DefaultMutableFeatureGate))
+
+	// Add Datum API types to the global scheme
+	utilruntime.Must(resourcemanagerv1alpha1.AddToScheme(Scheme))
+	utilruntime.Must(iamv1alpha1.AddToScheme(Scheme))
 }
 
 const (
@@ -97,7 +123,7 @@ func NewCommand() *cobra.Command {
 		klog.FlushAndExit(klog.ExitFlushTimeout, 1)
 	}
 	s.Generic.LeaderElection.ResourceName = "datum-controller-manager"
-	s.Generic.LeaderElection.ResourceNamespace = "datum-system"
+	s.Generic.LeaderElection.ResourceNamespace = SystemNamespace
 
 	cmd := &cobra.Command{
 		Use:  "datum-controller-manager",
@@ -159,6 +185,10 @@ func NewCommand() *cobra.Command {
 	// Are these needed?
 	fs.StringVar(&s.Master, "master", s.Master, "The address of the Kubernetes API server (overrides any value in kubeconfig).")
 	fs.StringVar(&s.Generic.ClientConnection.Kubeconfig, "kubeconfig", s.Generic.ClientConnection.Kubeconfig, "Path to kubeconfig file with authorization and master location information (the master location can be overridden by the master flag).")
+	// TODO: Investigate why these aren't showing up in the help output
+	fs.StringVar(&SystemNamespace, "system-namespace", "milo-system", "The namespace to use for system components and resources that are automatically created to run the system.")
+	fs.StringVar(&OrganizationOwnerRoleName, "organization-owner-role-name", "resourcemanager.datumapis.com-organizationowner", "The name of the role that will be used to grant organization owner permissions.")
+	fs.StringVar(&ProjectOwnerRoleName, "project-owner-role-name", "resourcemanager.datumapis.com-projectowner", "The name of the role that will be used to grant project owner permissions.")
 
 	verflag.AddFlags(namedFlagSets.FlagSet("global"))
 	globalflag.AddGlobalFlags(namedFlagSets.FlagSet("global"), cmd.Name(), logs.SkipLoggingConfigurationFlags())
@@ -203,6 +233,8 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 		logger.Error(err, "Unable to register configz")
 	}
 
+	log.SetLogger(logger)
+
 	// Setup any healthz checks we will want to use.
 	var checks []healthz.HealthChecker
 	var electionChecker *leaderelection.HealthzAdaptor
@@ -218,6 +250,12 @@ func Run(ctx context.Context, c *config.CompletedConfig) error {
 	if c.SecureServing != nil {
 		unsecuredMux = genericcontrollermanager.NewBaseHandler(&c.ComponentConfig.Generic.Debugging, healthzHandler)
 		slis.SLIMetricsWithReset{}.Install(unsecuredMux)
+
+		// Initialize and register webhooks here
+		if err := setupWebhooks(logger, c.Kubeconfig, unsecuredMux, Scheme, SystemNamespace, OrganizationOwnerRoleName, ProjectOwnerRoleName); err != nil {
+			logger.Error(err, "Failed to setup webhooks")
+			return err
+		}
 
 		handler := genericcontrollermanager.BuildHandlerChain(unsecuredMux, &c.Authorization, &c.Authentication)
 		// TODO: handle stoppedCh and listenerStoppedCh returned by c.SecureServing.Serve
@@ -751,6 +789,19 @@ func leaderElectAndRun(ctx context.Context, c *config.CompletedConfig, lockIdent
 	})
 
 	panic("unreachable")
+}
+
+// setupWebhooks initializes and registers the validation webhooks.
+func setupWebhooks(logger klog.Logger, kubeConfig *restclient.Config, mux *mux.PathRecorderMux, scheme *runtime.Scheme, systemNamespace string, organizationOwnerRoleName string, projectOwnerRoleName string) error {
+	logger.Info("Setting up webhooks")
+
+	// Setup resourcemanager.datumapis.com webhooks
+	if err := resourcemanagerwebhook.SetupWebhooksWithManager(kubeConfig, mux, scheme, systemNamespace, organizationOwnerRoleName, projectOwnerRoleName); err != nil {
+		return fmt.Errorf("failed to setup resourcemanager.datumapis.com webhooks: %w", err)
+	}
+
+	logger.Info("Webhooks setup complete")
+	return nil
 }
 
 // filteredControllerDescriptors returns all controllerDescriptors after filtering through filterFunc.

@@ -1,0 +1,39 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: resourcemanager.datumapis.com
+webhooks:
+  - name: validation.project.resourcemanager.datumapis.com
+    rules:
+      - apiGroups: ["resourcemanager.datumapis.com"]
+        apiVersions: ["v1alpha1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["projects"]
+        scope: "*"
+    clientConfig:
+      service:
+        # TODO: Rename to milo-controller-manager
+        name: datum-controller-manager
+        namespace: milo-system
+        path: /webhooks/resourcemanager/validate-v1alpha1-project
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    timeoutSeconds: 5
+    failurePolicy: Fail # Or Ignore, depending on your needs
+  - name: validation.organization.resourcemanager.datumapis.com
+    rules:
+      - apiGroups: ["resourcemanager.datumapis.com"]
+        apiVersions: ["v1alpha1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["organizations"]
+        scope: "*"
+    clientConfig:
+      service:
+        # TODO: Rename to milo-controller-manager
+        name: datum-controller-manager
+        namespace: milo-system
+        path: /webhooks/resourcemanager/validate-v1alpha1-organization
+    admissionReviewVersions: ["v1"]
+    sideEffects: None
+    timeoutSeconds: 5
+    failurePolicy: Fail # Or Ignore, depending on your needs

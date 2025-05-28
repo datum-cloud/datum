@@ -1,0 +1,19 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: resourcemanager.datumapis.com-mutating
+webhooks:
+- name: mproject.datum.net
+  clientConfig:
+    service:
+      name: datum-apiserver
+      namespace: milo-system
+      path: /webhooks/resourcemanager/mutate-v1alpha1-project
+  rules:
+  - operations: ["CREATE"]
+    apiGroups: ["resourcemanager.datumapis.com"]
+    apiVersions: ["v1alpha1"]
+    resources: ["projects"]
+  sideEffects: None
+  admissionReviewVersions: ["v1", "v1beta1"]
+  failurePolicy: Fail

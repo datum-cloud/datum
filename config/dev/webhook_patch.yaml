@@ -1,0 +1,41 @@
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: mutatingwebhook-url-patch
+patch: |-
+  - op: move
+    path: /webhooks/0/clientConfig/url
+    from: /webhooks/0/clientConfig/service/path
+  - op: remove
+    path: /webhooks/0/clientConfig/service
+target:
+  kind: MutatingWebhookConfiguration
+---
+apiVersion: builtin
+kind: PatchTransformer
+metadata:
+  name: validatingwebhook-url-patch
+patch: |-
+  - op: move
+    path: /webhooks/0/clientConfig/url
+    from: /webhooks/0/clientConfig/service/path
+  - op: remove
+    path: /webhooks/0/clientConfig/service
+  - op: move
+    path: /webhooks/1/clientConfig/url
+    from: /webhooks/1/clientConfig/service/path
+  - op: remove
+    path: /webhooks/1/clientConfig/service
+target:
+  kind: ValidatingWebhookConfiguration
+---
+apiVersion: builtin
+kind: PrefixSuffixTransformer
+metadata:
+  name: hostPrefix
+prefix: "https://host.docker.internal:9443"
+fieldSpecs:
+  - kind: ValidatingWebhookConfiguration
+    path: webhooks/clientConfig/url
+  - kind: MutatingWebhookConfiguration
+    path: webhooks/clientConfig/url
