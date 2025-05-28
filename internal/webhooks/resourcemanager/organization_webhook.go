@@ -1,4 +1,4 @@
-package resourcemanagerdatumapiscom
+package resourcemanager
 
 import (
 	"context"

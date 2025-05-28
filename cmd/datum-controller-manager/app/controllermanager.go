@@ -65,7 +65,7 @@ import (
 	kubefeatures "k8s.io/kubernetes/pkg/features"
 
 	// Datum webhook and API type imports
-	resourcemanagerwebhook "go.datum.net/datum/internal/webhooks/resourcemanager.datumapis.com"
+	"go.datum.net/datum/internal/webhooks/resourcemanager"
 	iamv1alpha1 "go.datum.net/datum/pkg/apis/iam.datumapis.com/v1alpha1"
 	resourcemanagerv1alpha1 "go.datum.net/datum/pkg/apis/resourcemanager.datumapis.com/v1alpha1"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -796,7 +796,7 @@ func setupWebhooks(logger klog.Logger, kubeConfig *restclient.Config, mux *mux.P
 	logger.Info("Setting up webhooks")
 
 	// Setup resourcemanager.datumapis.com webhooks
-	if err := resourcemanagerwebhook.SetupWebhooksWithManager(kubeConfig, mux, scheme, systemNamespace, organizationOwnerRoleName, projectOwnerRoleName); err != nil {
+	if err := resourcemanager.SetupWebhooksWithManager(kubeConfig, mux, scheme, systemNamespace, organizationOwnerRoleName, projectOwnerRoleName); err != nil {
 		return fmt.Errorf("failed to setup resourcemanager.datumapis.com webhooks: %w", err)
 	}
 
