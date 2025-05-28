@@ -1,4 +1,4 @@
-module go.datumapis.com/datum
+module go.datum.net/datum
 
 go 1.23.1
 

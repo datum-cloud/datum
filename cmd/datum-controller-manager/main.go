@@ -5,7 +5,7 @@ import (
 
 	"k8s.io/component-base/cli"
 
-	"go.datumapis.com/datum/cmd/datum-controller-manager/app"
+	"go.datum.net/datum/cmd/datum-controller-manager/app"
 )
 
 func main() {
