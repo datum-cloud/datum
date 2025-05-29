@@ -1,0 +1,10 @@
+resources:
+- iam.datumapis.com_policybindings.yaml
+- iam.datumapis.com_roles.yaml
+- iam.datumapis.com_protectedresources.yaml
+- iam.datumapis.com_users.yaml
+- iam.datumapis.com_groups.yaml
+- iam.datumapis.com_groupmemberships.yaml
+- iam.datumapis.com_userinvitations.yaml
+- resourcemanager.datumapis.com_organizations.yaml
+- resourcemanager.datumapis.com_projects.yaml
