@@ -58,13 +58,12 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-      - command:
-        - /manager
-        args:
+      - args:
+          - controller-manager
           - --leader-elect
           - --health-probe-bind-address=:8081
-        image: controller:latest
-        name: manager
+        image: ghcr.io/datum-cloud/datum:latest
+        name: datum-controller-manager
         ports: []
         securityContext:
           allowPrivilegeEscalation: false
