@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
@@ -52,6 +53,12 @@ func NewControllerManagerCommand() *cobra.Command {
 	var metricsCertPath, metricsCertName, metricsCertKey string
 	var webhookCertPath, webhookCertName, webhookCertKey string
 	var enableLeaderElection bool
+	var leaderElectionID string
+	var leaderElectionNamespace string
+	var leaderElectionLeaseDuration time.Duration
+	var leaderElectionRenewDeadline time.Duration
+	var leaderElectionRetryPeriod time.Duration
+	var leaderElectionReleaseOnCancel bool
 	var probeAddr string
 	var secureMetrics bool
 	var enableHTTP2 bool
@@ -67,6 +74,12 @@ func NewControllerManagerCommand() *cobra.Command {
 				metricsCertPath, metricsCertName, metricsCertKey,
 				webhookCertPath, webhookCertName, webhookCertKey,
 				enableLeaderElection,
+				leaderElectionID,
+				leaderElectionNamespace,
+				leaderElectionLeaseDuration,
+				leaderElectionRenewDeadline,
+				leaderElectionRetryPeriod,
+				leaderElectionReleaseOnCancel,
 				serverConfigFile,
 				probeAddr,
 				secureMetrics,
@@ -79,9 +92,27 @@ func NewControllerManagerCommand() *cobra.Command {
 	cmd.Flags().StringVar(&metricsAddr, "metrics-bind-address", "0", "The address the metrics endpoint binds to. "+
 		"Use :8443 for HTTPS or :8080 for HTTP, or leave as 0 to disable the metrics service.")
 	cmd.Flags().StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
+
+	// Leader election flags
 	cmd.Flags().BoolVar(&enableLeaderElection, "leader-elect", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
+	cmd.Flags().StringVar(&leaderElectionID, "leader-election-id", "81afa9db.datumapis.com",
+		"The name of the resource that leader election will use for holding the leader lock.")
+	cmd.Flags().StringVar(&leaderElectionNamespace, "leader-election-namespace", "",
+		"The namespace in which the leader election resource will be created. "+
+			"If not specified, it will use the namespace where the controller is running.")
+	cmd.Flags().DurationVar(&leaderElectionLeaseDuration, "leader-election-lease-duration", 15*time.Second,
+		"The duration that non-leader candidates will wait to force acquire leadership.")
+	cmd.Flags().DurationVar(&leaderElectionRenewDeadline, "leader-election-renew-deadline", 10*time.Second,
+		"The duration that the acting leader will retry refreshing leadership before giving up.")
+	cmd.Flags().DurationVar(&leaderElectionRetryPeriod, "leader-election-retry-period", 2*time.Second,
+		"The duration the LeaderElector clients should wait between tries of actions.")
+	cmd.Flags().BoolVar(&leaderElectionReleaseOnCancel, "leader-election-release-on-cancel", false,
+		"If the leader should step down voluntarily when the Manager ends. "+
+			"This requires the binary to immediately end when the Manager is stopped.")
+
+	// Security and certificate flags
 	cmd.Flags().BoolVar(&secureMetrics, "metrics-secure", true,
 		"If set, the metrics endpoint is served securely via HTTPS. Use --metrics-secure=false to use HTTP instead.")
 	cmd.Flags().StringVar(&webhookCertPath, "webhook-cert-path", "", "The directory that contains the webhook certificate.")
@@ -112,6 +143,12 @@ func runControllerManager(
 	metricsCertPath, metricsCertName, metricsCertKey string,
 	webhookCertPath, webhookCertName, webhookCertKey string,
 	enableLeaderElection bool,
+	leaderElectionID string,
+	leaderElectionNamespace string,
+	leaderElectionLeaseDuration time.Duration,
+	leaderElectionRenewDeadline time.Duration,
+	leaderElectionRetryPeriod time.Duration,
+	leaderElectionReleaseOnCancel bool,
 	serverConfigFile string,
 	probeAddr string,
 	secureMetrics bool,
@@ -232,23 +269,17 @@ func runControllerManager(
 	}
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-		Scheme:                 scheme,
-		Metrics:                metricsServerOptions,
-		WebhookServer:          webhookServer,
-		HealthProbeBindAddress: probeAddr,
-		LeaderElection:         enableLeaderElection,
-		LeaderElectionID:       "81afa9db.datumapis.com",
-		// LeaderElectionReleaseOnCancel defines if the leader should step down voluntarily
-		// when the Manager ends. This requires the binary to immediately end when the
-		// Manager is stopped, otherwise, this setting is unsafe. Setting this significantly
-		// speeds up voluntary leader transitions as the new leader don't have to wait
-		// LeaseDuration time first.
-		//
-		// In the default scaffold provided, the program ends immediately after
-		// the manager stops, so would be fine to enable this option. However,
-		// if you are doing or is intended to do any operation such as perform cleanups
-		// after the manager stops then its usage might be unsafe.
-		// LeaderElectionReleaseOnCancel: true,
+		Scheme:                        scheme,
+		Metrics:                       metricsServerOptions,
+		WebhookServer:                 webhookServer,
+		HealthProbeBindAddress:        probeAddr,
+		LeaderElection:                enableLeaderElection,
+		LeaderElectionID:              leaderElectionID,
+		LeaderElectionNamespace:       leaderElectionNamespace,
+		LeaseDuration:                 &leaderElectionLeaseDuration,
+		RenewDeadline:                 &leaderElectionRenewDeadline,
+		RetryPeriod:                   &leaderElectionRetryPeriod,
+		LeaderElectionReleaseOnCancel: leaderElectionReleaseOnCancel,
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
