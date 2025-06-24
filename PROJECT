@@ -7,4 +7,11 @@ layout:
 - go.kubebuilder.io/v4
 projectName: datum-cloud
 repo: go.datum.net/datum
+resources:
+- controller: true
+  domain: iam.datumapis.com
+  external: true
+  kind: User
+  path: go.miloapis.com/milo/pkg/apis/iam/v1alpha1
+  version: v1alpha1
 version: "3"

@@ -4,6 +4,8 @@ package controller
 import (
 	"crypto/tls"
 	"flag"
+	"fmt"
+	"os"
 	"path/filepath"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -11,6 +13,7 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -23,15 +26,22 @@ import (
 
 	"github.com/spf13/cobra"
 	// +kubebuilder:scaffold:imports
+	"go.datum.net/datum/internal/config"
+	resourcemanagercontroller "go.datum.net/datum/internal/controller/resourcemanager"
+	iamv1alpha1 "go.miloapis.com/milo/pkg/apis/iam/v1alpha1"
+	resourcemanagerv1alpha1 "go.miloapis.com/milo/pkg/apis/resourcemanager/v1alpha1"
 )
 
 var (
 	scheme   = runtime.NewScheme()
 	setupLog = ctrl.Log.WithName("setup")
+	codecs   = serializer.NewCodecFactory(scheme, serializer.EnableStrict)
 )
 
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
+	utilruntime.Must(iamv1alpha1.AddToScheme(scheme))
+	utilruntime.Must(resourcemanagerv1alpha1.AddToScheme(scheme))
 
 	// +kubebuilder:scaffold:scheme
 }
@@ -45,6 +55,7 @@ func NewControllerManagerCommand() *cobra.Command {
 	var probeAddr string
 	var secureMetrics bool
 	var enableHTTP2 bool
+	var serverConfigFile string
 
 	cmd := &cobra.Command{
 		Use:   "controller-manager",
@@ -56,6 +67,7 @@ func NewControllerManagerCommand() *cobra.Command {
 				metricsCertPath, metricsCertName, metricsCertKey,
 				webhookCertPath, webhookCertName, webhookCertKey,
 				enableLeaderElection,
+				serverConfigFile,
 				probeAddr,
 				secureMetrics,
 				enableHTTP2,
@@ -81,6 +93,7 @@ func NewControllerManagerCommand() *cobra.Command {
 	cmd.Flags().StringVar(&metricsCertKey, "metrics-cert-key", "tls.key", "The name of the metrics server key file.")
 	cmd.Flags().BoolVar(&enableHTTP2, "enable-http2", false,
 		"If set, HTTP/2 will be enabled for the metrics and webhook servers")
+	cmd.Flags().StringVar(&serverConfigFile, "config", "", "path to the controller manager config file")
 
 	// Add zap logging flags
 	opts := zap.Options{
@@ -99,6 +112,7 @@ func runControllerManager(
 	metricsCertPath, metricsCertName, metricsCertKey string,
 	webhookCertPath, webhookCertName, webhookCertKey string,
 	enableLeaderElection bool,
+	serverConfigFile string,
 	probeAddr string,
 	secureMetrics bool,
 	enableHTTP2 bool,
@@ -126,6 +140,21 @@ func runControllerManager(
 
 	if !enableHTTP2 {
 		tlsOpts = append(tlsOpts, disableHTTP2)
+	}
+
+	var serverConfig config.DatumControllerManager
+	var configData []byte
+	if len(serverConfigFile) > 0 {
+		var err error
+		configData, err = os.ReadFile(serverConfigFile)
+		if err != nil {
+			setupLog.Error(fmt.Errorf("unable to read server config from %q", serverConfigFile), "")
+			os.Exit(1)
+		}
+	}
+
+	if err := runtime.DecodeInto(codecs.UniversalDecoder(), configData, &serverConfig); err != nil {
+		return fmt.Errorf("unable to decode server config: %w", err)
 	}
 
 	// Create watchers for metrics and webhooks certificates
@@ -223,6 +252,14 @@ func runControllerManager(
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
+		return err
+	}
+
+	if err = (&resourcemanagercontroller.PersonalOrganizationController{
+		Client: mgr.GetClient(),
+		Config: serverConfig.PersonalOrganizationController,
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "PersonalOrganization")
 		return err
 	}
 
