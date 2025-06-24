@@ -24,15 +24,7 @@ var rootCmd = &cobra.Command{
 where companies can programmatically connect without building the entire stack themselves.
 
 This component provides tooling for extending the Milo control plane with Datum Cloud
-specific functionality, enabling AI-native infrastructure orchestration using
-Kubernetes API patterns and declarative management.
-
-Key capabilities:
-- AI-native principles with developer and agent-friendly interfaces
-- Neutral by design with no allegiance to a single cloud or vendor
-- Fully programmable using Kubernetes API patterns
-- Support for bring-your-own infrastructure
-- Comprehensive observability and determinism`,
+specific functionality.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

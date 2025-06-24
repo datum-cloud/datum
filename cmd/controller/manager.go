@@ -49,18 +49,7 @@ func NewControllerManagerCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "controller-manager",
 		Short: "Run the Datum control plane controller manager",
-		Long: `The controller-manager extends the Milo control plane with Datum Cloud specific
-functionality for AI-native infrastructure orchestration.
-
-This controller manager handles:
-- Declarative management of Datum resources using Kubernetes API patterns
-- Reconciliation of infrastructure state across heterogeneous environments
-- Integration with pluggable infrastructure providers (GCP, AWS, bare metal, etc.)
-- Management of Workloads, Networks, Gateways and other Datum primitives
-- Support for GitOps workflows and infrastructure-as-code practices
-
-The controller ensures your declared infrastructure configuration is continuously
-reconciled to match the desired state across your distributed infrastructure.`,
+		Long:  `The controller-manager extends the Milo control plane with Datum Cloud specific functionality.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runControllerManager(
 				metricsAddr,
