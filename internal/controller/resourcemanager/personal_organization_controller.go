@@ -123,6 +123,12 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 				Name:      r.Config.RoleName,
 				Namespace: r.Config.RoleNamespace,
 			},
+			TargetRef: iamv1alpha1.TargetReference{
+				APIGroup: resourcemanagerv1alpha1.GroupVersion.Group,
+				Kind:     "Organization",
+				Name:     personalOrg.Name,
+				UID:      string(personalOrg.UID),
+			},
 			Subjects: []iamv1alpha1.Subject{
 				{
 					Kind: "User",
