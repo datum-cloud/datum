@@ -93,6 +93,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	}
 
 	_, err = controllerutil.CreateOrUpdate(ctx, r.Client, membership, func() error {
+		logger.Info("Creating or updating personal organization membership", "organization", personalOrg.Name)
 		membership.Spec = resourcemanagerv1alpha1.OrganizationMembershipSpec{
 			OrganizationRef: resourcemanagerv1alpha1.OrganizationReference{
 				Name: personalOrg.Name,
@@ -116,6 +117,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	}
 
 	_, err = controllerutil.CreateOrUpdate(ctx, r.Client, policyBinding, func() error {
+		logger.Info("Creating or updating personal organization policy binding", "organization", personalOrg.Name)
 		policyBinding.Spec = iamv1alpha1.PolicyBindingSpec{
 			RoleRef: iamv1alpha1.RoleReference{
 				Name:      r.Config.RoleName,
@@ -135,6 +137,8 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	if err != nil {
 		return ctrl.Result{}, fmt.Errorf("failed to create or update policy binding: %w", err)
 	}
+
+	logger.Info("Successfully created or updated personal organization resources", "organization", personalOrg.Name)
 
 	return ctrl.Result{}, nil
 }
