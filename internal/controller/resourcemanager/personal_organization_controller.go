@@ -58,25 +58,23 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 			Annotations: map[string]string{
 				"kubernetes.io/display-name": fmt.Sprintf("Personal Organization - %s %s", user.Spec.GivenName, user.Spec.FamilyName),
 			},
-			OwnerReferences: []metav1.OwnerReference{
-				// The owner reference is used to ensure that the personal organization
-				// is deleted when the user is deleted.
-				{
-					APIVersion: iamv1alpha1.SchemeGroupVersion.String(),
-					Kind:       "User",
-					Name:       user.Name,
-					UID:        user.UID,
-				},
-			},
-		},
-		Spec: resourcemanagerv1alpha1.OrganizationSpec{
-			Type: "Personal",
 		},
 	}
 
 	_, err := controllerutil.CreateOrUpdate(ctx, r.Client, personalOrg, func() error {
 		logger.Info("Creating or updating personal organization", "organization", personalOrg.Name)
 		personalOrg.Annotations["kubernetes.io/display-name"] = fmt.Sprintf("Personal Organization - %s %s", user.Spec.GivenName, user.Spec.FamilyName)
+		personalOrg.ObjectMeta.OwnerReferences = []metav1.OwnerReference{
+			// The owner reference is used to ensure that the personal organization
+			// is deleted when the user is deleted.
+			{
+				APIVersion: iamv1alpha1.SchemeGroupVersion.String(),
+				Kind:       "User",
+				Name:       user.Name,
+				UID:        user.UID,
+			},
+		}
+		personalOrg.Spec.Type = "Personal"
 		return nil
 	})
 	if err != nil {
