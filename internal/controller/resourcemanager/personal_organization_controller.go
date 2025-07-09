@@ -61,7 +61,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 
 	_, err := controllerutil.CreateOrUpdate(ctx, r.Client, personalOrg, func() error {
 		logger.Info("Creating or updating personal organization", "organization", personalOrg.Name)
-		personalOrg.Annotations["kubernetes.io/display-name"] = fmt.Sprintf("Personal Organization - %s %s", user.Spec.GivenName, user.Spec.FamilyName)
+		personalOrg.Annotations["kubernetes.io/display-name"] = fmt.Sprintf("%s %s's Personal Org", user.Spec.GivenName, user.Spec.FamilyName)
 		personalOrg.ObjectMeta.OwnerReferences = []metav1.OwnerReference{
 			// The owner reference is used to ensure that the personal organization
 			// is deleted when the user is deleted.
