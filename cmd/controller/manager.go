@@ -289,6 +289,7 @@ func runControllerManager(
 	if err = (&resourcemanagercontroller.PersonalOrganizationController{
 		Client: mgr.GetClient(),
 		Config: serverConfig.PersonalOrganizationController,
+		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "PersonalOrganization")
 		return err

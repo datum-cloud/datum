@@ -9,6 +9,7 @@ import (
 	"hash/fnv"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -28,6 +29,10 @@ type PersonalOrganizationController struct {
 	Client client.Client
 
 	Config PersonalOrganizationControllerConfig
+
+	// The scheme is used to set the controller reference on the personal
+	// organization.
+	Scheme *runtime.Scheme
 }
 
 // +kubebuilder:rbac:groups=iam.datumapis.com,resources=users,verbs=get;list;watch
@@ -59,15 +64,8 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	_, err := controllerutil.CreateOrUpdate(ctx, r.Client, personalOrg, func() error {
 		logger.Info("Creating or updating personal organization", "organization", personalOrg.Name)
 		metav1.SetMetaDataAnnotation(&personalOrg.ObjectMeta, "kubernetes.io/display-name", fmt.Sprintf("%s %s's Personal Org", user.Spec.GivenName, user.Spec.FamilyName))
-		personalOrg.ObjectMeta.OwnerReferences = []metav1.OwnerReference{
-			// The owner reference is used to ensure that the personal organization
-			// is deleted when the user is deleted.
-			{
-				APIVersion: iamv1alpha1.SchemeGroupVersion.String(),
-				Kind:       "User",
-				Name:       user.Name,
-				UID:        user.UID,
-			},
+		if err := controllerutil.SetControllerReference(user, personalOrg, r.Scheme); err != nil {
+			return fmt.Errorf("failed to set controller reference: %w", err)
 		}
 		personalOrg.Spec.Type = "Personal"
 		return nil
