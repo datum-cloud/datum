@@ -11,5 +11,5 @@ spec:
       operations:  ["UPDATE"]
       resources:   ["organizations"]
   validations:
-  - expression: "object.spec.type != 'Personal' || oldObject.metadata.annotations.get('kubernetes.io/display-name', '') == object.metadata.annotations.get('kubernetes.io/display-name', '')"
+  - expression: "object.spec.type != 'Personal' || oldObject.metadata.annotations['kubernetes.io/display-name'] == object.metadata.annotations['kubernetes.io/display-name']"
     message: "The display name of a personal organization cannot be changed."
