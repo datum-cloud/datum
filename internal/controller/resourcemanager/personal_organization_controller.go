@@ -30,10 +30,8 @@ type PersonalOrganizationController struct {
 	Config PersonalOrganizationControllerConfig
 }
 
-// +kubebuilder:rbac:groups=iam.datumapis.com,resources=users,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=iam.datumapis.com,resources=users/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=iam.datumapis.com,resources=users/finalizers,verbs=update
-// +kubebuilder:rbac:groups=resourcemanager.datumapis.com,resources=organizations,verbs=create;delete
+// +kubebuilder:rbac:groups=iam.datumapis.com,resources=users,verbs=get;list;watch
+// +kubebuilder:rbac:groups=resourcemanager.datumapis.com,resources=organizations,verbs=create
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
