@@ -1,0 +1,15 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "organization-update-policy.miloapis.com"
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   ["resourcemanager.miloapis.com"]
+      apiVersions: ["v1alpha1"]
+      operations:  ["UPDATE"]
+      resources:   ["organizations"]
+  validations:
+  - expression: "object.spec.type != 'Personal' || oldObject.metadata.annotations.get('kubernetes.io/display-name', '') == object.metadata.annotations.get('kubernetes.io/display-name', '')"
+    message: "The display name of a personal organization cannot be changed."
