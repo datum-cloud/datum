@@ -156,7 +156,7 @@ managing your infrastructure.
 There are also other ways to get involved:
 
 - **Development Setup:** See the [Development
-  Guide](https://docs.datum.net/docs/tasks/developer-guide/).
+  Guide](https://docs.datum.net/docs/developer-guide/).
 - **Roadmap & Enhancements:** Visit our [enhancements
   repo](https://link.datum.net/enhancements).
 - **General Discussion:** Join us on the [Datum Community
