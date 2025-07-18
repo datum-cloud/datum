@@ -4,13 +4,17 @@ package controller
 import (
 	"crypto/tls"
 	"flag"
+	"fmt"
+	"os"
 	"path/filepath"
+	"time"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/serializer"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -23,15 +27,22 @@ import (
 
 	"github.com/spf13/cobra"
 	// +kubebuilder:scaffold:imports
+	"go.datum.net/datum/internal/config"
+	resourcemanagercontroller "go.datum.net/datum/internal/controller/resourcemanager"
+	iamv1alpha1 "go.miloapis.com/milo/pkg/apis/iam/v1alpha1"
+	resourcemanagerv1alpha1 "go.miloapis.com/milo/pkg/apis/resourcemanager/v1alpha1"
 )
 
 var (
 	scheme   = runtime.NewScheme()
 	setupLog = ctrl.Log.WithName("setup")
+	codecs   = serializer.NewCodecFactory(scheme, serializer.EnableStrict)
 )
 
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
+	utilruntime.Must(iamv1alpha1.AddToScheme(scheme))
+	utilruntime.Must(resourcemanagerv1alpha1.AddToScheme(scheme))
 
 	// +kubebuilder:scaffold:scheme
 }
@@ -42,9 +53,16 @@ func NewControllerManagerCommand() *cobra.Command {
 	var metricsCertPath, metricsCertName, metricsCertKey string
 	var webhookCertPath, webhookCertName, webhookCertKey string
 	var enableLeaderElection bool
+	var leaderElectionID string
+	var leaderElectionNamespace string
+	var leaderElectionLeaseDuration time.Duration
+	var leaderElectionRenewDeadline time.Duration
+	var leaderElectionRetryPeriod time.Duration
+	var leaderElectionReleaseOnCancel bool
 	var probeAddr string
 	var secureMetrics bool
 	var enableHTTP2 bool
+	var serverConfigFile string
 
 	cmd := &cobra.Command{
 		Use:   "controller-manager",
@@ -56,6 +74,13 @@ func NewControllerManagerCommand() *cobra.Command {
 				metricsCertPath, metricsCertName, metricsCertKey,
 				webhookCertPath, webhookCertName, webhookCertKey,
 				enableLeaderElection,
+				leaderElectionID,
+				leaderElectionNamespace,
+				leaderElectionLeaseDuration,
+				leaderElectionRenewDeadline,
+				leaderElectionRetryPeriod,
+				leaderElectionReleaseOnCancel,
+				serverConfigFile,
 				probeAddr,
 				secureMetrics,
 				enableHTTP2,
@@ -67,9 +92,27 @@ func NewControllerManagerCommand() *cobra.Command {
 	cmd.Flags().StringVar(&metricsAddr, "metrics-bind-address", "0", "The address the metrics endpoint binds to. "+
 		"Use :8443 for HTTPS or :8080 for HTTP, or leave as 0 to disable the metrics service.")
 	cmd.Flags().StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
+
+	// Leader election flags
 	cmd.Flags().BoolVar(&enableLeaderElection, "leader-elect", false,
 		"Enable leader election for controller manager. "+
 			"Enabling this will ensure there is only one active controller manager.")
+	cmd.Flags().StringVar(&leaderElectionID, "leader-election-id", "81afa9db.datumapis.com",
+		"The name of the resource that leader election will use for holding the leader lock.")
+	cmd.Flags().StringVar(&leaderElectionNamespace, "leader-election-namespace", "",
+		"The namespace in which the leader election resource will be created. "+
+			"If not specified, it will use the namespace where the controller is running.")
+	cmd.Flags().DurationVar(&leaderElectionLeaseDuration, "leader-election-lease-duration", 15*time.Second,
+		"The duration that non-leader candidates will wait to force acquire leadership.")
+	cmd.Flags().DurationVar(&leaderElectionRenewDeadline, "leader-election-renew-deadline", 10*time.Second,
+		"The duration that the acting leader will retry refreshing leadership before giving up.")
+	cmd.Flags().DurationVar(&leaderElectionRetryPeriod, "leader-election-retry-period", 2*time.Second,
+		"The duration the LeaderElector clients should wait between tries of actions.")
+	cmd.Flags().BoolVar(&leaderElectionReleaseOnCancel, "leader-election-release-on-cancel", false,
+		"If the leader should step down voluntarily when the Manager ends. "+
+			"This requires the binary to immediately end when the Manager is stopped.")
+
+	// Security and certificate flags
 	cmd.Flags().BoolVar(&secureMetrics, "metrics-secure", true,
 		"If set, the metrics endpoint is served securely via HTTPS. Use --metrics-secure=false to use HTTP instead.")
 	cmd.Flags().StringVar(&webhookCertPath, "webhook-cert-path", "", "The directory that contains the webhook certificate.")
@@ -81,6 +124,7 @@ func NewControllerManagerCommand() *cobra.Command {
 	cmd.Flags().StringVar(&metricsCertKey, "metrics-cert-key", "tls.key", "The name of the metrics server key file.")
 	cmd.Flags().BoolVar(&enableHTTP2, "enable-http2", false,
 		"If set, HTTP/2 will be enabled for the metrics and webhook servers")
+	cmd.Flags().StringVar(&serverConfigFile, "config", "", "path to the controller manager config file")
 
 	// Add zap logging flags
 	opts := zap.Options{
@@ -99,6 +143,13 @@ func runControllerManager(
 	metricsCertPath, metricsCertName, metricsCertKey string,
 	webhookCertPath, webhookCertName, webhookCertKey string,
 	enableLeaderElection bool,
+	leaderElectionID string,
+	leaderElectionNamespace string,
+	leaderElectionLeaseDuration time.Duration,
+	leaderElectionRenewDeadline time.Duration,
+	leaderElectionRetryPeriod time.Duration,
+	leaderElectionReleaseOnCancel bool,
+	serverConfigFile string,
 	probeAddr string,
 	secureMetrics bool,
 	enableHTTP2 bool,
@@ -126,6 +177,21 @@ func runControllerManager(
 
 	if !enableHTTP2 {
 		tlsOpts = append(tlsOpts, disableHTTP2)
+	}
+
+	var serverConfig config.DatumControllerManager
+	var configData []byte
+	if len(serverConfigFile) > 0 {
+		var err error
+		configData, err = os.ReadFile(serverConfigFile)
+		if err != nil {
+			setupLog.Error(fmt.Errorf("unable to read server config from %q", serverConfigFile), "")
+			os.Exit(1)
+		}
+	}
+
+	if err := runtime.DecodeInto(codecs.UniversalDecoder(), configData, &serverConfig); err != nil {
+		return fmt.Errorf("unable to decode server config: %w", err)
 	}
 
 	// Create watchers for metrics and webhooks certificates
@@ -203,26 +269,29 @@ func runControllerManager(
 	}
 
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
-		Scheme:                 scheme,
-		Metrics:                metricsServerOptions,
-		WebhookServer:          webhookServer,
-		HealthProbeBindAddress: probeAddr,
-		LeaderElection:         enableLeaderElection,
-		LeaderElectionID:       "81afa9db.datumapis.com",
-		// LeaderElectionReleaseOnCancel defines if the leader should step down voluntarily
-		// when the Manager ends. This requires the binary to immediately end when the
-		// Manager is stopped, otherwise, this setting is unsafe. Setting this significantly
-		// speeds up voluntary leader transitions as the new leader don't have to wait
-		// LeaseDuration time first.
-		//
-		// In the default scaffold provided, the program ends immediately after
-		// the manager stops, so would be fine to enable this option. However,
-		// if you are doing or is intended to do any operation such as perform cleanups
-		// after the manager stops then its usage might be unsafe.
-		// LeaderElectionReleaseOnCancel: true,
+		Scheme:                        scheme,
+		Metrics:                       metricsServerOptions,
+		WebhookServer:                 webhookServer,
+		HealthProbeBindAddress:        probeAddr,
+		LeaderElection:                enableLeaderElection,
+		LeaderElectionID:              leaderElectionID,
+		LeaderElectionNamespace:       leaderElectionNamespace,
+		LeaseDuration:                 &leaderElectionLeaseDuration,
+		RenewDeadline:                 &leaderElectionRenewDeadline,
+		RetryPeriod:                   &leaderElectionRetryPeriod,
+		LeaderElectionReleaseOnCancel: leaderElectionReleaseOnCancel,
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
+		return err
+	}
+
+	if err = (&resourcemanagercontroller.PersonalOrganizationController{
+		Client: mgr.GetClient(),
+		Config: serverConfig.PersonalOrganizationController,
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "PersonalOrganization")
 		return err
 	}
 

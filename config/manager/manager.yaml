@@ -1,17 +1,7 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    control-plane: controller-manager
-    app.kubernetes.io/name: datum
-    app.kubernetes.io/managed-by: kustomize
-  name: system
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: controller-manager
-  namespace: system
   labels:
     control-plane: controller-manager
     app.kubernetes.io/name: datum
@@ -60,8 +50,61 @@ spec:
       containers:
       - args:
           - controller-manager
-          - --leader-elect
-          - --health-probe-bind-address=:8081
+          - --metrics-bind-address=$(METRICS_BIND_ADDRESS)
+          - --health-probe-bind-address=$(HEALTH_PROBE_BIND_ADDRESS)
+          - --leader-elect=$(LEADER_ELECT)
+          - --leader-election-id=$(LEADER_ELECTION_ID)
+          - --leader-election-namespace=$(LEADER_ELECTION_NAMESPACE)
+          - --leader-election-lease-duration=$(LEADER_ELECTION_LEASE_DURATION)
+          - --leader-election-renew-deadline=$(LEADER_ELECTION_RENEW_DEADLINE)
+          - --leader-election-retry-period=$(LEADER_ELECTION_RETRY_PERIOD)
+          - --leader-election-release-on-cancel=$(LEADER_ELECTION_RELEASE_ON_CANCEL)
+          - --metrics-secure=$(METRICS_SECURE)
+          - --webhook-cert-path=$(WEBHOOK_CERT_PATH)
+          - --webhook-cert-name=$(WEBHOOK_CERT_NAME)
+          - --webhook-cert-key=$(WEBHOOK_CERT_KEY)
+          - --metrics-cert-path=$(METRICS_CERT_PATH)
+          - --metrics-cert-name=$(METRICS_CERT_NAME)
+          - --metrics-cert-key=$(METRICS_CERT_KEY)
+          - --enable-http2=$(ENABLE_HTTP2)
+          - --config=$(CONFIG_FILE)
+        env:
+          - name: METRICS_BIND_ADDRESS
+            value: "0"
+          - name: HEALTH_PROBE_BIND_ADDRESS
+            value: ":8081"
+          - name: LEADER_ELECT
+            value: "true"
+          - name: LEADER_ELECTION_ID
+            value: "81afa9db.datumapis.com"
+          - name: LEADER_ELECTION_NAMESPACE
+            value: ""
+          - name: LEADER_ELECTION_LEASE_DURATION
+            value: "15s"
+          - name: LEADER_ELECTION_RENEW_DEADLINE
+            value: "10s"
+          - name: LEADER_ELECTION_RETRY_PERIOD
+            value: "2s"
+          - name: LEADER_ELECTION_RELEASE_ON_CANCEL
+            value: "false"
+          - name: METRICS_SECURE
+            value: "true"
+          - name: WEBHOOK_CERT_PATH
+            value: ""
+          - name: WEBHOOK_CERT_NAME
+            value: "tls.crt"
+          - name: WEBHOOK_CERT_KEY
+            value: "tls.key"
+          - name: METRICS_CERT_PATH
+            value: ""
+          - name: METRICS_CERT_NAME
+            value: "tls.crt"
+          - name: METRICS_CERT_KEY
+            value: "tls.key"
+          - name: ENABLE_HTTP2
+            value: "false"
+          - name: CONFIG_FILE
+            value: ""
         image: ghcr.io/datum-cloud/datum:latest
         name: datum-controller-manager
         ports: []
