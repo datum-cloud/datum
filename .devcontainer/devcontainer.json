@@ -1,44 +1,24 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/go
 {
-	"name": "Go",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/go:1-1.23-bookworm",
-	"features": {
-		"ghcr.io/devcontainers/features/common-utils": {
-			"installOhMyZsh": true,
-			"configureZshAsDefaultShell": true,
-			"installOhMyZshConfig": true,
-			"installZsh": true,
-			"upgradePackages": true
-		},
-		"ghcr.io/devcontainers/features/docker-in-docker": {},
-		"ghcr.io/dhoeric/features/act": {},
-	},
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"patbenatar.advanced-new-file",
-				"stkb.rewrap",
-				"github.vscode-github-actions",
-				"yzhang.markdown-all-in-one"
-			],
-			"settings": {
-				"rewrap.autoWrap.enabled": true
-			},
-			"editor.tabSize": 2
-		}
-	},
+  "name": "Kubebuilder DevContainer",
+  "image": "docker.io/golang:1.24",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
 
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
+  "runArgs": ["--network=host"],
 
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "go version",
-
-	// Configure tool-specific properties.
-	// "customizations": {},
+  "onCreateCommand": "bash .devcontainer/post-install.sh"
 }
