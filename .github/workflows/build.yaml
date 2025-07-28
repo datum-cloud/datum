@@ -53,7 +53,7 @@ jobs:
 
     - name: Build ${{ matrix.service }}
       id: push
-      uses: docker/build-push-action@v6.15.0
+      uses: docker/build-push-action@v6.18.0
       with:
         context: .
         file: cmd/${{ matrix.service }}/Dockerfile
