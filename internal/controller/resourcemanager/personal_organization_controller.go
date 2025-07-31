@@ -20,7 +20,12 @@ import (
 )
 
 type PersonalOrganizationControllerConfig struct {
-	RoleName      string `json:"roleName"`
+	// The name of the role to use when assigning owner permissions to the user
+	// this organization is being created for.
+	RoleName string `json:"roleName"`
+
+	// The namespace the owner role exists in that will be assigned to the user
+	// the organization is being created for.
 	RoleNamespace string `json:"roleNamespace"`
 }
 
