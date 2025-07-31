@@ -21,7 +21,9 @@ import (
 
 type PersonalOrganizationControllerConfig struct {
 	// The name of the role to use when assigning owner permissions to the user
-	// this organization is being created for.
+	// this organization is being created for. This role should be used to grant
+	// the default set of permissions that should be granted to the user the
+	// personal organization is being created.
 	RoleName string `json:"roleName"`
 
 	// The namespace the owner role exists in that will be assigned to the user
