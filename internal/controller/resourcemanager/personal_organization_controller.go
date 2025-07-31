@@ -68,7 +68,9 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 
 	_, err := controllerutil.CreateOrUpdate(ctx, r.Client, personalOrg, func() error {
 		logger.Info("Creating or updating personal organization", "organization", personalOrg.Name)
+		// TODO: Remove once portal uses the description annotation
 		metav1.SetMetaDataAnnotation(&personalOrg.ObjectMeta, "kubernetes.io/display-name", fmt.Sprintf("%s %s's Personal Org", user.Spec.GivenName, user.Spec.FamilyName))
+		metav1.SetMetaDataAnnotation(&personalOrg.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Org", user.Spec.GivenName, user.Spec.FamilyName))
 		if err := controllerutil.SetControllerReference(user, personalOrg, r.Scheme); err != nil {
 			return fmt.Errorf("failed to set controller reference: %w", err)
 		}
