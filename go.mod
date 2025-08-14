@@ -9,9 +9,9 @@ require (
 	github.com/onsi/gomega v1.36.1
 	github.com/spf13/cobra v1.9.1
 	go.miloapis.com/milo v0.1.0
-	k8s.io/api v0.32.1
-	k8s.io/apimachinery v0.33.2
-	k8s.io/client-go v0.32.1
+	k8s.io/api v0.33.4
+	k8s.io/apimachinery v0.33.4
+	k8s.io/client-go v0.33.4
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
 	sigs.k8s.io/controller-runtime v0.20.4
 )
@@ -75,7 +75,7 @@ require (
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
 	golang.org/x/net v0.41.0 // indirect
-	golang.org/x/oauth2 v0.25.0 // indirect
+	golang.org/x/oauth2 v0.27.0 // indirect
 	golang.org/x/sync v0.15.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/term v0.32.0 // indirect
