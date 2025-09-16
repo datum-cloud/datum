@@ -1,0 +1,86 @@
+apiVersion: notification.miloapis.com/v1alpha1
+kind: EmailTemplate
+metadata:
+  name: emailtemplates.notification.miloapis.com-userinvitationemailtemplate
+spec:
+  subject: "Join your friends on Datum"
+  htmlBody: |
+    <html>
+      <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+          }
+          .header {
+            text-align: center;
+            margin-bottom: 30px;
+          }
+          .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 20px 0;
+          }
+          .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666666;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>Join your friends on Datum</h1>
+          </div>
+
+          <p>{{.InviterDisplayName}} has just invited you to use Datum with them,<br/>
+             in an organization called <strong>{{.OrganizationDisplayName}}</strong>,<br/>
+             with the role{{if (gt (len .Roles) 1)}}s{{end}} of <strong>{{.Roles}}</strong>.</p>
+
+          <p style="text-align: center;">
+            <a href="https://cloud.datun.net/invitations/name/{{.UserInvitationName}}/accept" class="button">Accept Invitation</a>
+          </p>
+
+          <p>If the button doesn't work, copy and paste this link into your browser:</p>
+          <p>https://cloud.datun.net/invitations/name/{{.UserInvitationName}}/accept</p>
+
+          <div class="footer">
+            <p>This is an automated message, please do not reply.</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  textBody: |
+    {{.InviterDisplayName}} has just invited you to use Datum with them,
+    in an organization called {{.OrganizationDisplayName}}, with the role{{if (gt (len .Roles) 1)}}s{{end}} of {{.Roles}}.
+
+    Here's the link for accepting the invitation:
+    https://cloud.datun.net/invitations/name/{{.UserInvitationName}}/accept
+
+    (If the link doesn't open, copy and paste it into your browser.)
+
+    This is an automated message, please do not reply.
+  variables:
+  - name: "InviterDisplayName"
+    required: true
+    type: "string"
+  - name: "OrganizationDisplayName"
+    required: true
+    type: "string"
+  - name: "Roles"
+    required: true
+    type: "string"
+  - name: "UserInvitationName"
+    required: true
+    type: "string"
