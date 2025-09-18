@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: resource-manager-quota-grant-policies
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: resource-manager
+    app.kubernetes.io/part-of: quota-system
+
+resources:
+  - personal-org-grant-policy.yaml
+  - standard-org-grant-policy.yaml
+
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/name: datum
+      app.kubernetes.io/component: resource-manager

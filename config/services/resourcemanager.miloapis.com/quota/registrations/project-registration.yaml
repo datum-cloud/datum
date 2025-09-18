@@ -1,0 +1,30 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: ResourceRegistration
+metadata:
+  name: projects-per-organization
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  # Organization is the consumer of project quota
+  consumerTypeRef:
+    apiGroup: resourcemanager.miloapis.com
+    kind: Organization
+
+  # Count-based quota for projects
+  type: Entity
+
+  # The resource type being managed
+  resourceType: resourcemanager.miloapis.com/projects
+
+  description: "Maximum number of projects that can be created within an organization"
+
+  # Simple counting units
+  baseUnit: project
+  displayUnit: projects
+  unitConversionFactor: 1
+
+  # Projects can claim quota against this registration
+  claimingResources:
+    - apiGroup: resourcemanager.miloapis.com
+      kind: Project

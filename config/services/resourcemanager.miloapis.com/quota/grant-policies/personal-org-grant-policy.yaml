@@ -1,0 +1,34 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: GrantCreationPolicy
+metadata:
+  name: personal-organization-project-quota-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  enabled: true
+
+  # Only trigger for Personal organizations
+  trigger:
+    resource:
+      apiVersion: resourcemanager.miloapis.com/v1alpha1
+      kind: Organization
+    conditions:
+      - expression: 'object.spec.type == "Personal"'
+        message: "Organization must be of type Personal"
+
+  target:
+    resourceGrantTemplate:
+      metadata:
+        name: "default-project-quota"
+        namespace: "organization-{{ .trigger.metadata.name }}"
+      spec:
+        consumerRef:
+          apiGroup: resourcemanager.miloapis.com
+          kind: Organization
+          name: "{{ .trigger.metadata.name }}"
+
+        allowances:
+          - resourceType: resourcemanager.miloapis.com/projects
+            buckets:
+              - amount: 2
