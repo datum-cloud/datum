@@ -22,6 +22,11 @@ spec:
       metadata:
         name: "default-project-quota"
         namespace: "organization-{{ .trigger.metadata.name }}"
+        labels:
+          quota.miloapis.com/auto-created: "true"
+          quota.miloapis.com/policy: "personal-organization-project-quota-policy"
+        annotations:
+          kubernetes.io/description: "Project quota allocation for Personal organization"
       spec:
         consumerRef:
           apiGroup: resourcemanager.miloapis.com

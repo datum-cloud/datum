@@ -23,12 +23,10 @@ spec:
         labels:
           app.kubernetes.io/name: datum
           app.kubernetes.io/component: quota-system
-          quota.datumapis.com/auto-created: "true"
-          quota.datumapis.com/resource-type: "project"
-
+          quota.miloapis.com/auto-created: "true"
+          quota.miloapis.com/policy: "project-quota-enforcement-policy"
         annotations:
-          quota.datumapis.com/description: "Automatic quota claim for project creation"
-          quota.datumapis.com/created-by: "project-quota-enforcement-policy"
+          kubernetes.io/description: "Automatic quota claim for project creation"
       spec:
         consumerRef:
           apiGroup: "resourcemanager.miloapis.com"
