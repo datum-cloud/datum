@@ -348,9 +348,6 @@ spec:
   - name: "OrganizationDisplayName"
     required: true
     type: "string"
-  - name: "Roles"
-    required: true
-    type: "string"
   - name: "UserInvitationName"
     required: true
     type: "string"
