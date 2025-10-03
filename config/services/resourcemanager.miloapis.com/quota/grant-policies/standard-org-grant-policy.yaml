@@ -14,7 +14,7 @@ spec:
       apiVersion: resourcemanager.miloapis.com/v1alpha1
       kind: Organization
     conditions:
-      - expression: 'object.spec.type == "Standard"'
+      - expression: 'trigger.spec.type == "Standard"'
         message: "Organization must be of type Standard"
 
   target:

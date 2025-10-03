@@ -14,7 +14,7 @@ spec:
       apiVersion: resourcemanager.miloapis.com/v1alpha1
       kind: Organization
     conditions:
-      - expression: 'object.spec.type == "Personal"'
+      - expression: 'trigger.spec.type == "Personal"'
         message: "Organization must be of type Personal"
 
   target:
