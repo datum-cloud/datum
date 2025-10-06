@@ -148,7 +148,7 @@ spec:
                                         to set up your account and get started:
                                       </p>
                                       <a
-                                        href="https://cloud.datun.net/invitations/{{.UserInvitationName}}/accept"
+                                        href="https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept"
                                         style="border-radius:0.25rem;font-weight:600;text-align:center;text-decoration-line:none;border-width:1px;border-style:solid;display:block;background-color:rgb(191,149,149);color:rgb(255,255,255);border-color:rgb(191,149,149);padding-left:20px;padding-right:20px;padding-top:12px;padding-bottom:12px;font-size:14px;line-height:20px;margin-top:24px;margin-bottom:24px;text-decoration:none;max-width:100%;mso-padding-alt:0px"
                                         target="_blank"
                                         ><span
@@ -165,10 +165,10 @@ spec:
                                         Or you can copy and paste the following URL
                                         into your browser:<!-- -->
                                         <a
-                                          href="https://cloud.datun.net/invitations/{{.UserInvitationName}}/accept"
+                                          href="https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept"
                                           style="color:rgb(191,149,149);text-decoration-line:none"
                                           target="_blank"
-                                          >https://cloud.datun.net/invitations/{{.UserInvitationName}}/accept</a>
+                                          >https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept</a>
                                       </p>
                                     </tr>
                                   </tbody>
@@ -315,10 +315,10 @@ spec:
     {{.InviterDisplayName}} has invited you to join "{{.OrganizationDisplayName}}" organization to collaborate
     with them. Use the button below to set up your account and get started:
 
-    Accept invitation https://cloud.datun.net/invitations/{{.UserInvitationName}}/accept
+    Accept invitation https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept
 
     Or you can copy and paste the following URL into your browser:
-    https://cloud.datun.net/invitations/{{.UserInvitationName}}/accept
+    https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept
 
     --------------------------------------------------------------------------------
 
