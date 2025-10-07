@@ -3,3 +3,4 @@ kind: Component
 
 resources:
   - validation/
+  - assignable-organization-roles/

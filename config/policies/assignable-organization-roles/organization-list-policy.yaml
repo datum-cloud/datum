@@ -1,0 +1,16 @@
+apiVersion: iam.miloapis.com/v1alpha1
+kind: PolicyBinding
+metadata:
+  name: allow-authenticated-user-list-assignable-roles
+  namespace: milo-system
+spec:
+  roleRef:
+    name: role-reader
+    namespace: milo-system
+  subjects:
+    - kind: User
+      name: system:authenticated-users
+  resourceSelector:
+    resourceKind:
+      apiGroup: "iam.miloapis.com"
+      kind: Role
