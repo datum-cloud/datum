@@ -6,22 +6,19 @@ metadata:
     app.kubernetes.io/name: datum
     app.kubernetes.io/component: quota-system
 spec:
-  enabled: true
-
   # Only trigger for Standard organizations
   trigger:
     resource:
       apiVersion: resourcemanager.miloapis.com/v1alpha1
       kind: Organization
-    conditions:
+    constraints:
       - expression: 'trigger.spec.type == "Standard"'
         message: "Organization must be of type Standard"
-
   target:
     resourceGrantTemplate:
       metadata:
         name: "default-project-quota"
-        namespace: "organization-{{ .trigger.metadata.name }}"
+        namespace: "organization-{{ trigger.metadata.name }}"
         labels:
           quota.miloapis.com/auto-created: "true"
           quota.miloapis.com/policy: "standard-organization-project-quota-policy"
@@ -31,8 +28,7 @@ spec:
         consumerRef:
           apiGroup: resourcemanager.miloapis.com
           kind: Organization
-          name: "{{ .trigger.metadata.name }}"
-
+          name: "{{ trigger.metadata.name }}"
         allowances:
           - resourceType: resourcemanager.miloapis.com/projects
             buckets:

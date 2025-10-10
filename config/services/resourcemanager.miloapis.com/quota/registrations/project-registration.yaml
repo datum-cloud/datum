@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/component: quota-system
 spec:
   # Organization is the consumer of project quota
-  consumerTypeRef:
+  consumerType:
     apiGroup: resourcemanager.miloapis.com
     kind: Organization
 
