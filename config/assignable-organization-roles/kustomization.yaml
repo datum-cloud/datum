@@ -15,8 +15,6 @@ resources:
   - https://raw.githubusercontent.com/datum-cloud/network-services-operator/refs/tags/v0.7.0/config/iam/roles/domain-admin.yaml
   - https://raw.githubusercontent.com/datum-cloud/network-services-operator/refs/tags/v0.7.0/config/iam/roles/networking-viewer.yaml  
   - https://raw.githubusercontent.com/datum-cloud/network-services-operator/refs/tags/v0.7.0/config/iam/roles/networking-admin.yaml
-  # Indirect roles (used by networking-admin )
-  - https://raw.githubusercontent.com/datum-cloud/network-services-operator/refs/tags/v0.7.0/config/iam/roles/location-admin.yaml
   # Organization roles
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.2/config/roles/organization-viewer.yaml
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.2/config/roles/organization-admin.yaml
