@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: assignable-organization-roles-viewer
+  namespace: datum-cloud
+rules:
+- apiGroups: ["iam.miloapis.com"]
+  resources: ["roles"]
+  verbs: ["get", "watch", "list"]
