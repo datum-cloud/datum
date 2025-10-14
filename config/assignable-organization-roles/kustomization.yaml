@@ -26,6 +26,7 @@ resources:
   # Indirect roles required by networking-admin
   - https://raw.githubusercontent.com/datum-cloud/network-services-operator/refs/tags/v0.7.0/config/iam/roles/location-admin.yaml  
   # Indirect roles required by organization-admin
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.3/config/roles/organizationmembership-editor.yaml
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.3/config/roles/organizationmembership-admin.yaml
   # Indirect roles required by organization-reader
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.3/config/roles/organizationmembership-reader.yaml
