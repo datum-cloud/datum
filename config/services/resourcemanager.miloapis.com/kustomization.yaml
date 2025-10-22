@@ -9,6 +9,11 @@ components:
   - quota/
   - validation/
 
+# Use explicit sorting options so we can guarantee order in which resources are
+# applied.
+sortOptions:
+  order: fifo
+
 labels:
   - includeSelectors: true
     pairs:
