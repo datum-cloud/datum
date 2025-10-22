@@ -1,0 +1,33 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: ClaimCreationPolicy
+metadata:
+  name: project-quota-enforcement-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: resourcemanager.miloapis.com/v1alpha1
+      kind: Project
+  target:
+    resourceClaimTemplate:
+      metadata:
+        name: "project-{{ trigger.metadata.name }}"
+        namespace: "organization-{{ trigger.spec.ownerRef.name }}"
+        labels:
+          app.kubernetes.io/name: datum
+          app.kubernetes.io/component: quota-system
+          quota.miloapis.com/auto-created: "true"
+          quota.miloapis.com/policy: "project-quota-enforcement-policy"
+        annotations:
+          kubernetes.io/description: "Automatic quota claim for project creation"
+      spec:
+        consumerRef:
+          apiGroup: "resourcemanager.miloapis.com"
+          kind: "Organization"
+          name: "{{ trigger.spec.ownerRef.name }}"
+        # Each project claims 1 unit of project quota
+        requests:
+          - resourceType: resourcemanager.miloapis.com/projects
+            amount: 1
