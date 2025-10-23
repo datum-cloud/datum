@@ -1,0 +1,23 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "deny-unapproved-user"
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ["*"]
+      apiVersions: ["*"]
+      operations: ["*"]
+      resources: ["*"]
+  validations:
+  - expression: "(!has(request.userInfo.extra)) || !('iam.miloapis.com/registrationApproval' in request.userInfo.extra) || (request.userInfo.extra['iam.miloapis.com/registrationApproval'][0] == 'Approved') || ((request.resource.group == 'iam.miloapis.com') && (request.resource.resource == 'users') && (request.operation == 'GET'))"
+    message: "User registration is not approved and cannot perform this operation."
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: "deny-unapproved-user"
+spec:
+  policyName: "deny-unapproved-user"
+  validationActions: [Deny]
