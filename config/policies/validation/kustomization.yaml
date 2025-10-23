@@ -1,3 +1,2 @@
 resources:
   - organization-update-policy.yaml
-  - approved-user-policy.yaml
