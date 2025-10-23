@@ -1,6 +1,6 @@
 # Milo API Groups Configuration
 
-This directory contains Milo configurations for **all Milo API groups** in Datum Cloud.
+This directory contains Milo configurations for the **IAM Milo API Group** in Datum Cloud.
 
 It defines common validation admission policies and other base configurations needed for correct operation of all Milo API resources.
 
