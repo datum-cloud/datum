@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Resource Manager service configurations:
+# - Quota management for projects and organizations
+# - Validation policies for organizations
+# - Future: RBAC, additional policies, etc.
+components:
+  - quota/
+  - validation/
+
+# Use explicit sorting options so we can guarantee order in which resources are
+# applied.
+sortOptions:
+  order: fifo
+
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/component: resource-manager-miloapis-com
+      app.kubernetes.io/part-of: datum-cloud

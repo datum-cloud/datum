@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Use explicit sorting options so we can guarantee that resource registrations
+# are applied before grant / claim creation policies that reference the
+# resources being created.
+sortOptions:
+  order: fifo
+
+components:
+  - registrations/
+  - grant-policies/
+  - claim-policies/

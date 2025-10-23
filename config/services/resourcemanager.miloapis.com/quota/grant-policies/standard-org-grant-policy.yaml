@@ -1,0 +1,35 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: GrantCreationPolicy
+metadata:
+  name: standard-organization-project-quota-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  # Only trigger for Standard organizations
+  trigger:
+    resource:
+      apiVersion: resourcemanager.miloapis.com/v1alpha1
+      kind: Organization
+    constraints:
+      - expression: 'trigger.spec.type == "Standard"'
+        message: "Organization must be of type Standard"
+  target:
+    resourceGrantTemplate:
+      metadata:
+        name: "default-project-quota"
+        namespace: "organization-{{ trigger.metadata.name }}"
+        labels:
+          quota.miloapis.com/auto-created: "true"
+          quota.miloapis.com/policy: "standard-organization-project-quota-policy"
+        annotations:
+          kubernetes.io/description: "Project quota allocation for Standard organization"
+      spec:
+        consumerRef:
+          apiGroup: resourcemanager.miloapis.com
+          kind: Organization
+          name: "{{ trigger.metadata.name }}"
+        allowances:
+          - resourceType: resourcemanager.miloapis.com/projects
+            buckets:
+              - amount: 10
