@@ -1,0 +1,18 @@
+apiVersion: iam.miloapis.com/v1alpha1
+kind: Role
+metadata:
+  name: datum-cloud-owner
+  annotations:
+    kubernetes.io/display-name: Datum Cloud Owner
+    kubernetes.io/description: "Full access to all Datum Cloud resources"
+spec:
+  launchStage: Beta
+  inheritedRoles:
+    - name: resourcemanager-admin
+    - name: core-admin
+    - name: apiextensions-reader
+    - name: iam-admin
+    - name: networking.datumapis.com-admin
+    - name: telemetry.miloapis.com-admin
+    - name: organizationmembership-reader
+    - name: quota.miloapis.com-organization-quota-manager

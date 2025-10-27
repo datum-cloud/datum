@@ -2,6 +2,8 @@ namespace: datum-cloud
 resources:
   - namespace.yaml
   - roles/viewer-role.yaml
+  - roles/datum-cloud-owner.yaml
+  - roles/datum-cloud-viewer.yaml
   - bindings/viewer-role-binding.yaml
   # IAM roles
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.3/config/roles/iam-viewer.yaml
