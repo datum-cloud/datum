@@ -40,7 +40,6 @@ resources:
   # Indirect roles required by datum-cloud-owner
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/resourcemanager-admin.yaml
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/core-admin.yaml
-  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/apiextensions-reader.yaml
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/services/quota/iam/roles/organization-quota-manager.yaml
 
 
