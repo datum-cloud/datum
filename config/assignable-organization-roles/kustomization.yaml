@@ -32,4 +32,20 @@ resources:
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.3/config/roles/organizationmembership-admin.yaml
   # Indirect roles required by organization-reader
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.3/config/roles/organizationmembership-reader.yaml
+  # Indirect roles required by datum-cloud-viewer
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/resourcemanager-reader.yaml
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/core-reader.yaml
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/apiextensions-reader.yaml
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/services/quota/iam/roles/quota-viewer.yaml
+  # Indirect roles required by datum-cloud-owner
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/resourcemanager-admin.yaml
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/core-admin.yaml
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/roles/apiextensions-reader.yaml
+  - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.7.5/config/services/quota/iam/roles/organization-quota-manager.yaml
+
+
+
+
+
+
 
