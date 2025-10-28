@@ -141,7 +141,7 @@ spec:
                                       <h4
                                         style="margin-top:0;font-weight:500;margin-bottom:16px">
                                         Hi
-                                        <!-- -->{{.Name}}<!-- -->,
+                                        <!-- -->{{.UserName}}<!-- -->,
                                       </h4>
                                       <p
                                         style="font-size:14px;line-height:20px;margin-top:0;margin-bottom:16px;font-weight:300">
@@ -256,7 +256,7 @@ spec:
   textBody: |
     ----------------------------------------
     
-    HI {{.Name}},
+    HI {{.UserName}},
     
     Thank you for your interest in Datum Cloud. Unfortunately, we're unable to approve your account at this time.
     
@@ -278,6 +278,6 @@ spec:
     NY, 10006
 
   variables:
-  - name: "Name"
+  - name: "UserName"
     required: true
     type: "string"

@@ -141,7 +141,7 @@ spec:
                                       <h4
                                         style="margin-top:0;font-weight:500;margin-bottom:16px">
                                         Hi
-                                        <!-- -->{{.Name}}<!-- -->,
+                                        <!-- -->{{.UserName}}<!-- -->,
                                       </h4>
                                       <p
                                         style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
@@ -272,7 +272,7 @@ spec:
   textBody: |
     ----------------------------------------
     
-    HI {{.Name}},
+    HI {{.UserName}},
     
     Good news, you're off the waitlist! I'm excited to share what we've built (so far) with Datum Cloud and get your feedback. To get started, just login below:
     
@@ -297,7 +297,7 @@ spec:
     NY, 10006
 
   variables:
-  - name: "Name"
+  - name: "UserName"
     required: true
     type: "string"
   - name: "ActionUrl"
