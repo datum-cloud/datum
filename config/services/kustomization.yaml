@@ -10,3 +10,4 @@ sortOptions:
 
 components:
   - resourcemanager.miloapis.com/
+  - iam.miloapis.com/
