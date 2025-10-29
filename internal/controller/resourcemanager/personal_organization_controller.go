@@ -101,49 +101,17 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 			UserRef: resourcemanagerv1alpha1.MemberReference{
 				Name: user.Name,
 			},
+			Roles: []resourcemanagerv1alpha1.RoleReference{
+				{
+					Name:      r.Config.RoleName,
+					Namespace: r.Config.RoleNamespace,
+				},
+			},
 		}
 		return nil
 	})
 	if err != nil {
 		return ctrl.Result{}, fmt.Errorf("failed to create or update organization membership: %w", err)
-	}
-
-	// Assign the default role to the user.
-	policyBinding := &iamv1alpha1.PolicyBinding{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("policy-binding-%s", user.Name),
-			Namespace: fmt.Sprintf("organization-%s", personalOrg.Name),
-		},
-	}
-
-	_, err = controllerutil.CreateOrUpdate(ctx, r.Client, policyBinding, func() error {
-		logger.Info("Creating or updating personal organization policy binding", "organization", personalOrg.Name)
-		policyBinding.Spec = iamv1alpha1.PolicyBindingSpec{
-			RoleRef: iamv1alpha1.RoleReference{
-				Name:      r.Config.RoleName,
-				Namespace: r.Config.RoleNamespace,
-			},
-			ResourceSelector: iamv1alpha1.ResourceSelector{
-				ResourceRef: &iamv1alpha1.ResourceReference{
-					APIGroup: resourcemanagerv1alpha1.GroupVersion.Group,
-					Kind:     "Organization",
-					Name:     personalOrg.Name,
-					UID:      string(personalOrg.UID),
-				},
-			},
-			Subjects: []iamv1alpha1.Subject{
-				{
-					Kind: "User",
-					Name: user.Name,
-					UID:  string(user.UID),
-				},
-			},
-		}
-
-		return nil
-	})
-	if err != nil {
-		return ctrl.Result{}, fmt.Errorf("failed to create or update policy binding: %w", err)
 	}
 
 	logger.Info("Successfully created or updated personal organization resources", "organization", personalOrg.Name)

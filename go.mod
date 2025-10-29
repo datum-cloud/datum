@@ -8,7 +8,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.22.0
 	github.com/onsi/gomega v1.36.1
 	github.com/spf13/cobra v1.9.1
-	go.miloapis.com/milo v0.7.0
+	go.miloapis.com/milo v0.8.0
 	k8s.io/api v0.32.3
 	k8s.io/apimachinery v0.33.2
 	k8s.io/client-go v0.32.3
