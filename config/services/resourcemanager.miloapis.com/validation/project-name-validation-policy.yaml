@@ -1,0 +1,35 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: "validate-project-name"
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   ["resourcemanager.miloapis.com"]
+      apiVersions: ["v1alpha1"]
+      operations:  ["CREATE"]
+      resources:   ["projects"]
+  validations:
+  # Minimum name length (6 characters)
+  - expression: "size(object.metadata.name) >= 6"
+    message: "Project name is too short. Project names must be at least 6 characters long. Please choose a longer name."
+    reason: Invalid
+
+  # Maximum name length (30 characters)
+  - expression: "size(object.metadata.name) <= 30"
+    message: "Project name is too long. Project names must not exceed 30 characters. Please choose a shorter name."
+    reason: Invalid
+
+  # Reserved words validation - block names containing "datum"
+  - expression: "!object.metadata.name.contains('datum')"
+    message: "Project name contains the reserved word 'datum' and cannot be used. Please choose a different name."
+    reason: Invalid
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: "validate-project-name-binding"
+spec:
+  policyName: "validate-project-name"
+  validationActions: [Deny]
