@@ -3,3 +3,7 @@ kind: Component
 
 resources:
   - userinvitation-emailtemplate.yaml
+  - userapproved-emailtemplate.yaml
+  - userrejected-emailtemplate.yaml
+  - userwaitlist-emailtemplate.yaml
+  - platforminvitation-emailtemplate.yaml
