@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# IAM Milo API Group configurations:
+# - Quota management for projects and organizations
+# - Validation policies for organizations
+# - Future: RBAC, additional policies, etc.
+components:
+  - validation/
+
+# Use explicit sorting options so we can guarantee order in which resources are
+# applied.
+sortOptions:
+  order: fifo
+
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/component: iam-miloapis-com
+      app.kubernetes.io/part-of: datum-cloud
