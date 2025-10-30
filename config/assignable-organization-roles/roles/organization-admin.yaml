@@ -1,0 +1,29 @@
+apiVersion: iam.miloapis.com/v1alpha1
+kind: Role
+metadata:
+  name: organization-admin
+  annotations:
+    kubernetes.io/display-name: Organization Admin
+    kubernetes.io/description: "Manage the organization and it's team members"
+spec:
+  launchStage: Beta
+  inheritedRoles:
+    - name: organization-viewer
+  includedPermissions:
+    # Manage the organization
+    - resourcemanager.miloapis.com/organizations.create
+    - resourcemanager.miloapis.com/organizations.update
+    - resourcemanager.miloapis.com/organizations.patch
+    - resourcemanager.miloapis.com/organizations.delete
+
+    # Manage the organization's members
+    - resourcemanager.miloapis.com/organizationmemberships.create
+    - resourcemanager.miloapis.com/organizationmemberships.patch
+    - resourcemanager.miloapis.com/organizationmemberships.update
+    - resourcemanager.miloapis.com/organizationmemberships.delete
+
+    # Manage invitations to join the organization
+    - iam.miloapis.com/userinvitations.create
+    - iam.miloapis.com/userinvitations.patch
+    - iam.miloapis.com/userinvitations.update
+    - iam.miloapis.com/userinvitations.delete
