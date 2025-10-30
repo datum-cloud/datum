@@ -8,6 +8,8 @@ resources:
   # Top-level owner / viewer roles for each permission management
   - roles/datum-cloud-owner.yaml
   - roles/datum-cloud-viewer.yaml
+  - roles/organization-admin.yaml
+  - roles/organization-viewer.yaml
 
   # Project roles
   - https://raw.githubusercontent.com/datum-cloud/milo/refs/tags/v0.5.3/config/roles/project-viewer.yaml
