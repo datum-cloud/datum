@@ -9,6 +9,7 @@ spec:
   launchStage: Beta
   inheritedRoles:
     - name: organization-viewer
+      namespace: datum-cloud
   includedPermissions:
     # Manage the organization
     - resourcemanager.miloapis.com/organizations.create

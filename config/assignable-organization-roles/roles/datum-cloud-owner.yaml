@@ -9,8 +9,9 @@ spec:
   launchStage: Beta
   inheritedRoles:
     - name: viewer
+      namespace: datum-cloud
     - name: organization-admin
-
+      namespace: datum-cloud
     - name: core-admin
       namespace: milo-system
     - name: networking.datumapis.com-admin
