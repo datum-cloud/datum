@@ -8,7 +8,7 @@ metadata:
 spec:
   launchStage: Beta
   inheritedRoles:
-    - name: project-viewer
+    - name: resourcemanager.miloapis.com-project-viewer
       namespace: milo-system
     - name: core-reader
       namespace: milo-system
