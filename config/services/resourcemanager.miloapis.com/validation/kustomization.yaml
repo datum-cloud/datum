@@ -3,3 +3,4 @@ kind: Component
 
 resources:
   - organization-update-policy.yaml
+  - project-name-validation-policy.yaml
