@@ -1,4 +1,17 @@
 namespace: datum-cloud
+
+patches:
+  - path: patches/project-viewer.yaml
+  - path: patches/project-admin.yaml
+  - path: patches/telemetry-viewer.yaml
+  - path: patches/telemetry-admin.yaml
+  - path: patches/networking-viewer.yaml
+  - path: patches/networking-admin.yaml
+  - path: patches/gateway-viewer.yaml
+  - path: patches/gateway-admin.yaml
+  - path: patches/domain-viewer.yaml
+  - path: patches/domain-admin.yaml
+
 resources:
   - namespace.yaml
   # Grant authenticated users access to these roles

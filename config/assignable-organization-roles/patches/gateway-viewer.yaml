@@ -1,0 +1,7 @@
+apiVersion: iam.miloapis.com/v1alpha1
+kind: Role
+metadata:
+  name: networking.datumapis.com-gateway-viewer
+  annotations:
+    taxonomy.miloapis.com/sort-order: "82"
+    taxonomy.miloapis.com/product: "Configure Networking"

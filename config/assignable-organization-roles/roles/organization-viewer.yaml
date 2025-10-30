@@ -4,7 +4,9 @@ metadata:
   name: organization-viewer
   annotations:
     kubernetes.io/display-name: Organization Viewer
-    kubernetes.io/description: "View the organization and it's team members"
+    kubernetes.io/description: "View the organization and its team members"
+    taxonomy.miloapis.com/sort-order: "40"
+    taxonomy.miloapis.com/product: "Manage Your Team"
 spec:
   launchStage: Beta
   inheritedRoles:

@@ -1,0 +1,7 @@
+apiVersion: iam.miloapis.com/v1alpha1
+kind: Role
+metadata:
+  name: resourcemanager.miloapis.com-project-admin
+  annotations:
+    taxonomy.miloapis.com/sort-order: "50"
+    taxonomy.miloapis.com/product: "Manage Projects"
