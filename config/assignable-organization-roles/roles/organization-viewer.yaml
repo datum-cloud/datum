@@ -1,0 +1,27 @@
+apiVersion: iam.miloapis.com/v1alpha1
+kind: Role
+metadata:
+  name: organization-viewer
+  annotations:
+    kubernetes.io/display-name: Organization Viewer
+    kubernetes.io/description: "View the organization and it's team members"
+spec:
+  launchStage: Beta
+  inheritedRoles:
+    - name: project-viewer
+      namespace: milo-system
+    - name: core-reader
+      namespace: milo-system
+    - name: apiextensions-reader
+      namespace: milo-system
+  includedPermissions:
+    - resourcemanager.miloapis.com/organizations.get
+    - resourcemanager.miloapis.com/organizations.watch
+
+    - resourcemanager.miloapis.com/organizationmemberships.get
+    - resourcemanager.miloapis.com/organizationmemberships.list
+    - resourcemanager.miloapis.com/organizationmemberships.watch
+
+    - iam.miloapis.com/userinvitations.get
+    - iam.miloapis.com/userinvitations.list
+    - iam.miloapis.com/userinvitations.watch

@@ -1,26 +1,17 @@
 apiVersion: iam.miloapis.com/v1alpha1
 kind: Role
 metadata:
-  name: datum-cloud-viewer
+  name: viewer
   annotations:
-    kubernetes.io/display-name: Datum Cloud Viewer
-    kubernetes.io/description: "View access to all Datum Cloud resources"
+    kubernetes.io/display-name: Viewer
+    kubernetes.io/description: "View access to all Datum Cloud resources in the organization"
 spec:
   launchStage: Beta
   inheritedRoles:
-    - name: resourcemanager-reader
-      namespace: milo-system
-    - name: core-reader
-      namespace: milo-system
-    - name: apiextensions-reader
-      namespace: milo-system
-    - name: iam-viewer
-      namespace: milo-system
+    - name: organization-viewer
     - name: networking.datumapis.com-viewer
       namespace: milo-system
     - name: telemetry.miloapis.com-viewer
       namespace: milo-system
-    - name: organizationmembership-reader
-      namespace: milo-system
-    - name: quota.miloapis.com-viewer
+    - name: quota.miloapis.com-organization-quota-manager
       namespace: milo-system
