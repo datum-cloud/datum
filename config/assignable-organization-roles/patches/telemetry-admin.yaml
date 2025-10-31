@@ -1,7 +1,0 @@
-apiVersion: iam.miloapis.com/v1alpha1
-kind: Role
-metadata:
-  name: telemetry.miloapis.com-admin
-  annotations:
-    taxonomy.miloapis.com/sort-order: "90"
-    taxonomy.miloapis.com/product: "Monitor & Observe"

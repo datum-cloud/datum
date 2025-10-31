@@ -20,3 +20,7 @@ spec:
       namespace: milo-system
     - name: telemetry.miloapis.com-admin
       namespace: milo-system
+    - name: resourcemanager.miloapis.com-organization-viewer
+      namespace: milo-system
+    - name: resourcemanager.miloapis.com-project-viewer
+      namespace: milo-system

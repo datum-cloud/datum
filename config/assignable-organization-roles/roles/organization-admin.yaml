@@ -12,6 +12,10 @@ spec:
   inheritedRoles:
     - name: organization-viewer
       namespace: datum-cloud
+    - name: resourcemanager.miloapis.com-organization-viewer
+      namespace: milo-system
+    - name: resourcemanager.miloapis.com-project-viewer
+      namespace: milo-system
   includedPermissions:
     # Manage the organization
     - resourcemanager.miloapis.com/organizations.create

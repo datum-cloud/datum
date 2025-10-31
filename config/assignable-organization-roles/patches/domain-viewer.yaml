@@ -1,7 +1,0 @@
-apiVersion: iam.miloapis.com/v1alpha1
-kind: Role
-metadata:
-  name: networking.datumapis.com-domain-viewer
-  annotations:
-    taxonomy.miloapis.com/sort-order: "84"
-    taxonomy.miloapis.com/product: "Configure Networking"

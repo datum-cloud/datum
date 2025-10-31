@@ -18,3 +18,7 @@ spec:
       namespace: milo-system
     - name: quota.miloapis.com-organization-quota-manager
       namespace: milo-system
+    - name: resourcemanager.miloapis.com-organization-viewer
+      namespace: milo-system
+    - name: resourcemanager.miloapis.com-project-viewer
+      namespace: milo-system

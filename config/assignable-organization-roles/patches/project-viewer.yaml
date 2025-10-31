@@ -1,7 +1,0 @@
-apiVersion: iam.miloapis.com/v1alpha1
-kind: Role
-metadata:
-  name: resourcemanager.miloapis.com-project-viewer
-  annotations:
-    taxonomy.miloapis.com/sort-order: "60"
-    taxonomy.miloapis.com/product: "Manage Projects"
