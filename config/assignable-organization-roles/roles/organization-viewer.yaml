@@ -4,11 +4,15 @@ metadata:
   name: organization-viewer
   annotations:
     kubernetes.io/display-name: Organization Viewer
-    kubernetes.io/description: "View the organization and it's team members"
+    kubernetes.io/description: "View the organization and its team members"
+    taxonomy.miloapis.com/sort-order: "40"
+    taxonomy.miloapis.com/product: "Manage Your Team"
 spec:
   launchStage: Beta
   inheritedRoles:
     - name: resourcemanager.miloapis.com-project-viewer
+      namespace: milo-system
+    - name: resourcemanager.miloapis.com-organization-viewer
       namespace: milo-system
     - name: core-reader
       namespace: milo-system

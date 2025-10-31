@@ -1,4 +1,173 @@
 namespace: datum-cloud
+
+patches:
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "60"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Manage Projects"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: resourcemanager.miloapis.com-project-viewer
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "50"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Manage Projects"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: resourcemanager.miloapis.com-project-admin
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "100"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Monitor & Observe"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+          - name: resourcemanager.miloapis.com-project-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: telemetry.miloapis.com-viewer
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "90"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Monitor & Observe"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+          - name: resourcemanager.miloapis.com-project-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: telemetry.miloapis.com-admin
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "80"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Configure Networking"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+          - name: resourcemanager.miloapis.com-project-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: networking.datumapis.com-viewer
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "70"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Configure Networking"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+          - name: resourcemanager.miloapis.com-project-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: networking.datumapis.com-admin
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "82"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Configure Networking"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+          - name: resourcemanager.miloapis.com-project-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: networking.datumapis.com-gateway-viewer
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "72"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Configure Networking"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+          - name: resourcemanager.miloapis.com-project-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: networking.datumapis.com-gateway-admin
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "84"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Configure Networking"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+          - name: resourcemanager.miloapis.com-project-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: networking.datumapis.com-domain-viewer
+  - patch: |-
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
+        value: "74"
+      - op: add
+        path: /metadata/annotations/taxonomy.miloapis.com~1product
+        value: "Configure Networking"
+      - op: add
+        path: /spec/inheritedRoles
+        value:
+          - name: resourcemanager.miloapis.com-organization-viewer
+            namespace: milo-system
+          - name: resourcemanager.miloapis.com-project-viewer
+            namespace: milo-system
+    target:
+      kind: Role
+      name: networking.datumapis.com-domain-admin
+
 resources:
   - namespace.yaml
   # Grant authenticated users access to these roles

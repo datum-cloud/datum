@@ -5,6 +5,8 @@ metadata:
   annotations:
     kubernetes.io/display-name: Viewer
     kubernetes.io/description: "View access to all Datum Cloud resources in the organization"
+    taxonomy.miloapis.com/sort-order: "20"
+    taxonomy.miloapis.com/product: "Access Everything"
 spec:
   launchStage: Beta
   inheritedRoles:
@@ -15,4 +17,8 @@ spec:
     - name: telemetry.miloapis.com-viewer
       namespace: milo-system
     - name: quota.miloapis.com-organization-quota-manager
+      namespace: milo-system
+    - name: resourcemanager.miloapis.com-organization-viewer
+      namespace: milo-system
+    - name: resourcemanager.miloapis.com-project-viewer
       namespace: milo-system

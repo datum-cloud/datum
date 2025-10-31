@@ -4,12 +4,18 @@ metadata:
   name: organization-admin
   annotations:
     kubernetes.io/display-name: Organization Admin
-    kubernetes.io/description: "Manage the organization and it's team members"
+    kubernetes.io/description: "Manage the organization and its team members"
+    taxonomy.miloapis.com/sort-order: "30"
+    taxonomy.miloapis.com/product: "Manage Your Team"
 spec:
   launchStage: Beta
   inheritedRoles:
     - name: organization-viewer
       namespace: datum-cloud
+    - name: resourcemanager.miloapis.com-organization-viewer
+      namespace: milo-system
+    - name: resourcemanager.miloapis.com-project-viewer
+      namespace: milo-system
   includedPermissions:
     # Manage the organization
     - resourcemanager.miloapis.com/organizations.create
