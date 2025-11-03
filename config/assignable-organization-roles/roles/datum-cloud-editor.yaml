@@ -1,11 +1,11 @@
 apiVersion: iam.miloapis.com/v1alpha1
 kind: Role
 metadata:
-  name: owner
+  name: editor
   annotations:
-    kubernetes.io/display-name: Owner
-    kubernetes.io/description: "Full access to all Datum Cloud resources in the organization"
-    taxonomy.miloapis.com/sort-order: "10"
+    kubernetes.io/display-name: Editor
+    kubernetes.io/description: "Edit access to all Datum Cloud resources in the organization, except managing team members"
+    taxonomy.miloapis.com/sort-order: "15"
     taxonomy.miloapis.com/product: "Access Everything"
 spec:
   launchStage: Beta
@@ -20,5 +20,5 @@ spec:
       namespace: milo-system
     - name: resourcemanager.miloapis.com-project-admin
       namespace: milo-system
-    - name: resourcemanager.miloapis.com-organization-admin
+    - name: resourcemanager.miloapis.com-organization-viewer
       namespace: milo-system
