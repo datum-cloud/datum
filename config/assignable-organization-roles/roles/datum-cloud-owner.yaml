@@ -24,3 +24,7 @@ spec:
       namespace: milo-system
     - name: resourcemanager.miloapis.com-project-viewer
       namespace: milo-system
+    - name: dns.networking.miloapis.com-dnszone-admin
+      namespace: milo-system
+    - name: dns.networking.miloapis.com-dnsrecordset-admin
+      namespace: milo-system
