@@ -183,7 +183,7 @@ patches:
             namespace: milo-system
     target:
       kind: Role
-      name: dns.networking.miloapis.com-dnszone-viewer
+      name: dns.networking.miloapis.com-dns-viewer
   - patch: |-
       - op: add
         path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
@@ -200,42 +200,8 @@ patches:
             namespace: milo-system
     target:
       kind: Role
-      name: dns.networking.miloapis.com-dnszone-admin
-  - patch: |-
-      - op: add
-        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
-        value: "114"
-      - op: add
-        path: /metadata/annotations/taxonomy.miloapis.com~1product
-        value: "Configure DNS"
-      - op: add
-        path: /spec/inheritedRoles
-        value:
-          - name: resourcemanager.miloapis.com-organization-viewer
-            namespace: milo-system
-          - name: resourcemanager.miloapis.com-project-viewer
-            namespace: milo-system
-    target:
-      kind: Role
-      name: dns.networking.miloapis.com-dnsrecordset-viewer
-  - patch: |-
-      - op: add
-        path: /metadata/annotations/taxonomy.miloapis.com~1sort-order
-        value: "116"
-      - op: add
-        path: /metadata/annotations/taxonomy.miloapis.com~1product
-        value: "Configure DNS"
-      - op: add
-        path: /spec/inheritedRoles
-        value:
-          - name: resourcemanager.miloapis.com-organization-viewer
-            namespace: milo-system
-          - name: resourcemanager.miloapis.com-project-viewer
-            namespace: milo-system
-    target:
-      kind: Role
-      name: dns.networking.miloapis.com-dnsrecordset-admin
-
+      name: dns.networking.miloapis.com-dns-admin
+      
 resources:
   - namespace.yaml
   # Grant authenticated users access to these roles
@@ -267,7 +233,5 @@ resources:
   - https://raw.githubusercontent.com/datum-cloud/network-services-operator/refs/heads/main/config/iam/roles/networking-admin.yaml
 
   # DNS roles
-  - https://raw.githubusercontent.com/datum-cloud/dns-operator/refs/tags/v0.1.0/config/iam/roles/dnszone-viewer.yaml
-  - https://raw.githubusercontent.com/datum-cloud/dns-operator/refs/tags/v0.1.0/config/iam/roles/dnszone-admin.yaml
-  - https://raw.githubusercontent.com/datum-cloud/dns-operator/refs/tags/v0.1.0/config/iam/roles/dnsrecordset-viewer.yaml
-  - https://raw.githubusercontent.com/datum-cloud/dns-operator/refs/tags/v0.1.0/config/iam/roles/dnsrecordset-admin.yaml
+  - https://raw.githubusercontent.com/datum-cloud/dns-operator/refs/tags/v0.1.0/config/iam/roles/dns-viewer.yaml
+  - https://raw.githubusercontent.com/datum-cloud/dns-operator/refs/tags/v0.1.0/config/iam/roles/dns-admin.yaml
