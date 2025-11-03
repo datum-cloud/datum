@@ -22,3 +22,5 @@ spec:
       namespace: milo-system
     - name: resourcemanager.miloapis.com-project-viewer
       namespace: milo-system
+    - name: dns.networking.miloapis.com-dns-viewer
+      namespace: milo-system
