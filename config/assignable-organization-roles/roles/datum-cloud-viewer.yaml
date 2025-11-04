@@ -10,8 +10,6 @@ metadata:
 spec:
   launchStage: Beta
   inheritedRoles:
-    - name: organization-viewer
-      namespace: datum-cloud
     - name: networking.datumapis.com-viewer
       namespace: milo-system
     - name: telemetry.miloapis.com-viewer
