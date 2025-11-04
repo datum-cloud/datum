@@ -24,3 +24,5 @@ spec:
       namespace: milo-system
     - name: dns.networking.miloapis.com-dns-admin
       namespace: milo-system
+    - name: iam-user-invitations-admin
+      namespace: milo-system
