@@ -179,8 +179,14 @@ spec:
                                         style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
                                         We&#x27;re releasing new features each week
                                         and chatting about issues and opportunities
-                                        on Discord. Feel free to join me there with
-                                        any questions or feedback.
+                                        on
+                                        <a
+                                          href="https://link.datum.net/discord"
+                                          style="color:#067df7;text-decoration-line:none"
+                                          target="_blank"
+                                          >Discord</a
+                                        >. Feel free to join me there with any
+                                        questions or feedback.
                                       </p>
                                       <p
                                         style="font-size:14px;line-height:20px;margin-top:16px;margin-bottom:0;font-weight:300">
@@ -324,7 +330,7 @@ spec:
     
     Start building {{.ActionUrl}}
     
-    We're releasing new features each week and chatting about issues and opportunities on Discord. Feel free to join me there with any questions or feedback.
+    We're releasing new features each week and chatting about issues and opportunities on Discord https://link.datum.net/discord. Feel free to join me there with any questions or feedback.
     
     Cheers,
     

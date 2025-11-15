@@ -153,7 +153,7 @@ spec:
                                     <tr style="width:100%">
                                       <h4
                                         style="margin-top:0;font-weight:500;margin-bottom:16px">
-                                        Hey there!,
+                                        Hey there!
                                       </h4>
                                       <p
                                         style="font-size:14px;line-height:20px;margin-top:0;margin-bottom:16px;font-weight:300">
@@ -354,7 +354,7 @@ spec:
   textBody: |
     ----------------------------------------
     
-    HEY THERE!,
+    HEY THERE!
     
     {{.InviterDisplayName}} has invited you to join the {{.OrganizationDisplayName}} organization at Datum.
     
