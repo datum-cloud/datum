@@ -3,7 +3,7 @@
 <p align="left">
   <a href="https://cloud.datum.net">Datum Cloud</a> -
   <a href="https://docs.datum.net">Docs</a> -
-  <a href="https://slack.datum.net">Community Discord</a> -
+  <a href="https://link.datum.net/discord">Community Discord</a> -
   <a href="https://www.datum.net/blog/">Blog</a> -
   <a href="https://www.linkedin.com/company/datum-cloud/">LinkedIn</a>
 </p>
