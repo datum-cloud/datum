@@ -152,8 +152,8 @@ There are also other ways to get involved:
   Guide](https://docs.datum.net/docs/developer-guide/).
 - **Roadmap & Enhancements:** Visit our [enhancements
   repo](https://link.datum.net/enhancements).
-- **General Discussion:** Join us on the [Datum Community
-  Discord](https://discord.com/invite/AeA9XZu4Py).
+- **General Discussion:** Join us on the [Community
+  Discord](https://link.datum.net/discord).
 
 ## License
 
