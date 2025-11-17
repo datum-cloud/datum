@@ -143,7 +143,7 @@ Supported features include:
 
 The easiest way to leverage our value is with [Datum
 Cloud](https://cloud.datum.net). Sign up and follow the [Getting Started
-Guide](https://docs.datum.net/docs/get-started/) to begin connecting and
+Guide](https://www.datum.net/docs/quickstart/) to begin connecting and
 managing your infrastructure.
 
 There are also other ways to get involved:
@@ -152,8 +152,8 @@ There are also other ways to get involved:
   Guide](https://docs.datum.net/docs/developer-guide/).
 - **Roadmap & Enhancements:** Visit our [enhancements
   repo](https://link.datum.net/enhancements).
-- **General Discussion:** Join us on the [Datum Community
-  Slack](https://link.datum.net/datumslack).
+- **General Discussion:** Join us on the [Community
+  Discord](https://link.datum.net/discord).
 
 ## License
 
