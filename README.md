@@ -3,27 +3,28 @@
 <p align="left">
   <a href="https://cloud.datum.net">Datum Cloud</a> -
   <a href="https://docs.datum.net">Docs</a> -
-  <a href="https://slack.datum.net">Community Slack</a> -
+  <a href="https://slack.datum.net">Community Discord</a> -
   <a href="https://www.datum.net/blog/">Blog</a> -
   <a href="https://www.linkedin.com/company/datum-cloud/">LinkedIn</a>
 </p>
 
 ## 🤝 Overview
 
-We believe that AI is changing everything — not just how we compute, but how
-ecosystems form and interact. Digital leaders today must orchestrate a complex,
-fragmented web of clouds, specialty providers, customers, and data. 
+Datum was founded to help 1k new clouds thrive in the age of AI. Unlike existing alternatives, Datum’s open network cloud is built specifically for modern service providers, can be shipped anywhere, and is backed by an AGPLv3 open source license. 
 
-That's why we're building Datum...to act as a **“meet-me room” for the internet’s next
-era** — a neutral, programmable middle layer where companies can
-programmatically connect without needing to build and operate the entire stack
-themselves.
+With Datum, cloud and AI-native builders can use the tools they love (like Cursor or a Kubernetes native CLI) to access the internet superpowers that today’s tech giants leverage at scale: authoritative DNS, distributed proxies, global backbones, deterministic routing, cloud on-ramps, and private interconnection. 
 
-### 🧠 AI-native principles 
+## Our Purpose
 
-- Developer and agent-friendly interfaces and workflows
-- Enables autonomous and programmatic interconnection between providers and
-  services
+We believe that most people devote their time, energy, families, reputations and money to something not because of what it does, but why it exists and what it believes about the world. When we introduce Datum to prospective users, customers, investors, partners or employees, here is what we share.
+
+- We are connectors — of people, businesses, apps and networks. ABCD!
+- We are operators at heart who know how to get stuff done.
+- We build for scale with thoughtful abstractions. "Our future selves will thank us."
+- We believe that “open” is better, software is the customer, and partners have real value.
+- We value grit, humility and hunger.
+
+## So What is Datum?  
 
 ### 🌍 Neutral by design
 
@@ -95,14 +96,6 @@ Leveraging the standard Kubernetes Gateway API (`GatewayClass`,
 internal traffic should connect to your services. Manage TLS certificates,
 configure routing logic, and control network ingress/egress across the
 infrastructure managed by Datum.
-
-### Pluggable infrastructure providers
-
-Datum uses a provider model to interact with different underlying infrastructure
-environments (e.g., GCP, AWS, bare metal). Specific provider operators
-(like`infra-provider-gcp`) translate the abstract Datum API resources
-(`Workload`,`Gateway`) into concrete resources managed by the target provider.
-This allows for consistent management across heterogeneous environments.
 
 ## Components
 
