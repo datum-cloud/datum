@@ -8,44 +8,59 @@
   <a href="https://www.linkedin.com/company/datum-cloud/">LinkedIn</a>
 </p>
 
-## 🤝 Overview
+## Why Datum?
 
-Datum was founded to help 1k new clouds thrive in the age of AI. Unlike existing alternatives, Datum’s open network cloud is built specifically for modern service providers, can be shipped anywhere, and is backed by an AGPLv3 open source license. 
+We believe that AI is changing everything — not just how we work and create, but how
+quickly new applications, agents, and even clouds are being built. Digital
+leaders today must orchestrate a complex, fragmented web of clouds, specialty
+providers, customers, and data.
 
-With Datum, cloud and AI-native builders can use the tools they love (like Cursor or a Kubernetes native CLI) to access the internet superpowers that today’s tech giants leverage at scale: authoritative DNS, distributed proxies, global backbones, deterministic routing, cloud on-ramps, and private interconnection. 
+The Internet is built on data center [meet-me
+rooms](https://en.wikipedia.org/wiki/Meet-me_room), where telco providers and
+hyperscaler clouds talk to each other over real physical cables, called
+cross-connects. A new connection takes days or weeks of humans moving things
+around to set up.
 
-## Our Purpose
+We believe the next era of the Internet is already here, and it's growing
+fast. In the [alt-cloud](https://github.com/datum-cloud/awesome-alt-clouds)
+universe, you don't think about virtual machines and VPCs, you think about
+*services*. You connect your Vercel app with your Supabase instance all wired up
+with your Kestra workflow, monitored by your Resolve SRE agent. There isn't a
+switch or routing table in sight. It's just virtual plumbing to make your
+business go. 
 
-We believe that most people devote their time, energy, families, reputations and money to something not because of what it does, but why it exists and what it believes about the world. When we introduce Datum to prospective users, customers, investors, partners or employees, here is what we share.
+With Datum, cloud and AI-native builders can use the tools they love (like
+Cursor or a Kubernetes native CLI) to access the internet superpowers that
+today’s tech giants leverage at scale: authoritative DNS, distributed proxies,
+global backbones, deterministic routing, cloud on-ramps, and private
+interconnection.
 
-- We are connectors — of people, businesses, apps and networks. ABCD!
-- We are operators at heart who know how to get stuff done.
-- We build for scale with thoughtful abstractions. "Our future selves will thank us."
-- We believe that “open” is better, software is the customer, and partners have real value.
-- We value grit, humility and hunger.
+That's why we're building Datum: to help build 1k clouds in the age of AI.
 
-## So What is Datum?  
+## So what is Datum?
 
-### 🌍 Neutral by design
+### Fully programmable and AI-native
+
+- Developer- and agent-friendly protocols, interfaces, and workflows
+- Programmatic interconnection between providers and services
+- Security through network-level encryption that's built-in and impossible to break or disable
+- Built using the "operating system for AI" Kubernetes API patterns for operator
+  tooling and familiarity (`kubectl`, Helm, etc.)
+
+### Neutral by design
 
 - No allegiance to a single cloud, vendor, or region
 - Operates as a trusted, independent layer for alt clouds, incumbents, and
   digital-first enterprises
 
-### ⚙️ Fully programmable
-
-- Designed for developers, operators, and modern service providers
-- Built using Kubernetes API patterns for operator happiness and ecosystem
-  tooling (`kubectl`, Helm, etc.)
-
-### 🛰 Bring your own infra
+### Bring your own infra
 
 - Use Datum’s cloud control plane along with its global network and distributed
   compute
 - Or run components in your own cloud or infra (e.g., GCP, AWS, NetActuate,
   Vultr, etc.)
 
-### 🔍 Observability & determinism
+### Maximum flexibility
 
 - Feed full telemetry to your preferred tools (Grafana Cloud, Honeycomb,
   Datadog, etc.)
@@ -53,16 +68,11 @@ We believe that most people devote their time, energy, families, reputations and
 
 ---
 
-## 🚀 Some of our Favorite Features
+## Some of our favorite features
 
 ### Declarative management
 
-Define your desired infrastructure state using Kubernetes manifests. Datum
-controllers continuously work to reconcile the actual state with your declared
-configuration. This enables infrastructure-as-code practices and GitOps
-workflows.
-
-### Kubernetes native
+Datum works just like Kubernetes, because it *is* Kubernetes. Define your desired infrastructure state and our components reconcile the living system to match. No more syncing or drift.
 
 The Datum control plane is natively compatible with tooling from the Kubernetes
 ecosystem. Datum APIs are defined as [Custom Resources][k8s-custom-resources],
@@ -70,13 +80,8 @@ and resources are managed by operators which can be deployed into any Kubernetes
 cluster.
 
 Use the tools you're familiar with - `kubectl` for interacting with API
-resources via the CLI, `kustomize` or `terraform` for configuration management
-via GitOps practices, or any other tool compatible with the Kubernetes API.
-
-Expect the same behaviors from the Datum control plane as you would from
-Kubernetes. Resources are reconciled to ensure intended state has been met,
-failures are automatically addressed, and transparent status information is made
-available.
+resources via the CLI, `kustomize` or `terraform` for configuration management,
+or any other tool compatible with the Kubernetes API.
 
 [k8s-custom-resources]:
     https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
@@ -95,17 +100,15 @@ Leveraging the standard Kubernetes Gateway API (`GatewayClass`,
 `Gateway`,`HTTPRoute`, etc.), Datum allows you to define how external or
 internal traffic should connect to your services. Manage TLS certificates,
 configure routing logic, and control network ingress/egress across the
-infrastructure managed by Datum.
+Datum infrastructure.
 
 ## Components
 
 ### Datum API server
 
-Built using Kubernetes API server libraries for compatibility with ecosystem
-tools (`kubectl`, Helm, etc.), but focused on Datum-specific resources, not
-standard Kubernetes workload types (like Pods or Deployments). This approach
-takes advantage of recent developments in the Kubernetes project to build a
-[generic control plane (KEP-4080)][kep-4080].
+We deploy a Datum variant of the Kubernetes api-server in the style of the [generic control plane (KEP-4080)][kep-4080] so that we can leverage the vast ecosystem of libraries and tooling. There is no need to design a bespoke, infrastructure-focused distributed system for you to learn; Kubernetes has the primitives to support it.  While the standard api-server operates normally for the cluster itself (think Pods and Deployments), Datum's api-server handles Datum-specific resources like `Network` and `Workload`.
+
+[kep-4080]: https://github.com/kubernetes/enhancements/tree/master/keps/sig-api-machinery/4080-generic-controlplane
 
 ### [Network services operator](https://github.com/datum-cloud/network-services-operator)
 
@@ -139,24 +142,30 @@ Supported features include:
 
 ---
 
-## 🔗 Get Started
+## Get Started
 
-The easiest way to leverage our value is with [Datum
-Cloud](https://cloud.datum.net). Sign up and follow the [Getting Started
-Guide](https://www.datum.net/docs/quickstart/) to begin connecting and
-managing your infrastructure.
+The easiest way to understand Datum is to try it! Head over to [Datum
+Cloud](https://cloud.datum.net), sign up, and follow the [Quickstart
+Guide](https://www.datum.net/docs/quickstart/) to begin your journey to a reimagined world of interconnection.
 
-There are also other ways to get involved:
+We hope that you will then come and build with us:
 
+- **General Discussion:** Join us on the [Datum Community
+  Discord](https://link.datum.net/discord).
 - **Development Setup:** See the [Development
   Guide](https://docs.datum.net/docs/developer-guide/).
 - **Roadmap & Enhancements:** Visit our [enhancements
   repo](https://link.datum.net/enhancements).
-- **General Discussion:** Join us on the [Community
-  Discord](https://link.datum.net/discord).
 
 ## License
 
 Datum is primarily licensed under the [AGPL v3.0](https://www.gnu.org/licenses/agpl-3.0.en.html).
 Specific components mayhave different licenses; please check individual
 repositories for details.
+
+
+
+
+
+
+
