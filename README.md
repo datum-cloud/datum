@@ -37,7 +37,7 @@ interconnection.
 
 That's why we're building Datum: to help build 1k clouds in the age of AI.
 
-## So What is Datum?
+## So what is Datum?
 
 ### Fully programmable and AI-native
 
@@ -68,7 +68,7 @@ That's why we're building Datum: to help build 1k clouds in the age of AI.
 
 ---
 
-## Some of our Favorite Features
+## Some of our favorite features
 
 ### Declarative management
 
