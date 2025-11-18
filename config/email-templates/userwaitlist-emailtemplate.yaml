@@ -15,7 +15,19 @@ spec:
         <link
           rel="preload"
           as="image"
+          href="https://www.datum.net/download/eng/social-dt.png" />
+        <link
+          rel="preload"
+          as="image"
+          href="https://www.datum.net/download/eng/social-dc.png" />
+        <link
+          rel="preload"
+          as="image"
           href="https://www.datum.net/download/eng/social-gh.png" />
+        <link
+          rel="preload"
+          as="image"
+          href="https://www.datum.net/download/eng/social-yt.png" />
         <link
           rel="preload"
           as="image"
@@ -181,17 +193,6 @@ spec:
                               <td>
                                 <hr
                                   style="margin-left:0;margin-right:0;margin-bottom:32px;margin-top:0;display:block;border-width:1px;border-color:rgb(232,231,228);border-style:solid;width:100%;border:none;border-top:1px solid #eaeaea" />
-                                <p
-                                  style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-bottom:24px;margin-top:0;margin-left:0;margin-right:0">
-                                  Datum unlocks cloud superpowers, without getting
-                                  in the way. Find out more about Datum at<!-- -->
-                                  <a
-                                    href="https://www.datum.net"
-                                    style="font-size:14px;line-height:20px;font-weight:300;text-decoration-line:underline;color:rgb(191,149,149)"
-                                    target="_blank"
-                                    >datum.net</a
-                                  >
-                                </p>
                                 <table
                                   align="center"
                                   width="100%"
@@ -206,7 +207,37 @@ spec:
                                         data-id="__react-email-column"
                                         style="padding-right:8px">
                                         <a
-                                          href="https://github.com/datum-cloud"
+                                          href="https://www.datum.net"
+                                          style="color:#067df7;text-decoration-line:none"
+                                          target="_blank"
+                                          ><img
+                                            alt="Datum"
+                                            height="18"
+                                            src="https://www.datum.net/download/eng/social-dt.png"
+                                            style="display:block;outline:none;border:none;text-decoration:none"
+                                            width="18"
+                                        /></a>
+                                      </td>
+                                      <td
+                                        data-id="__react-email-column"
+                                        style="padding-right:8px">
+                                        <a
+                                          href="https://link.datum.net/discord"
+                                          style="color:#067df7;text-decoration-line:none"
+                                          target="_blank"
+                                          ><img
+                                            alt="Discord"
+                                            height="18"
+                                            src="https://www.datum.net/download/eng/social-dc.png"
+                                            style="display:block;outline:none;border:none;text-decoration:none"
+                                            width="18"
+                                        /></a>
+                                      </td>
+                                      <td
+                                        data-id="__react-email-column"
+                                        style="padding-right:8px">
+                                        <a
+                                          href="https://link.datum.net/github"
                                           style="color:#067df7;text-decoration-line:none"
                                           target="_blank"
                                           ><img
@@ -217,9 +248,24 @@ spec:
                                             width="18"
                                         /></a>
                                       </td>
+                                      <td
+                                        data-id="__react-email-column"
+                                        style="padding-right:8px">
+                                        <a
+                                          href="https://link.datum.net/youtube"
+                                          style="color:#067df7;text-decoration-line:none"
+                                          target="_blank"
+                                          ><img
+                                            alt="YouTube"
+                                            height="18"
+                                            src="https://www.datum.net/download/eng/social-yt.png"
+                                            style="display:block;outline:none;border:none;text-decoration:none"
+                                            width="18"
+                                        /></a>
+                                      </td>
                                       <td data-id="__react-email-column">
                                         <a
-                                          href="https://www.linkedin.com/company/datum-cloud"
+                                          href="https://link.datum.net/linkedin"
                                           style="color:#067df7;text-decoration-line:none"
                                           target="_blank"
                                           ><img
@@ -235,8 +281,8 @@ spec:
                                 </table>
                                 <p
                                   style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
-                                  Datum Technology Inc. <br />29 Broadway <br />New
-                                  York City <br />NY, 10006
+                                  Datum Technology Inc. <br />120 Broadway, 26th
+                                  Floor <br />New York, NY 10271
                                 </p>
                               </td>
                             </tr>
@@ -271,14 +317,11 @@ spec:
     
     ----------------------------------------
     
-    Datum unlocks cloud superpowers, without getting in the way. Find out more about Datum at datum.net https://www.datum.net
-    
-    https://github.com/datum-cloud https://www.linkedin.com/company/datum-cloud
+    https://www.datum.net https://link.datum.net/discord https://link.datum.net/github https://link.datum.net/youtube https://link.datum.net/linkedin
     
     Datum Technology Inc.
-    29 Broadway
-    New York City
-    NY, 10006
+    120 Broadway, 26th Floor
+    New York, NY 10271
 
   variables:
   - name: "UserName"

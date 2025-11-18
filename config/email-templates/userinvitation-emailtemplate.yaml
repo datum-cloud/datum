@@ -3,7 +3,7 @@ kind: EmailTemplate
 metadata:
   name: emailtemplates.notification.miloapis.com-userinvitationemailtemplate
 spec:
-  subject: "Join your friends on Datum"
+  subject: "Invitation to collaborate at Datum"
   htmlBody: |
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html dir="ltr" lang="en">
@@ -15,7 +15,19 @@ spec:
         <link
           rel="preload"
           as="image"
+          href="https://www.datum.net/download/eng/social-dt.png" />
+        <link
+          rel="preload"
+          as="image"
+          href="https://www.datum.net/download/eng/social-dc.png" />
+        <link
+          rel="preload"
+          as="image"
           href="https://www.datum.net/download/eng/social-gh.png" />
+        <link
+          rel="preload"
+          as="image"
+          href="https://www.datum.net/download/eng/social-yt.png" />
         <link
           rel="preload"
           as="image"
@@ -30,7 +42,7 @@ spec:
             mso-font-alt: 'sans-serif';
             src: url(https://www.datum.net/fonts/datum/allianceno1-semibold-webfont.woff2) format('woff2');
           }
-
+    
           * {
             font-family: 'Alliance No1', sans-serif;
           }
@@ -43,7 +55,7 @@ spec:
             mso-font-alt: 'sans-serif';
             src: url(https://www.datum.net/fonts/datum/allianceno1-medium-webfont.woff2) format('woff2');
           }
-
+    
           * {
             font-family: 'Alliance No1', sans-serif;
           }
@@ -56,7 +68,7 @@ spec:
             mso-font-alt: 'sans-serif';
             src: url(https://www.datum.net/fonts/datum/allianceno1-regular-webfont.woff2) format('woff2');
           }
-
+    
           * {
             font-family: 'Alliance No1', sans-serif;
           }
@@ -68,7 +80,11 @@ spec:
         <div
           style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0"
           data-skip-in-text="true">
-          {{.InviterDisplayName}} invited you to join {{.OrganizationDisplayName}}
+          {{.InviterDisplayName}} invited you to join
+          {{.OrganizationDisplayName}}
+          <div>
+             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
+          </div>
         </div>
         <!--body-->
         <table
@@ -132,20 +148,31 @@ spec:
                                   border="0"
                                   cellpadding="0"
                                   cellspacing="0"
-                                  role="presentation"
-                                  style="margin-bottom:32px">
+                                  role="presentation">
                                   <tbody style="width:100%">
                                     <tr style="width:100%">
-                                      <h2
-                                        style="font-size:24px;line-height:32px;margin-top:0;font-weight:500;margin-bottom:16px">
-                                        Join your friends on Datum
-                                      </h2>
+                                      <h4
+                                        style="margin-top:0;font-weight:500;margin-bottom:16px">
+                                        Hey there!
+                                      </h4>
+                                      <p
+                                        style="font-size:14px;line-height:20px;margin-top:0;margin-bottom:16px;font-weight:300">
+                                        {{.InviterDisplayName}}<!-- -->
+                                        has invited you to join the<!-- -->
+                                        <!-- -->{{.OrganizationDisplayName}}<!-- -->
+                                        organization at Datum.
+                                      </p>
                                       <p
                                         style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
-                                        {{.InviterDisplayName}}<!-- -->
-                                        has invited you to join &quot;<!-- -->{{.OrganizationDisplayName}}<!-- -->&quot; organization to
-                                        collaborate with them. Use the button below
-                                        to set up your account and get started:
+                                        Please click the button to set up your
+                                        account and get started. If you need help,
+                                        just reply to this email or visit us on<!-- -->
+                                        <a
+                                          href="https://link.datum.net/discord"
+                                          style="color:#067df7;text-decoration-line:none"
+                                          target="_blank"
+                                          >Discord</a
+                                        >.
                                       </p>
                                       <a
                                         href="https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept"
@@ -162,13 +189,14 @@ spec:
                                       >
                                       <p
                                         style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
-                                        Or you can copy and paste the following URL
-                                        into your browser:<!-- -->
+                                        Or paste the following URL into your
+                                        browser:<!-- -->
                                         <a
                                           href="https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept"
                                           style="color:rgb(191,149,149);text-decoration-line:none"
                                           target="_blank"
-                                          >https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept</a>
+                                          >https://cloud.datum.net/invitation/<!-- -->{{.UserInvitationName}}<!-- -->/accept</a
+                                        >
                                       </p>
                                     </tr>
                                   </tbody>
@@ -179,41 +207,22 @@ spec:
                                   border="0"
                                   cellpadding="0"
                                   cellspacing="0"
-                                  role="presentation"
-                                  class="">
-                                  <tbody>
-                                    <tr>
-                                      <td>
-                                        <hr
-                                          style="margin-left:0;margin-right:0;margin-bottom:32px;margin-top:0;display:block;border-width:1px;border-color:rgb(232,231,228);border-style:solid;width:100%;border:none;border-top:1px solid #eaeaea" />
-                                        <table
-                                          align="center"
-                                          width="100%"
-                                          border="0"
-                                          cellpadding="0"
-                                          cellspacing="0"
-                                          role="presentation">
-                                          <tbody style="width:100%">
-                                            <tr style="width:100%">
-                                              <h3
-                                                style="font-size:20px;line-height:28px;margin-top:0;margin-bottom:16px;font-weight:500">
-                                                We&#x27;re here to help
-                                              </h3>
-                                              <p
-                                                style="font-size:14px;line-height:20px;margin-bottom:8px;margin-top:0;font-weight:300">
-                                                If you have any questions reach out
-                                                and we&#x27;ll do our best to help
-                                              </p>
-                                              <a
-                                                href="mailto:support@datum.net"
-                                                style="font-size:14px;line-height:20px;font-weight:300;text-decoration-line:underline;color:rgb(191,149,149)"
-                                                target="_blank"
-                                                >support@datum.net</a
-                                              >
-                                            </tr>
-                                          </tbody>
-                                        </table>
-                                      </td>
+                                  role="presentation">
+                                  <tbody style="width:100%">
+                                    <tr style="width:100%">
+                                      <hr
+                                        style="margin-left:0;margin-right:0;margin-top:32px;margin-bottom:32px;display:block;border-width:1px;border-color:rgb(232,231,228);border-style:solid;width:100%;border:none;border-top:1px solid #eaeaea" />
+                                      <h3
+                                        style="margin-top:0;font-weight:500;margin-bottom:16px">
+                                        Why Datum?
+                                      </h3>
+                                      <p
+                                        style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
+                                        Datum is a venture-backed startup based in
+                                        New York City. Our mission is to help 1k new
+                                        clouds thrive in the age of AI by unlocking
+                                        internet superpowers for every builder.
+                                      </p>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -234,17 +243,6 @@ spec:
                               <td>
                                 <hr
                                   style="margin-left:0;margin-right:0;margin-bottom:32px;margin-top:0;display:block;border-width:1px;border-color:rgb(232,231,228);border-style:solid;width:100%;border:none;border-top:1px solid #eaeaea" />
-                                <p
-                                  style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-bottom:24px;margin-top:0;margin-left:0;margin-right:0">
-                                  Datum unlocks cloud superpowers, without getting
-                                  in the way. Find out more about Datum at<!-- -->
-                                  <a
-                                    href="https://www.datum.net"
-                                    style="font-size:14px;line-height:20px;font-weight:300;text-decoration-line:underline;color:rgb(191,149,149)"
-                                    target="_blank"
-                                    >datum.net</a
-                                  >
-                                </p>
                                 <table
                                   align="center"
                                   width="100%"
@@ -259,7 +257,37 @@ spec:
                                         data-id="__react-email-column"
                                         style="padding-right:8px">
                                         <a
-                                          href="https://github.com/datum-cloud"
+                                          href="https://www.datum.net"
+                                          style="color:#067df7;text-decoration-line:none"
+                                          target="_blank"
+                                          ><img
+                                            alt="Datum"
+                                            height="18"
+                                            src="https://www.datum.net/download/eng/social-dt.png"
+                                            style="display:block;outline:none;border:none;text-decoration:none"
+                                            width="18"
+                                        /></a>
+                                      </td>
+                                      <td
+                                        data-id="__react-email-column"
+                                        style="padding-right:8px">
+                                        <a
+                                          href="https://link.datum.net/discord"
+                                          style="color:#067df7;text-decoration-line:none"
+                                          target="_blank"
+                                          ><img
+                                            alt="Discord"
+                                            height="18"
+                                            src="https://www.datum.net/download/eng/social-dc.png"
+                                            style="display:block;outline:none;border:none;text-decoration:none"
+                                            width="18"
+                                        /></a>
+                                      </td>
+                                      <td
+                                        data-id="__react-email-column"
+                                        style="padding-right:8px">
+                                        <a
+                                          href="https://link.datum.net/github"
                                           style="color:#067df7;text-decoration-line:none"
                                           target="_blank"
                                           ><img
@@ -270,9 +298,24 @@ spec:
                                             width="18"
                                         /></a>
                                       </td>
+                                      <td
+                                        data-id="__react-email-column"
+                                        style="padding-right:8px">
+                                        <a
+                                          href="https://link.datum.net/youtube"
+                                          style="color:#067df7;text-decoration-line:none"
+                                          target="_blank"
+                                          ><img
+                                            alt="YouTube"
+                                            height="18"
+                                            src="https://www.datum.net/download/eng/social-yt.png"
+                                            style="display:block;outline:none;border:none;text-decoration:none"
+                                            width="18"
+                                        /></a>
+                                      </td>
                                       <td data-id="__react-email-column">
                                         <a
-                                          href="https://www.linkedin.com/company/datum-cloud"
+                                          href="https://link.datum.net/linkedin"
                                           style="color:#067df7;text-decoration-line:none"
                                           target="_blank"
                                           ><img
@@ -288,8 +331,8 @@ spec:
                                 </table>
                                 <p
                                   style="font-size:14px;line-height:20px;margin:0;font-weight:300;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
-                                  Datum Technology Inc. <br />29 Broadway <br />New
-                                  York City <br />NY, 10006
+                                  Datum Technology Inc. <br />120 Broadway, 26th
+                                  Floor <br />New York, NY 10271
                                 </p>
                               </td>
                             </tr>
@@ -306,40 +349,36 @@ spec:
         <!--/$-->
       </body>
     </html>
+    
 
   textBody: |
-    --------------------------------------------------------------------------------
-
-    JOIN YOUR FRIENDS ON DATUM
-
-    {{.InviterDisplayName}} has invited you to join "{{.OrganizationDisplayName}}" organization to collaborate
-    with them. Use the button below to set up your account and get started:
-
+    ----------------------------------------
+    
+    HEY THERE!
+    
+    {{.InviterDisplayName}} has invited you to join the {{.OrganizationDisplayName}} organization at Datum.
+    
+    Please click the button to set up your account and get started. If you need help, just reply to this email or visit us on Discord https://link.datum.net/discord.
+    
     Accept invitation https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept
-
-    Or you can copy and paste the following URL into your browser:
-    https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept
-
-    --------------------------------------------------------------------------------
-
-
-    WE'RE HERE TO HELP
-
-    If you have any questions reach out and we'll do our best to help
-
-    support@datum.net
-
-    --------------------------------------------------------------------------------
-
-    Datum unlocks cloud superpowers, without getting in the way. Find out more about
-    Datum at datum.net https://www.datum.net
-
-    https://github.com/datum-cloud https://www.linkedin.com/company/datum-cloud
-
+    
+    Or paste the following URL into your browser: https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept
+    
+    ----------------------------------------
+    
+    
+    WHY DATUM?
+    
+    Datum is a venture-backed startup based in New York City. Our mission is to help 1k new clouds thrive in the age of AI by unlocking internet superpowers for every builder.
+    
+    ----------------------------------------
+    
+    https://www.datum.net https://link.datum.net/discord https://link.datum.net/github https://link.datum.net/youtube https://link.datum.net/linkedin
+    
     Datum Technology Inc.
-    29 Broadway
-    New York City
-    NY, 10006
+    120 Broadway, 26th Floor
+    New York, NY 10271
+
   variables:
   - name: "InviterDisplayName"
     required: true

@@ -2,8 +2,8 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
 resources:
-  - userinvitation-emailtemplate.yaml
+  - platforminvitation-emailtemplate.yaml
   - userapproved-emailtemplate.yaml
+  - userinvitation-emailtemplate.yaml
   - userrejected-emailtemplate.yaml
   - userwaitlist-emailtemplate.yaml
-  - platforminvitation-emailtemplate.yaml
