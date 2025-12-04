@@ -1,0 +1,41 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: GrantCreationPolicy
+metadata:
+  name: personal-organization-dns-quota-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  # Trigger when a Project is created; only apply to Personal organizations
+  trigger:
+    resource:
+      apiVersion: resourcemanager.miloapis.com/v1alpha1
+      kind: Project
+    constraints:
+      # Personal Orgs are named with the "personal-org-" prefix
+      - expression: 'trigger.spec.ownerRef.name.startsWith("personal-org-")'
+        message: "Project must belong to a Personal organization"
+  target:
+    resourceGrantTemplate:
+      metadata:
+        name: "default-dns-quota-{{ trigger.metadata.name }}"
+        namespace: "organization-{{ trigger.spec.ownerRef.name }}"
+        labels:
+          quota.miloapis.com/auto-created: "true"
+          quota.miloapis.com/policy: "personal-organization-dns-quota-policy"
+        annotations:
+          kubernetes.io/description: "DNS quota allocation for Personal org project"
+      spec:
+        consumerRef:
+          apiGroup: resourcemanager.miloapis.com
+          kind: Project
+          name: "{{ trigger.metadata.name }}"
+        allowances:
+          - resourceType: dns.networking.miloapis.com/dnszones
+            buckets:
+              - amount: 25
+          - resourceType: dns.networking.miloapis.com/dnsrecordsets
+            buckets:
+              - amount: 500
+
+

@@ -1,0 +1,39 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: ClaimCreationPolicy
+metadata:
+  name: project-dnsrecordset-claim-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: dns.networking.miloapis.com/v1alpha1
+      kind: DNSRecordSet
+    constraints:
+      - expression: "has(trigger.metadata.labels['resourcemanager.miloapis.com/project'])"
+        message: "DNSRecordSet must be labeled with 'resourcemanager.miloapis.com/project'"
+      - expression: "has(trigger.metadata.labels['resourcemanager.miloapis.com/organization'])"
+        message: "DNSRecordSet must be labeled with 'resourcemanager.miloapis.com/organization'"
+  target:
+    resourceClaimTemplate:
+      metadata:
+        name: "dnsrecordset-{{ trigger.metadata.name }}"
+        namespace: "organization-{{ trigger.metadata.labels['resourcemanager.miloapis.com/organization'] }}"
+        labels:
+          app.kubernetes.io/name: datum
+          app.kubernetes.io/component: quota-system
+          quota.miloapis.com/auto-created: "true"
+          quota.miloapis.com/policy: "project-dnsrecordset-claim-policy"
+        annotations:
+          kubernetes.io/description: "Automatic quota claim for DNSRecordSet creation"
+      spec:
+        consumerRef:
+          apiGroup: "resourcemanager.miloapis.com"
+          kind: "Project"
+          name: "{{ trigger.metadata.labels['resourcemanager.miloapis.com/project'] }}"
+        requests:
+          - resourceType: dns.networking.miloapis.com/dnsrecordsets
+            amount: 1
+
+
