@@ -12,9 +12,9 @@ spec:
       apiVersion: resourcemanager.miloapis.com/v1alpha1
       kind: Project
     constraints:
-      # Personal Orgs are named with the "personal-org-" prefix
-      - expression: 'trigger.spec.ownerRef.name.startsWith("personal-org-")'
-        message: "Project must belong to a Personal organization"
+      # Ensure the owning Organization is of type Personal
+      - expression: 'trigger.spec.ownerRef.type == "Personal"'
+        message: "Project must belong to an Organization of type Personal"
   target:
     resourceGrantTemplate:
       metadata:
