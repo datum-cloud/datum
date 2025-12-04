@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Use explicit sorting options so we can guarantee order in which resources are
+# applied.
+sortOptions:
+  order: fifo
+
+resources:
+  - dnszone-registration.yaml
+  - dnsrecordset-registration.yaml
+
+

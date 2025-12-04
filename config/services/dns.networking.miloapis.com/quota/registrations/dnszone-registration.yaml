@@ -1,0 +1,32 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: ResourceRegistration
+metadata:
+  name: dnszones-per-project
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  # Project is the consumer of DNS zone quota
+  consumerType:
+    apiGroup: resourcemanager.miloapis.com
+    kind: Project
+
+  # Count-based quota for DNS zones
+  type: Entity
+
+  # The resource type being managed
+  resourceType: dns.networking.miloapis.com/dnszones
+
+  description: "Maximum number of DNS zones that can be created within a project"
+
+  # Simple counting units
+  baseUnit: zone
+  displayUnit: zones
+  unitConversionFactor: 1
+
+  # DNSZone resources can claim quota against this registration
+  claimingResources:
+    - apiGroup: dns.networking.miloapis.com
+      kind: DNSZone
+
+

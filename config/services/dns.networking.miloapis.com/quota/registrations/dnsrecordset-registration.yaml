@@ -1,0 +1,32 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: ResourceRegistration
+metadata:
+  name: dnsrecordsets-per-project
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  # Project is the consumer of DNS record set quota
+  consumerType:
+    apiGroup: resourcemanager.miloapis.com
+    kind: Project
+
+  # Count-based quota for DNS record sets
+  type: Entity
+
+  # The resource type being managed
+  resourceType: dns.networking.miloapis.com/dnsrecordsets
+
+  description: "Maximum number of DNS record sets that can be created within a project"
+
+  # Simple counting units
+  baseUnit: recordset
+  displayUnit: recordsets
+  unitConversionFactor: 1
+
+  # DNSRecordSet resources can claim quota against this registration
+  claimingResources:
+    - apiGroup: dns.networking.miloapis.com
+      kind: DNSRecordSet
+
+
