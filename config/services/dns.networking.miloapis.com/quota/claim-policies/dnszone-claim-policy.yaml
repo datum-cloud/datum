@@ -18,8 +18,6 @@ spec:
         labels:
           app.kubernetes.io/name: datum
           app.kubernetes.io/component: quota-system
-          quota.miloapis.com/auto-created: "true"
-          quota.miloapis.com/policy: "project-dnszone-claim-policy"
         annotations:
           kubernetes.io/description: "Automatic quota claim for DNSZone creation"
       spec:
