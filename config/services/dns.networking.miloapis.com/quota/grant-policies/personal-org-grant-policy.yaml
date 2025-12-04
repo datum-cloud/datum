@@ -20,9 +20,6 @@ spec:
       metadata:
         name: "default-dns-quota-{{ trigger.metadata.name }}"
         namespace: "organization-{{ trigger.spec.ownerRef.name }}"
-        labels:
-          quota.miloapis.com/auto-created: "true"
-          quota.miloapis.com/policy: "personal-organization-dns-quota-policy"
         annotations:
           kubernetes.io/description: "DNS quota allocation for Personal org project"
       spec:
