@@ -29,6 +29,7 @@ spec:
         consumerRef:
           apiGroup: resourcemanager.miloapis.com
           kind: Project
+          namespace: "organization-{{ trigger.spec.ownerRef.name }}"
           name: "{{ trigger.metadata.name }}"
         allowances:
           - resourceType: dns.networking.miloapis.com/dnszones

@@ -10,11 +10,6 @@ spec:
     resource:
       apiVersion: dns.networking.miloapis.com/v1alpha1
       kind: DNSZone
-    constraints:
-      - expression: "has(trigger.metadata.labels['resourcemanager.miloapis.com/project'])"
-        message: "DNSZone must be labeled with 'resourcemanager.miloapis.com/project'"
-      - expression: "has(trigger.metadata.labels['resourcemanager.miloapis.com/organization'])"
-        message: "DNSZone must be labeled with 'resourcemanager.miloapis.com/organization'"
   target:
     resourceClaimTemplate:
       metadata:
@@ -28,10 +23,6 @@ spec:
         annotations:
           kubernetes.io/description: "Automatic quota claim for DNSZone creation"
       spec:
-        consumerRef:
-          apiGroup: "resourcemanager.miloapis.com"
-          kind: "Project"
-          name: "{{ trigger.metadata.labels['resourcemanager.miloapis.com/project'] }}"
         requests:
           - resourceType: dns.networking.miloapis.com/dnszones
             amount: 1
