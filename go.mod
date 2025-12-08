@@ -5,7 +5,7 @@ go 1.24.0
 godebug default=go1.24
 
 require (
-	github.com/onsi/ginkgo/v2 v2.22.0
+	github.com/onsi/ginkgo/v2 v2.27.3
 	github.com/onsi/gomega v1.36.1
 	github.com/spf13/cobra v1.9.1
 	go.miloapis.com/milo v0.8.0
