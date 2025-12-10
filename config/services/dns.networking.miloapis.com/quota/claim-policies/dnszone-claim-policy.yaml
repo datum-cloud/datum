@@ -1,0 +1,28 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: ClaimCreationPolicy
+metadata:
+  name: project-dnszone-claim-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: dns.networking.miloapis.com/v1alpha1
+      kind: DNSZone
+  target:
+    resourceClaimTemplate:
+      metadata:
+        name: "dnszone-{{ trigger.metadata.name }}"
+        namespace: "{{requestInfo.namespace}}"
+        labels:
+          app.kubernetes.io/name: datum
+          app.kubernetes.io/component: quota-system
+        annotations:
+          kubernetes.io/description: "Automatic quota claim for DNSZone creation"
+      spec:
+        requests:
+          - resourceType: dns.networking.miloapis.com/dnszones
+            amount: 1
+
+

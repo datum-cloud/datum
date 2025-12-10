@@ -1,0 +1,28 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: ClaimCreationPolicy
+metadata:
+  name: project-dnsrecordset-claim-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: dns.networking.miloapis.com/v1alpha1
+      kind: DNSRecordSet
+  target:
+    resourceClaimTemplate:
+      metadata:
+        name: "dnsrecordset-{{ trigger.metadata.name }}"
+        namespace: "{{requestInfo.namespace}}"
+        labels:
+          app.kubernetes.io/name: datum
+          app.kubernetes.io/component: quota-system
+        annotations:
+          kubernetes.io/description: "Automatic quota claim for DNSRecordSet creation"
+      spec:
+        requests:
+          - resourceType: dns.networking.miloapis.com/dnsrecordsets
+            amount: 1
+
+
