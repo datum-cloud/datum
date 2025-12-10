@@ -6,27 +6,25 @@ metadata:
     app.kubernetes.io/name: datum
     app.kubernetes.io/component: quota-system
 spec:
-  # Trigger when a Project is created; only apply to Personal organizations
   trigger:
     resource:
       apiVersion: resourcemanager.miloapis.com/v1alpha1
       kind: Project
-    constraints:
-      # Ensure the owning Organization is of type Personal
-      - expression: 'trigger.spec.ownerRef.type == "Personal"'
-        message: "Project must belong to an Organization of type Personal"
   target:
+    parentContext:
+      apiGroup: "resourcemanager.miloapis.com"
+      kind: "Project"
+      nameExpression: "trigger.metadata.name"
     resourceGrantTemplate:
       metadata:
         name: "default-dns-quota-{{ trigger.metadata.name }}"
-        namespace: "organization-{{ trigger.spec.ownerRef.name }}"
+        namespace: milo-system
         annotations:
           kubernetes.io/description: "DNS quota allocation for Personal org project"
       spec:
         consumerRef:
           apiGroup: resourcemanager.miloapis.com
           kind: Project
-          namespace: "organization-{{ trigger.spec.ownerRef.name }}"
           name: "{{ trigger.metadata.name }}"
         allowances:
           - resourceType: dns.networking.miloapis.com/dnszones
