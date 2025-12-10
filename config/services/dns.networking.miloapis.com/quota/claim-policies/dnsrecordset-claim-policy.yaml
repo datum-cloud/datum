@@ -14,7 +14,7 @@ spec:
     resourceClaimTemplate:
       metadata:
         name: "dnsrecordset-{{ trigger.metadata.name }}"
-        namespace: "organization-{{ trigger.metadata.labels['resourcemanager.miloapis.com/organization'] }}"
+        namespace: "{{ trigger.metadata.namespace }}"
         labels:
           app.kubernetes.io/name: datum
           app.kubernetes.io/component: quota-system
