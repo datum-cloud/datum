@@ -9,9 +9,9 @@ require (
 	github.com/onsi/gomega v1.36.1
 	github.com/spf13/cobra v1.9.1
 	go.miloapis.com/milo v0.8.0
-	k8s.io/api v0.32.3
-	k8s.io/apimachinery v0.33.2
-	k8s.io/client-go v0.32.3
+	k8s.io/api v0.35.0
+	k8s.io/apimachinery v0.35.0
+	k8s.io/client-go v0.35.0
 	k8s.io/utils v0.0.0-20250604170112-4c0f3b243397
 	sigs.k8s.io/controller-runtime v0.20.4
 )
