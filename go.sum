@@ -133,6 +133,8 @@ github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 go.miloapis.com/milo v0.8.0 h1:3tjZpJ2Xn1MPnAHAuoPZHnffdewvBBNctJLdgM33+GY=
 go.miloapis.com/milo v0.8.0/go.mod h1:rmI6r0kL/pRaAkSlDbOVj/LQB3QgEAmDG5dwA1i7rP4=
+go.miloapis.com/milo v0.18.0 h1:+6HRLlRO2genWFnIw9803A1er9/vmRfP1EOC3ZlEF/U=
+go.miloapis.com/milo v0.18.0/go.mod h1:xOFYvUsvSZV3z6eow5YdB5C/qRQf2s/5/arcfJs5XPg=
 go.opentelemetry.io/auto/sdk v1.1.0 h1:cH53jehLUN6UFLY71z+NDOiNJqDdPRaXzTel0sJySYA=
 go.opentelemetry.io/auto/sdk v1.1.0/go.mod h1:3wSPjt5PWp2RhlCcmmOial7AvC4DQqZb7a7wCow3W8A=
 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.55.0 h1:ZIg3ZT/aQ7AfKqdwp7ECpOK6vHqquXXuyTjIO8ZdmPs=
