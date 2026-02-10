@@ -36,7 +36,7 @@ spec:
         <meta name="x-apple-disable-message-reformatting" />
       </head>
       <body
-        style='margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;background-color:rgb(255,255,255);font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:rgb(12,29,49)'>
+        style="background-color:rgb(255,255,255);margin-top:0;margin-bottom:0;margin-right:0;margin-left:0">
         <!--$--><!--html--><!--head-->
         <div
           style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0"
@@ -58,7 +58,7 @@ spec:
           <tbody>
             <tr>
               <td
-                style='margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;background-color:rgb(255,255,255);font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;color:rgb(12,29,49)'>
+                style='margin-right:auto;margin-left:auto;margin-bottom:auto;margin-top:auto;background-color:rgb(255,255,255);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:rgb(12,29,49)'>
                 <table
                   align="center"
                   width="100%"
@@ -66,7 +66,7 @@ spec:
                   cellpadding="0"
                   cellspacing="0"
                   role="presentation"
-                  style="margin-left:auto;margin-right:auto;margin-top:80px;margin-bottom:80px;border-radius:0.5rem;border-width:1px;border-style:solid;border-color:rgb(232,231,228);padding-top:36px;padding-bottom:55px;padding-left:52px;padding-right:52px;background-color:rgb(255,255,255);max-width:37.5em">
+                  style="max-width:600px;margin-right:auto;margin-left:auto;margin-bottom:80px;margin-top:80px;border-radius:0.5rem;border-style:solid;border-width:1px;border-color:rgb(232,231,228);padding-top:36px;padding-bottom:55px;padding-right:52px;padding-left:52px;background-color:rgb(255,255,255)">
                   <tbody>
                     <tr style="width:100%">
                       <td>
@@ -85,9 +85,9 @@ spec:
                                   alt="Datum"
                                   height="70"
                                   src="https://www.datum.net/download/eng/logo-datum-light.png"
-                                  style="margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;display:block;outline:none;border:none;text-decoration:none" />
+                                  style="display:block;outline:none;border:none;text-decoration:none;margin-right:auto;margin-left:auto;margin-bottom:0;margin-top:0" />
                                 <hr
-                                  style="margin-left:0;margin-right:0;margin-top:38px;margin-bottom:0;display:block;border-width:1px;border-color:rgb(232,231,228);border-style:solid;width:100%;border:none;border-top:1px solid #eaeaea" />
+                                  style="width:100%;border:none;border-top:1px solid #eaeaea;margin-right:0;margin-left:0;margin-top:38px;margin-bottom:0;display:block;border-style:solid;border-width:1px;border-color:rgb(232,231,228)" />
                               </td>
                             </tr>
                           </tbody>
@@ -99,7 +99,7 @@ spec:
                           cellpadding="0"
                           cellspacing="0"
                           role="presentation"
-                          style="margin-top:42px;margin-bottom:42px">
+                          style="margin-bottom:42px;margin-top:42px">
                           <tbody>
                             <tr>
                               <td>
@@ -113,20 +113,18 @@ spec:
                                   <tbody style="width:100%">
                                     <tr style="width:100%">
                                       <p
-                                        style="margin-top:0;font-size:28px;margin-bottom:22px;line-height:2.5rem;font-weight:500">
+                                        style="font-size:28px;line-height:40px;margin-top:0;margin-bottom:22px;font-weight:500">
                                         Hey there!
                                       </p>
                                       <p
-                                        class="leading-4.5"
-                                        style="margin-top:0;margin-bottom:22px;font-size:17px;font-weight:400;line-height:24px">
+                                        style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:22px;font-weight:400">
                                         {{.InviterDisplayName}}<!-- -->
                                         has invited you to join the<!-- -->
                                         <!-- -->{{.OrganizationDisplayName}}<!-- -->
                                         organization at Datum.
                                       </p>
                                       <p
-                                        class="leading-4.5"
-                                        style="margin:0;font-size:17px;font-weight:400;line-height:24px;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
+                                        style="font-size:17px;line-height:24px;margin:0;font-weight:400;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
                                         Please click the button to set up your
                                         account and get started. If you need help,
                                         just reply to this email or visit us on<!-- -->
@@ -139,7 +137,7 @@ spec:
                                       </p>
                                       <a
                                         href="https://cloud.datum.net/invitation/{{.UserInvitationName}}/accept"
-                                        style="border-radius:0.25rem;font-weight:600;text-align:center;text-decoration-line:none;border-width:1px;border-style:solid;display:block;background-color:rgb(191,149,149);color:rgb(255,255,255);border-color:rgb(191,149,149);padding-left:24px;padding-right:24px;padding-top:14px;padding-bottom:14px;font-size:16px;margin-top:36px;margin-bottom:32px;line-height:1.25rem;text-decoration:none;max-width:100%;mso-padding-alt:0px"
+                                        style="line-height:20px;text-decoration:none;display:block;max-width:100%;mso-padding-alt:0px;border-radius:0.25rem;font-weight:600;text-align:center;text-decoration-line:none;border-style:solid;border-width:1px;background-color:rgb(191,149,149);color:rgb(255,255,255);border-color:rgb(191,149,149);padding-right:24px;padding-left:24px;padding-bottom:14px;padding-top:14px;font-size:16px;margin-top:36px;margin-bottom:32px"
                                         target="_blank"
                                         ><span
                                           ><!--[if mso
@@ -161,7 +159,7 @@ spec:
                                         ></a
                                       >
                                       <p
-                                        style="font-size:13px;line-height:1.25rem;font-weight:400;margin-top:16px;margin-bottom:16px">
+                                        style="font-size:13px;line-height:20px;font-weight:400;margin-top:16px;margin-bottom:16px">
                                         Or you can copy and paste the following URL
                                         into your browser:<!-- -->
                                         <a
@@ -184,13 +182,13 @@ spec:
                                   <tbody style="width:100%">
                                     <tr style="width:100%">
                                       <hr
-                                        style="margin-left:0;margin-right:0;margin-top:42px;margin-bottom:42px;display:block;border-width:1px;border-color:rgb(232,231,228);border-style:solid;width:100%;border:none;border-top:1px solid #eaeaea" />
+                                        style="width:100%;border:none;border-top:1px solid #eaeaea;margin-right:0;margin-left:0;margin-bottom:42px;margin-top:42px;display:block;border-style:solid;border-width:1px;border-color:rgb(232,231,228)" />
                                       <p
-                                        style="margin-top:0;font-size:21px;line-height:1.75rem;font-weight:600;margin-bottom:11px">
+                                        style="font-size:21px;line-height:28px;margin-top:0;font-weight:600;margin-bottom:11px">
                                         Why Datum?
                                       </p>
                                       <p
-                                        style="margin:0;font-size:17px;line-height:1.5rem;font-weight:400;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
+                                        style="font-size:17px;line-height:24px;margin:0;font-weight:400;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
                                         Datum is a venture-backed startup based in
                                         New York City. Our mission is to help 1k new
                                         clouds thrive in the age of AI by unlocking
@@ -215,7 +213,7 @@ spec:
                             <tr>
                               <td>
                                 <hr
-                                  style="margin-left:0;margin-right:0;margin-bottom:37px;margin-top:0;display:block;border-width:1px;border-color:rgb(232,231,228);border-style:solid;width:100%;border:none;border-top:1px solid #eaeaea" />
+                                  style="width:100%;border:none;border-top:1px solid #eaeaea;margin-right:0;margin-left:0;margin-bottom:37px;margin-top:0;display:block;border-style:solid;border-width:1px;border-color:rgb(232,231,228)" />
                                 <table
                                   align="center"
                                   width="100%"
@@ -303,7 +301,7 @@ spec:
                                   </tbody>
                                 </table>
                                 <p
-                                  style="font-size:13px;margin:0;line-height:1.25rem;font-weight:400;margin-top:29px;margin-bottom:0;margin-left:0;margin-right:0">
+                                  style="font-size:13px;line-height:20px;margin:0;font-weight:400;margin-top:29px;margin-bottom:0;margin-left:0;margin-right:0">
                                   Datum Technology Inc. <br />120 Broadway, 26th
                                   Floor <br />New York, NY 10271
                                 </p>

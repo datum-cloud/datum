@@ -1,9 +1,9 @@
 apiVersion: notification.miloapis.com/v1alpha1
 kind: EmailTemplate
 metadata:
-  name: emailtemplates.notification.miloapis.com-userapprovedemailtemplate
+  name: emailtemplates.notification.miloapis.com-userwelcomeemailtemplate
 spec:
-  subject: "🚀 You're in! Your access to Datum is here 🚀"
+  subject: "{{.UserName}} Welcome to Datum!"
   htmlBody: |
     <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html dir="ltr" lang="en">
@@ -41,9 +41,9 @@ spec:
         <div
           style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0"
           data-skip-in-text="true">
-          Your account has been approved
+          {{.UserName}} Welcome to Datum!
           <div>
-             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
+             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
           </div>
         </div>
         <!--body-->
@@ -113,56 +113,79 @@ spec:
                                     <tr style="width:100%">
                                       <p
                                         style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:22px;font-weight:500">
-                                        Hi
+                                        Hey
                                         <!-- -->{{.UserName}}<!-- -->,
+                                        welcome to Datum! We&#x27;re glad
+                                        you&#x27;re here.
                                       </p>
                                       <p
                                         style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:22px;font-weight:400">
-                                        Good news, you&#x27;re off the waitlist!
-                                        I&#x27;m excited to share what we&#x27;ve
-                                        built (so far) with Datum Cloud and get your
-                                        feedback. To get started, just login below:
+                                        Datum is building for a future that is
+                                        evolving in front of our eyes, so we&#x27;re
+                                        shipping updates all the time. We&#x27;re
+                                        also serious about making improvements based
+                                        on feedback, so if you&#x27;ve got some for
+                                        us (good, bad, ugly) we&#x27;d love to have
+                                        it.
                                       </p>
-                                      <a
-                                        href="{{.ActionUrl}}"
-                                        style="line-height:20px;text-decoration:none;display:block;max-width:100%;mso-padding-alt:0px;border-radius:0.25rem;font-weight:600;text-align:center;text-decoration-line:none;border-style:solid;border-width:1px;background-color:rgb(191,149,149);color:rgb(255,255,255);border-color:rgb(191,149,149);padding-right:24px;padding-left:24px;padding-bottom:14px;padding-top:14px;font-size:16px;margin-top:36px;margin-bottom:32px"
-                                        target="_blank"
-                                        ><span
-                                          ><!--[if mso
-                                            ]><i
-                                              style="mso-font-width:400%;mso-text-raise:21"
-                                              hidden
-                                              >&#8202;&#8202;&#8202;</i
-                                            ><!
-                                          [endif]--></span
-                                        ><span
-                                          style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:10.5px"
-                                          >Start building</span
-                                        ><span
-                                          ><!--[if mso
-                                            ]><i style="mso-font-width:400%" hidden
-                                              >&#8202;&#8202;&#8202;&#8203;</i
-                                            ><!
-                                          [endif]--></span
-                                        ></a
-                                      >
                                       <p
-                                        style="font-size:17px;line-height:24px;font-weight:400;margin-top:16px;margin-bottom:16px">
-                                        We&#x27;re releasing new features each week
-                                        and chatting about issues and opportunities
-                                        on<!-- -->
+                                        style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:22px;font-weight:400">
+                                        Here&#x27;s how to stay in the loop, get
+                                        help, or get involved:
+                                      </p>
+                                      <p
+                                        style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:8px;font-weight:400">
+                                        <span style="font-weight:600">Email</span> –
+                                        Respond to this note and we&#x27;ll get back
+                                        to you
+                                      </p>
+                                      <p
+                                        style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:8px;font-weight:400">
                                         <a
                                           href="https://link.datum.net/discord"
-                                          style="color:rgb(191,149,149)!important;text-decoration-line:underline!important"
+                                          style="color:rgb(191,149,149);text-decoration-line:underline;font-weight:600"
                                           target="_blank"
                                           >Discord</a
-                                        >. Feel free to join me there with any
-                                        questions or feedback.
+                                        >
+                                        <!-- -->– Join for support and connect with
+                                        other builders
+                                      </p>
+                                      <p
+                                        style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:8px;font-weight:400">
+                                        <a
+                                          href="https://link.datum.net/events"
+                                          style="color:rgb(191,149,149);text-decoration-line:underline;font-weight:600"
+                                          target="_blank"
+                                          >Luma</a
+                                        >
+                                        <!-- -->– Know when and where to meet us in
+                                        person
+                                      </p>
+                                      <p
+                                        style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:8px;font-weight:400">
+                                        <a
+                                          href="https://link.datum.net/discussions"
+                                          style="color:rgb(191,149,149);text-decoration-line:underline;font-weight:600"
+                                          target="_blank"
+                                          >GitHub Discussions</a
+                                        >
+                                        <!-- -->– Submit feedback, report issues, or
+                                        request &amp; upvote features
+                                      </p>
+                                      <p
+                                        style="font-size:17px;line-height:24px;margin-top:0;margin-bottom:0;font-weight:400">
+                                        <a
+                                          href="https://link.datum.net/careers"
+                                          style="color:rgb(191,149,149);text-decoration-line:underline;font-weight:600"
+                                          target="_blank"
+                                          >Careers</a
+                                        >
+                                        <!-- -->– We&#x27;re actively hiring, and
+                                        value folks spreading the word
                                       </p>
                                       <p
                                         style="font-size:17px;line-height:24px;font-weight:400;margin-top:22px;margin-bottom:0">
-                                        Cheers,<br /><br />Zac Smith<br />Co-founder
-                                        &amp; CEO at Datum
+                                        ❤️<br />The Team at Datum
                                       </p>
                                     </tr>
                                   </tbody>
@@ -295,18 +318,24 @@ spec:
   textBody: |
     ----------------------------------------
     
-    Hi {{.UserName}},
+    Hey {{.UserName}}, welcome to Datum! We're glad you're here.
     
-    Good news, you're off the waitlist! I'm excited to share what we've built (so far) with Datum Cloud and get your feedback. To get started, just login below:
+    Datum is building for a future that is evolving in front of our eyes, so we're shipping updates all the time. We're also serious about making improvements based on feedback, so if you've got some for us (good, bad, ugly) we'd love to have it.
     
-    Start building {{.ActionUrl}}
+    Here's how to stay in the loop, get help, or get involved:
     
-    We're releasing new features each week and chatting about issues and opportunities on Discord https://link.datum.net/discord. Feel free to join me there with any questions or feedback.
+    Email – Respond to this note and we'll get back to you
     
-    Cheers,
+    Discord https://link.datum.net/discord – Join for support and connect with other builders
     
-    Zac Smith
-    Co-founder & CEO at Datum
+    Luma https://link.datum.net/events – Know when and where to meet us in person
+    
+    GitHub Discussions https://link.datum.net/discussions – Submit feedback, report issues, or request & upvote features
+    
+    Careers https://link.datum.net/careers – We're actively hiring, and value folks spreading the word
+    
+    ❤️
+    The Team at Datum
     
     ----------------------------------------
     
@@ -318,8 +347,5 @@ spec:
 
   variables:
   - name: "UserName"
-    required: true
-    type: "string"
-  - name: "ActionUrl"
     required: true
     type: "string"
