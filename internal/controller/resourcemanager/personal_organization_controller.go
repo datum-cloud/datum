@@ -119,8 +119,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	personalProjectID := hashPersonalOrgName(string(user.UID))
 	personalProject := &resourcemanagerv1alpha1.Project{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      fmt.Sprintf("personal-project-%s", personalProjectID),
-			Namespace: fmt.Sprintf("organization-%s", personalOrg.Name),
+			Name: fmt.Sprintf("personal-project-%s", personalProjectID),
 		},
 	}
 	_, err = controllerutil.CreateOrUpdate(ctx, r.Client, personalProject, func() error {
