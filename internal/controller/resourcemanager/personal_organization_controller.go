@@ -7,8 +7,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"hash/fnv"
-	"strings"
-	"time"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -33,6 +31,11 @@ type PersonalOrganizationControllerConfig struct {
 	// The namespace the owner role exists in that will be assigned to the user
 	// the organization is being created for.
 	RoleNamespace string `json:"roleNamespace"`
+
+	// ServiceAccountName is the fully qualified service account name
+	// (e.g. "system:serviceaccount:datum-system:datum-controller-manager")
+	// used as the UserName when impersonating with Extra fields for project creation.
+	ServiceAccountName string `json:"serviceAccountName"`
 }
 
 // PersonalOrganizationController reconciles a User object
@@ -123,11 +126,9 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	}
 
 	// Create a default personal project in the personal organization.
-	// The project webhook requires the parent context (Organization) in the
-	// user's extra fields for authorization and defaulting. We impersonate the
-	// user and route through the organization's control-plane proxy — the same
-	// path that kubectl uses — so that the org proxy injects the extras and
-	// evaluates authorization under the org scope.
+	// The project webhook requires parent context in UserInfo.Extra fields.
+	// We impersonate with the Extra fields that the webhook expects, using the
+	// controller's own identity so it retains cluster-scope RBAC permissions.
 	personalProjectID := hashPersonalOrgName(string(user.UID))
 	personalProject := &resourcemanagerv1alpha1.Project{
 		ObjectMeta: metav1.ObjectMeta{
@@ -136,8 +137,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	}
 
 	// Use the controller's own client (which has cluster-scope RBAC) to check
-	// whether the project already exists. We cannot use the impersonated client
-	// for this because the user has no cluster-scope permissions.
+	// whether the project already exists.
 	existingProject := &resourcemanagerv1alpha1.Project{}
 	err = r.Client.Get(ctx, client.ObjectKeyFromObject(personalProject), existingProject)
 	if err != nil {
@@ -145,20 +145,17 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 			return ctrl.Result{}, fmt.Errorf("failed to check for existing personal project: %w", err)
 		}
 
-		// Project does not exist yet — create it via the impersonated client
-		// routed through the org control-plane proxy.
+		// Project does not exist yet — create it via an impersonated client
+		// that injects the parent Extra fields the project webhook requires.
 		impersonatedConfig := rest.CopyConfig(r.RestConfig)
 		impersonatedConfig.Impersonate = rest.ImpersonationConfig{
-			UserName: user.Name,
+			UserName: r.Config.ServiceAccountName,
+			Extra: map[string][]string{
+				"iam.miloapis.com/parent-name":      {personalOrg.Name},
+				"iam.miloapis.com/parent-type":      {"Organization"},
+				"iam.miloapis.com/parent-api-group": {"resourcemanager.miloapis.com"},
+			},
 		}
-
-		// Route through the organization's control-plane proxy so that
-		// authorization is evaluated under the organization scope (where the
-		// user has membership permissions) rather than at the cluster scope.
-		// The org proxy also automatically injects the parent extras that the
-		// project webhook requires.
-		impersonatedConfig.Host = strings.TrimRight(impersonatedConfig.Host, "/") +
-			"/apis/resourcemanager.miloapis.com/v1alpha1/organizations/" + personalOrg.Name + "/control-plane"
 
 		impersonatedClient, err := client.New(impersonatedConfig, client.Options{Scheme: r.Scheme})
 		if err != nil {
@@ -182,12 +179,6 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 			if apierrors.IsAlreadyExists(err) {
 				// Project was created between our GET and CREATE — not an error.
 				logger.Info("Personal project already exists", "project", personalProject.Name)
-			} else if apierrors.IsForbidden(err) {
-				// The user's organization membership may not have been processed
-				// yet. Requeue so we retry once the membership is active.
-				logger.Info("User not yet authorized to create project in org, requeueing",
-					"organization", personalOrg.Name, "error", err)
-				return ctrl.Result{RequeueAfter: 5 * time.Second}, nil
 			} else {
 				return ctrl.Result{}, fmt.Errorf("failed to create personal project: %w", err)
 			}

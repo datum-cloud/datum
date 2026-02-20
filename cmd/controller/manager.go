@@ -2,6 +2,7 @@
 package controller
 
 import (
+	"context"
 	"crypto/tls"
 	"flag"
 	"fmt"
@@ -13,9 +14,12 @@ import (
 	// to ensure that exec-entrypoint and run can make use of them.
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
+	authenticationv1 "k8s.io/api/authentication/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	"k8s.io/client-go/kubernetes"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/certwatcher"
@@ -286,11 +290,33 @@ func runControllerManager(
 		return err
 	}
 
+	// Discover the controller's own identity for impersonation.
+	restConfig := mgr.GetConfig()
+	clientset, err := kubernetes.NewForConfig(restConfig)
+	if err != nil {
+		setupLog.Error(err, "unable to create kubernetes clientset")
+		return err
+	}
+
+	ssr, err := clientset.AuthenticationV1().SelfSubjectReviews().Create(
+		context.Background(),
+		&authenticationv1.SelfSubjectReview{},
+		metav1.CreateOptions{},
+	)
+	if err != nil {
+		setupLog.Error(err, "unable to perform SelfSubjectReview")
+		return err
+	}
+	controllerIdentity := ssr.Status.UserInfo.Username
+	setupLog.Info("Discovered controller identity", "username", controllerIdentity)
+
+	serverConfig.PersonalOrganizationController.ServiceAccountName = controllerIdentity
+
 	if err = (&resourcemanagercontroller.PersonalOrganizationController{
 		Client:     mgr.GetClient(),
 		Config:     serverConfig.PersonalOrganizationController,
 		Scheme:     mgr.GetScheme(),
-		RestConfig: mgr.GetConfig(),
+		RestConfig: restConfig,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "PersonalOrganization")
 		return err
