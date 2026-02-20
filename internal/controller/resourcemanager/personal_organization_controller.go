@@ -10,6 +10,7 @@ import (
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -40,6 +41,9 @@ type PersonalOrganizationController struct {
 	// The scheme is used to set the controller reference on the personal
 	// organization.
 	Scheme *runtime.Scheme
+
+	// RestConfig is used to create an impersonated client for project creation.
+	RestConfig *rest.Config
 }
 
 // +kubebuilder:rbac:groups=iam.datumapis.com,resources=users,verbs=get;list;watch
@@ -122,7 +126,22 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 			Name: fmt.Sprintf("personal-project-%s", personalProjectID),
 		},
 	}
-	_, err = controllerutil.CreateOrUpdate(ctx, r.Client, personalProject, func() error {
+
+	impersonatedConfig := rest.CopyConfig(r.RestConfig)
+	impersonatedConfig.Impersonate = rest.ImpersonationConfig{
+		Extra: map[string][]string{
+			"iam.miloapis.com/parent-name":      {personalOrg.Name},
+			"iam.miloapis.com/parent-type":      {"Organization"},
+			"iam.miloapis.com/parent-api-group": {"resourcemanager.miloapis.com"},
+		},
+	}
+
+	impersonatedClient, err := client.New(impersonatedConfig, client.Options{Scheme: r.Scheme})
+	if err != nil {
+		return ctrl.Result{}, fmt.Errorf("failed to create impersonated client: %w", err)
+	}
+
+	_, err = controllerutil.CreateOrUpdate(ctx, impersonatedClient, personalProject, func() error {
 		logger.Info("Creating or updating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
 		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
 		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
