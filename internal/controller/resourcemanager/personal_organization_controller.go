@@ -120,6 +120,9 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	}
 
 	// Create a default personal project in the personal organization.
+	// An impersonated client is required so that the API server's project filter
+	// and webhook receive the correct parent context (Organization) in the
+	// user's extra fields for authorization and defaulting.
 	personalProjectID := hashPersonalOrgName(string(user.UID))
 	personalProject := &resourcemanagerv1alpha1.Project{
 		ObjectMeta: metav1.ObjectMeta{
@@ -131,9 +134,9 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	impersonatedConfig.Impersonate = rest.ImpersonationConfig{
 		UserName: user.Name,
 		Extra: map[string][]string{
+			"iam.miloapis.com/parent-api-group": {resourcemanagerv1alpha1.GroupVersion.Group},
+			"iam.miloapis.com/parent-type":      {"Organization"},
 			"iam.miloapis.com/parent-name":      {personalOrg.Name},
-			"iam.miloapis.com/parent-type":      {"Project"},
-			"iam.miloapis.com/parent-api-group": {"resourcemanager.miloapis.com"},
 		},
 	}
 
@@ -142,19 +145,22 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		return ctrl.Result{}, fmt.Errorf("failed to create impersonated client: %w", err)
 	}
 
-	logger.Info("Creating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
-	metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
-	metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
-	if err := controllerutil.SetControllerReference(user, personalProject, r.Scheme); err != nil {
-		return ctrl.Result{}, fmt.Errorf("failed to set controller reference: %w", err)
-	}
-	personalProject.Spec = resourcemanagerv1alpha1.ProjectSpec{
-		OwnerRef: resourcemanagerv1alpha1.OwnerReference{
-			Kind: "Organization",
-			Name: personalOrg.Name,
-		},
-	}
-	if err := impersonatedClient.Create(ctx, personalProject); err != nil {
+	_, err = controllerutil.CreateOrUpdate(ctx, impersonatedClient, personalProject, func() error {
+		logger.Info("Creating or updating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
+		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
+		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
+		if err := controllerutil.SetControllerReference(user, personalProject, r.Scheme); err != nil {
+			return fmt.Errorf("failed to set controller reference: %w", err)
+		}
+		personalProject.Spec = resourcemanagerv1alpha1.ProjectSpec{
+			OwnerRef: resourcemanagerv1alpha1.OwnerReference{
+				Kind: "Organization",
+				Name: personalOrg.Name,
+			},
+		}
+		return nil
+	})
+	if err != nil {
 		return ctrl.Result{}, fmt.Errorf("failed to create personal project: %w", err)
 	}
 
