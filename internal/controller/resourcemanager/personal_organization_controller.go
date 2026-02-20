@@ -132,7 +132,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		UserName: user.Name,
 		Extra: map[string][]string{
 			"iam.miloapis.com/parent-name":      {personalOrg.Name},
-			"iam.miloapis.com/parent-type":      {"Organization"},
+			"iam.miloapis.com/parent-type":      {"Project"},
 			"iam.miloapis.com/parent-api-group": {"resourcemanager.miloapis.com"},
 		},
 	}
