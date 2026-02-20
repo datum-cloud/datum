@@ -142,12 +142,25 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		return ctrl.Result{}, fmt.Errorf("failed to create impersonated client: %w", err)
 	}
 
-	_, err = controllerutil.CreateOrUpdate(ctx, impersonatedClient, personalProject, func() error {
-		logger.Info("Creating or updating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
+	projectList := &resourcemanagerv1alpha1.ProjectList{}
+	if err := impersonatedClient.List(ctx, projectList); err != nil {
+		return ctrl.Result{}, fmt.Errorf("failed to list projects: %w", err)
+	}
+
+	projectExists := false
+	for _, p := range projectList.Items {
+		if p.Name == personalProject.Name {
+			projectExists = true
+			break
+		}
+	}
+
+	if !projectExists {
+		logger.Info("Creating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
 		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
 		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
 		if err := controllerutil.SetControllerReference(user, personalProject, r.Scheme); err != nil {
-			return fmt.Errorf("failed to set controller reference: %w", err)
+			return ctrl.Result{}, fmt.Errorf("failed to set controller reference: %w", err)
 		}
 		personalProject.Spec = resourcemanagerv1alpha1.ProjectSpec{
 			OwnerRef: resourcemanagerv1alpha1.OwnerReference{
@@ -155,10 +168,11 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 				Name: personalOrg.Name,
 			},
 		}
-		return nil
-	})
-	if err != nil {
-		return ctrl.Result{}, fmt.Errorf("failed to create or update personal project: %w", err)
+		if err := impersonatedClient.Create(ctx, personalProject); err != nil {
+			return ctrl.Result{}, fmt.Errorf("failed to create personal project: %w", err)
+		}
+	} else {
+		logger.Info("Personal project already exists", "organization", personalOrg.Name, "project", personalProject.Name)
 	}
 
 	logger.Info("Successfully created or updated personal organization resources", "organization", personalOrg.Name)
