@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"hash/fnv"
+	"strings"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -133,12 +134,16 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	impersonatedConfig := rest.CopyConfig(r.RestConfig)
 	impersonatedConfig.Impersonate = rest.ImpersonationConfig{
 		UserName: user.Name,
-		Extra: map[string][]string{
-			"iam.miloapis.com/parent-api-group": {resourcemanagerv1alpha1.GroupVersion.Group},
-			"iam.miloapis.com/parent-type":      {"Organization"},
-			"iam.miloapis.com/parent-name":      {personalOrg.Name},
-		},
 	}
+
+	// Route through the organization's control-plane proxy so that authorization
+	// is evaluated under the organization scope (where the user has membership
+	// permissions) rather than at the cluster scope (where the user has none).
+	// This matches the URL path that kubectl uses when operating within an org.
+	// The org proxy also automatically injects the parent extras that the
+	// project webhook requires.
+	impersonatedConfig.Host = strings.TrimRight(impersonatedConfig.Host, "/") +
+		"/apis/resourcemanager.miloapis.com/v1alpha1/organizations/" + personalOrg.Name + "/control-plane"
 
 	impersonatedClient, err := client.New(impersonatedConfig, client.Options{Scheme: r.Scheme})
 	if err != nil {
