@@ -44,6 +44,7 @@ type PersonalOrganizationController struct {
 
 // +kubebuilder:rbac:groups=iam.datumapis.com,resources=users,verbs=get;list;watch
 // +kubebuilder:rbac:groups=resourcemanager.datumapis.com,resources=organizations,verbs=create
+// +kubebuilder:rbac:groups=resourcemanager.datumapis.com,resources=projects,verbs=create;get;list;watch;update;patch
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
@@ -112,6 +113,32 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	})
 	if err != nil {
 		return ctrl.Result{}, fmt.Errorf("failed to create or update organization membership: %w", err)
+	}
+
+	// Create a default personal project in the personal organization.
+	personalProjectID := hashPersonalOrgName(string(user.UID))
+	personalProject := &resourcemanagerv1alpha1.Project{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: fmt.Sprintf("personal-project-%s", personalProjectID),
+		},
+	}
+	_, err = controllerutil.CreateOrUpdate(ctx, r.Client, personalProject, func() error {
+		logger.Info("Creating or updating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
+		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
+		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
+		if err := controllerutil.SetControllerReference(user, personalProject, r.Scheme); err != nil {
+			return fmt.Errorf("failed to set controller reference: %w", err)
+		}
+		personalProject.Spec = resourcemanagerv1alpha1.ProjectSpec{
+			OwnerRef: resourcemanagerv1alpha1.OwnerReference{
+				Kind: "Organization",
+				Name: personalOrg.Name,
+			},
+		}
+		return nil
+	})
+	if err != nil {
+		return ctrl.Result{}, fmt.Errorf("failed to create or update personal project: %w", err)
 	}
 
 	logger.Info("Successfully created or updated personal organization resources", "organization", personalOrg.Name)
