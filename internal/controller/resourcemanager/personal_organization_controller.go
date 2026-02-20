@@ -8,7 +8,9 @@ import (
 	"fmt"
 	"hash/fnv"
 	"strings"
+	"time"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/rest"
@@ -121,9 +123,11 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	}
 
 	// Create a default personal project in the personal organization.
-	// An impersonated client is required so that the API server's project filter
-	// and webhook receive the correct parent context (Organization) in the
-	// user's extra fields for authorization and defaulting.
+	// The project webhook requires the parent context (Organization) in the
+	// user's extra fields for authorization and defaulting. We impersonate the
+	// user and route through the organization's control-plane proxy — the same
+	// path that kubectl uses — so that the org proxy injects the extras and
+	// evaluates authorization under the org scope.
 	personalProjectID := hashPersonalOrgName(string(user.UID))
 	personalProject := &resourcemanagerv1alpha1.Project{
 		ObjectMeta: metav1.ObjectMeta{
@@ -131,31 +135,41 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		},
 	}
 
-	impersonatedConfig := rest.CopyConfig(r.RestConfig)
-	impersonatedConfig.Impersonate = rest.ImpersonationConfig{
-		UserName: user.Name,
-	}
-
-	// Route through the organization's control-plane proxy so that authorization
-	// is evaluated under the organization scope (where the user has membership
-	// permissions) rather than at the cluster scope (where the user has none).
-	// This matches the URL path that kubectl uses when operating within an org.
-	// The org proxy also automatically injects the parent extras that the
-	// project webhook requires.
-	impersonatedConfig.Host = strings.TrimRight(impersonatedConfig.Host, "/") +
-		"/apis/resourcemanager.miloapis.com/v1alpha1/organizations/" + personalOrg.Name + "/control-plane"
-
-	impersonatedClient, err := client.New(impersonatedConfig, client.Options{Scheme: r.Scheme})
+	// Use the controller's own client (which has cluster-scope RBAC) to check
+	// whether the project already exists. We cannot use the impersonated client
+	// for this because the user has no cluster-scope permissions.
+	existingProject := &resourcemanagerv1alpha1.Project{}
+	err = r.Client.Get(ctx, client.ObjectKeyFromObject(personalProject), existingProject)
 	if err != nil {
-		return ctrl.Result{}, fmt.Errorf("failed to create impersonated client: %w", err)
-	}
+		if !apierrors.IsNotFound(err) {
+			return ctrl.Result{}, fmt.Errorf("failed to check for existing personal project: %w", err)
+		}
 
-	_, err = controllerutil.CreateOrUpdate(ctx, impersonatedClient, personalProject, func() error {
-		logger.Info("Creating or updating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
+		// Project does not exist yet — create it via the impersonated client
+		// routed through the org control-plane proxy.
+		impersonatedConfig := rest.CopyConfig(r.RestConfig)
+		impersonatedConfig.Impersonate = rest.ImpersonationConfig{
+			UserName: user.Name,
+		}
+
+		// Route through the organization's control-plane proxy so that
+		// authorization is evaluated under the organization scope (where the
+		// user has membership permissions) rather than at the cluster scope.
+		// The org proxy also automatically injects the parent extras that the
+		// project webhook requires.
+		impersonatedConfig.Host = strings.TrimRight(impersonatedConfig.Host, "/") +
+			"/apis/resourcemanager.miloapis.com/v1alpha1/organizations/" + personalOrg.Name + "/control-plane"
+
+		impersonatedClient, err := client.New(impersonatedConfig, client.Options{Scheme: r.Scheme})
+		if err != nil {
+			return ctrl.Result{}, fmt.Errorf("failed to create impersonated client: %w", err)
+		}
+
+		logger.Info("Creating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
 		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
 		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
 		if err := controllerutil.SetControllerReference(user, personalProject, r.Scheme); err != nil {
-			return fmt.Errorf("failed to set controller reference: %w", err)
+			return ctrl.Result{}, fmt.Errorf("failed to set controller reference: %w", err)
 		}
 		personalProject.Spec = resourcemanagerv1alpha1.ProjectSpec{
 			OwnerRef: resourcemanagerv1alpha1.OwnerReference{
@@ -163,10 +177,21 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 				Name: personalOrg.Name,
 			},
 		}
-		return nil
-	})
-	if err != nil {
-		return ctrl.Result{}, fmt.Errorf("failed to create personal project: %w", err)
+
+		if err := impersonatedClient.Create(ctx, personalProject); err != nil {
+			if apierrors.IsAlreadyExists(err) {
+				// Project was created between our GET and CREATE — not an error.
+				logger.Info("Personal project already exists", "project", personalProject.Name)
+			} else if apierrors.IsForbidden(err) {
+				// The user's organization membership may not have been processed
+				// yet. Requeue so we retry once the membership is active.
+				logger.Info("User not yet authorized to create project in org, requeueing",
+					"organization", personalOrg.Name, "error", err)
+				return ctrl.Result{RequeueAfter: 5 * time.Second}, nil
+			} else {
+				return ctrl.Result{}, fmt.Errorf("failed to create personal project: %w", err)
+			}
+		}
 	}
 
 	logger.Info("Successfully created or updated personal organization resources", "organization", personalOrg.Name)
