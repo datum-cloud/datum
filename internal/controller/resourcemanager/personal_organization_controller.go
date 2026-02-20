@@ -129,6 +129,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 
 	impersonatedConfig := rest.CopyConfig(r.RestConfig)
 	impersonatedConfig.Impersonate = rest.ImpersonationConfig{
+		UserName: user.Name,
 		Extra: map[string][]string{
 			"iam.miloapis.com/parent-name":      {personalOrg.Name},
 			"iam.miloapis.com/parent-type":      {"Organization"},
