@@ -130,32 +130,11 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	}
 
 	// Create a default personal project in the personal organization.
-	// The project webhook requires parent context in UserInfo.Extra fields,
-	// and also looks up the requesting user by UID to create a PolicyBinding
-	// granting them ownership. We impersonate the actual user so the webhook
-	// sees the correct identity and creates the right PolicyBinding.
 	personalProjectID := hashPersonalOrgName(string(user.UID))
 	personalProject := &resourcemanagerv1alpha1.Project{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: fmt.Sprintf("personal-project-%s", personalProjectID),
 		},
-	}
-
-	impersonatedConfig := rest.CopyConfig(r.RestConfig)
-	impersonatedConfig.Impersonate = rest.ImpersonationConfig{
-		UserName: user.Name,
-		UID:      user.Name,
-		Groups:   []string{"system:authenticated"},
-		Extra: map[string][]string{
-			"iam.miloapis.com/parent-name":      {personalOrg.Name},
-			"iam.miloapis.com/parent-type":      {"Organization"},
-			"iam.miloapis.com/parent-api-group": {"resourcemanager.miloapis.com"},
-		},
-	}
-
-	impersonatedClient, err := client.New(impersonatedConfig, client.Options{Scheme: r.Scheme})
-	if err != nil {
-		return ctrl.Result{}, fmt.Errorf("failed to create impersonated client: %w", err)
 	}
 
 	// Use the controller's own client (cluster-scope RBAC) to check whether
@@ -168,20 +147,32 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 			return ctrl.Result{}, fmt.Errorf("failed to check for existing personal project: %w", err)
 		}
 
+		// The project webhook requires parent context in UserInfo.Extra fields,
+		// and also looks up the requesting user by UID to create a PolicyBinding
+		// granting them ownership. We impersonate the actual user so the webhook
+		// sees the correct identity and creates the right PolicyBinding.
+		impersonatedConfig := rest.CopyConfig(r.RestConfig)
+		impersonatedConfig.Impersonate = rest.ImpersonationConfig{
+			UserName: user.Name,
+			UID:      user.Name,
+			Groups:   []string{"system:authenticated"},
+			Extra: map[string][]string{
+				"iam.miloapis.com/parent-name":      {personalOrg.Name},
+				"iam.miloapis.com/parent-type":      {"Organization"},
+				"iam.miloapis.com/parent-api-group": {"resourcemanager.miloapis.com"},
+			},
+		}
+
+		impersonatedClient, err := client.New(impersonatedConfig, client.Options{Scheme: r.Scheme})
+		if err != nil {
+			return ctrl.Result{}, fmt.Errorf("failed to create impersonated client: %w", err)
+		}
+
 		// Project does not exist — create it via the impersonated client so
 		// the webhook sees the actual user's identity.
 		logger.Info("Creating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
 		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
 		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
-		if err := controllerutil.SetControllerReference(user, personalProject, r.Scheme); err != nil {
-			return ctrl.Result{}, fmt.Errorf("failed to set controller reference: %w", err)
-		}
-		personalProject.Spec = resourcemanagerv1alpha1.ProjectSpec{
-			OwnerRef: resourcemanagerv1alpha1.OwnerReference{
-				Kind: "Organization",
-				Name: personalOrg.Name,
-			},
-		}
 
 		if err := impersonatedClient.Create(ctx, personalProject); err != nil {
 			if apierrors.IsAlreadyExists(err) {
