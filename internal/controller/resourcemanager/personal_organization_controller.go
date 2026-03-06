@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"hash/fnv"
+	"time"
 
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -129,6 +130,13 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		return ctrl.Result{}, fmt.Errorf("failed to create or update organization membership: %w", err)
 	}
 
+	// If the user is not active, we should not create a personal project,
+	// as the impersonated client will not have the correct permissions.
+	if user.Status.RegistrationApproval != iamv1alpha1.RegistrationApprovalStateApproved {
+		logger.Info("User is not active, skipping personal project creation", "user", user.Name, "state", user.Status.State)
+		return ctrl.Result{RequeueAfter: 5 * time.Second}, nil
+	}
+
 	// Create a default personal project in the personal organization.
 	personalProjectID := hashPersonalOrgName(string(user.UID))
 	personalProject := &resourcemanagerv1alpha1.Project{
@@ -153,7 +161,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		// sees the correct identity and creates the right PolicyBinding.
 		impersonatedConfig := rest.CopyConfig(r.RestConfig)
 		impersonatedConfig.Impersonate = rest.ImpersonationConfig{
-			UserName: user.Name,
+			UserName: user.Spec.Email,
 			UID:      user.Name,
 			Groups:   []string{"system:authenticated"},
 			Extra: map[string][]string{
