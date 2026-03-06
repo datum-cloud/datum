@@ -1,0 +1,21 @@
+apiVersion: search.miloapis.com/v1alpha1
+kind: ResourceIndexPolicy
+metadata:
+  name: user-resource-index-policy
+spec:
+  conditions:
+  - expression: has(metadata.name)
+    name: has-name
+  fields:
+  - path: .metadata.name
+    searchable: true
+  - path: .spec.email
+    searchable: true
+  - path: .spec.firstName
+    searchable: true
+  - path: .spec.lastName
+    searchable: true
+  targetResource:
+    group: iam.miloapis.com
+    kind: User
+    version: v1alpha1
