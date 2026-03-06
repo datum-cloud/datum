@@ -153,7 +153,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		// sees the correct identity and creates the right PolicyBinding.
 		impersonatedConfig := rest.CopyConfig(r.RestConfig)
 		impersonatedConfig.Impersonate = rest.ImpersonationConfig{
-			UserName: user.Name,
+			UserName: user.Spec.Email,
 			UID:      user.Name,
 			Groups:   []string{"system:authenticated"},
 			Extra: map[string][]string{
