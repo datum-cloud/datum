@@ -28,3 +28,5 @@ spec:
       namespace: milo-system
     - name: iam-user-invitations-admin
       namespace: milo-system
+    - name: notes-admin
+      namespace: milo-system
