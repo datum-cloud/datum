@@ -26,3 +26,5 @@ spec:
       namespace: milo-system
     - name: activity.miloapis.com-audit-log-querier
       namespace: milo-system
+    - name: notes-viewer
+      namespace: milo-system
