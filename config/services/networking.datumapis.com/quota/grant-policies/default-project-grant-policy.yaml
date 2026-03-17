@@ -32,7 +32,7 @@ spec:
               - amount: 25
           - resourceType: networking.datumapis.com/httpproxies
             buckets:
-              - amount: 25
+              - amount: 10
           - resourceType: networking.datumapis.com/trafficprotectionpolicies
             buckets:
               - amount: 0
@@ -44,7 +44,7 @@ spec:
               - amount: 10
           - resourceType: gateway.networking.k8s.io/gateways
             buckets:
-              - amount: 25
+              - amount: 10
           - resourceType: gateway.networking.k8s.io/httproutes
             buckets:
               - amount: 25
