@@ -1,0 +1,68 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: GrantCreationPolicy
+metadata:
+  name: default-networking-quota-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: resourcemanager.miloapis.com/v1alpha1
+      kind: Project
+  target:
+    parentContext:
+      apiGroup: "resourcemanager.miloapis.com"
+      kind: "Project"
+      nameExpression: "trigger.metadata.name"
+    resourceGrantTemplate:
+      metadata:
+        name: "default-networking-quota-{{ trigger.metadata.name }}"
+        namespace: milo-system
+        annotations:
+          kubernetes.io/description: "Networking quota allocation for project"
+      spec:
+        consumerRef:
+          apiGroup: resourcemanager.miloapis.com
+          kind: Project
+          name: "{{ trigger.metadata.name }}"
+        allowances:
+          - resourceType: networking.datumapis.com/domains
+            buckets:
+              - amount: 25
+          - resourceType: networking.datumapis.com/httpproxies
+            buckets:
+              - amount: 10
+          - resourceType: networking.datumapis.com/trafficprotectionpolicies
+            buckets:
+              - amount: 0
+          - resourceType: networking.datumapis.com/connectors
+            buckets:
+              - amount: 5
+          - resourceType: networking.datumapis.com/connectoradvertisements
+            buckets:
+              - amount: 10
+          - resourceType: gateway.networking.k8s.io/gateways
+            buckets:
+              - amount: 10
+          - resourceType: gateway.networking.k8s.io/httproutes
+            buckets:
+              - amount: 25
+          - resourceType: gateway.networking.k8s.io/backendtlspolicies
+            buckets:
+              - amount: 10
+          - resourceType: gateway.envoyproxy.io/backends
+            buckets:
+              - amount: 10
+          - resourceType: gateway.envoyproxy.io/backendtrafficpolicies
+            buckets:
+              - amount: 10
+          - resourceType: gateway.envoyproxy.io/securitypolicies
+            buckets:
+              - amount: 10
+          - resourceType: gateway.envoyproxy.io/httproutefilters
+            buckets:
+              - amount: 10
+          - resourceType: discovery.k8s.io/endpointslices
+            buckets:
+              - amount: 25
