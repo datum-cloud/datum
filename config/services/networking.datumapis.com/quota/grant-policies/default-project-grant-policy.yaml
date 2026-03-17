@@ -44,7 +44,7 @@ spec:
               - amount: 10
           - resourceType: gateway.networking.k8s.io/gateways
             buckets:
-              - amount: 5
+              - amount: 10
           - resourceType: gateway.networking.k8s.io/httproutes
             buckets:
               - amount: 25
