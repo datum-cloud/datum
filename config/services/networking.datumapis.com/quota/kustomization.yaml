@@ -1,0 +1,10 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Use explicit sorting options so we can guarantee that grant creation
+# policies are applied correctly.
+sortOptions:
+  order: fifo
+
+components:
+  - grant-policies/
