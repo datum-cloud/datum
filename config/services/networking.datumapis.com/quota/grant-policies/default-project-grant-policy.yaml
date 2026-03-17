@@ -29,10 +29,10 @@ spec:
         allowances:
           - resourceType: networking.datumapis.com/domains
             buckets:
-              - amount: 10
+              - amount: 25
           - resourceType: networking.datumapis.com/httpproxies
             buckets:
-              - amount: 10
+              - amount: 25
           - resourceType: networking.datumapis.com/trafficprotectionpolicies
             buckets:
               - amount: 0
@@ -44,7 +44,7 @@ spec:
               - amount: 10
           - resourceType: gateway.networking.k8s.io/gateways
             buckets:
-              - amount: 10
+              - amount: 25
           - resourceType: gateway.networking.k8s.io/httproutes
             buckets:
               - amount: 25
