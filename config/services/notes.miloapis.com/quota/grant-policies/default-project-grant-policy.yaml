@@ -30,6 +30,3 @@ spec:
           - resourceType: notes.miloapis.com/notes
             buckets:
               - amount: 100
-          - resourceType: notes.miloapis.com/clusternotes
-            buckets:
-              - amount: 100
