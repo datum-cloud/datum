@@ -1,0 +1,35 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: GrantCreationPolicy
+metadata:
+  name: default-core-quota-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: resourcemanager.miloapis.com/v1alpha1
+      kind: Project
+  target:
+    parentContext:
+      apiGroup: "resourcemanager.miloapis.com"
+      kind: "Project"
+      nameExpression: "trigger.metadata.name"
+    resourceGrantTemplate:
+      metadata:
+        name: "default-core-quota-{{ trigger.metadata.name }}"
+        namespace: milo-system
+        annotations:
+          kubernetes.io/description: "Core resource quota allocation for project"
+      spec:
+        consumerRef:
+          apiGroup: resourcemanager.miloapis.com
+          kind: Project
+          name: "{{ trigger.metadata.name }}"
+        allowances:
+          - resourceType: core.miloapis.com/secrets
+            buckets:
+              - amount: 50
+          - resourceType: core.miloapis.com/configmaps
+            buckets:
+              - amount: 50
