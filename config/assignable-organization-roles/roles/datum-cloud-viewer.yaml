@@ -28,3 +28,7 @@ spec:
       namespace: milo-system
     - name: notes-viewer
       namespace: milo-system
+    - name: identity-machine-account-keys-viewer
+      namespace: milo-system
+    - name: iam-machine-accounts-viewer
+      namespace: milo-system
