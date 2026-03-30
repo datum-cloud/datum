@@ -35,7 +35,7 @@ spec:
               - amount: 10
           - resourceType: networking.datumapis.com/trafficprotectionpolicies
             buckets:
-              - amount: 0
+              - amount: 10
           - resourceType: networking.datumapis.com/connectors
             buckets:
               - amount: 5
