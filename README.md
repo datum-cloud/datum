@@ -2,7 +2,7 @@
 
 <p align="left">
   <a href="https://cloud.datum.net">Datum Cloud</a> -
-  <a href="https://docs.datum.net">Docs</a> -
+  <a href="https://www.datum.net/docs">Docs</a> -
   <a href="https://link.datum.net/discord">Community Discord</a> -
   <a href="https://www.datum.net/blog/">Blog</a> -
   <a href="https://www.linkedin.com/company/datum-cloud/">LinkedIn</a>
@@ -11,9 +11,7 @@
 ## Why Datum?
 
 We believe that AI is changing everything — not just how we work and create, but how
-quickly new applications, agents, and even clouds are being built. Digital
-leaders today must orchestrate a complex, fragmented web of clouds, specialty
-providers, customers, and data.
+quickly new applications, agents, and clouds are being built. 
 
 The Internet is built on data center [meet-me
 rooms](https://en.wikipedia.org/wiki/Meet-me_room), where telco providers and
@@ -22,16 +20,16 @@ cross-connects. A new connection takes days or weeks of humans moving things
 around to set up.
 
 We believe the next era of the Internet is already here, and it's growing
-fast. In the [alt-cloud](https://github.com/datum-cloud/awesome-alt-clouds)
+fast. In the [alt-cloud](https://www.alt-cloud.org/)
 universe, you don't think about virtual machines and VPCs, you think about
 *services*. You connect your Vercel app with your Supabase instance all wired up
-with your Kestra workflow, monitored by your Resolve SRE agent. There isn't a
+with your Kestra workflow, monitored by your favorite SRE agent. There isn't a
 switch or routing table in sight. It's just virtual plumbing to make your
-business go. 
+business go, powered by a fleet of agents. 
 
 With Datum, cloud and AI-native builders can use the tools they love (like
-Cursor or a Kubernetes native CLI) to access the internet superpowers that
-today’s tech giants leverage at scale: authoritative DNS, distributed proxies,
+Claude, Cursor or a Kubernetes native CLI) to access the internet superpowers that
+today’s tech giants leverage at scale: authoritative DNS, edge proxies,
 global backbones, deterministic routing, cloud on-ramps, and private
 interconnection.
 
@@ -39,68 +37,61 @@ That's why we're building Datum: to help build 1k clouds in the age of AI.
 
 ## So what is Datum?
 
-### Fully programmable and AI-native
+### An open network cloud built for AI
 
-- Developer- and agent-friendly protocols, interfaces, and workflows
-- Programmatic interconnection between providers and services
-- Security through network-level encryption that's built-in and impossible to break or disable
-- Built using the "operating system for AI" Kubernetes API patterns for operator
-  tooling and familiarity (`kubectl`, Helm, etc.)
+- Developer and agent-friendly protocols, interfaces, and workflows
+- Backed by an AGPvL 3.0 license
+- Powerful suite of infrastructure primitives, deployed at the edge
+- Built using Kubernetes API patterns for operator tooling and familiarity (`datumctl`, Helm, etc.)
+- Flexible deployment models (public cloud, managed cloud, BYOC, OSS)
 
-### Neutral by design
+### Neutral & flexible by design
 
+- Ecosystem friendly partner model
 - No allegiance to a single cloud, vendor, or region
-- Operates as a trusted, independent layer for alt clouds, incumbents, and
-  digital-first enterprises
-
-### Bring your own infra
-
-- Use Datum’s cloud control plane along with its global network and distributed
-  compute
-- Or run components in your own cloud or infra (e.g., GCP, AWS, NetActuate,
-  Vultr, etc.)
-
-### Maximum flexibility
-
-- Feed full telemetry to your preferred tools (Grafana Cloud, Honeycomb,
-  Datadog, etc.)
-- Support for policy enforcement via SRv6
+- Operates as a trusted, independent layer for alt clouds, incumbents, and digital-first enterprises
+- Feed full telemetry to your preferred tools (Grafana Cloud, etc)
 
 ---
 
-## Some of our favorite features
+## Key features
 
 ### Declarative management
 
-Datum works just like Kubernetes, because it *is* Kubernetes. Define your desired infrastructure state and our components reconcile the living system to match. No more syncing or drift.
+Our most important feature isn't a "what" but a "how". Datum works just like Kubernetes, because it *is* Kubernetes. Define your desired infrastructure state and our components reconcile the living system to match. No more syncing or drift.
 
 The Datum control plane is natively compatible with tooling from the Kubernetes
 ecosystem. Datum APIs are defined as [Custom Resources][k8s-custom-resources],
 and resources are managed by operators which can be deployed into any Kubernetes
 cluster.
 
-Use the tools you're familiar with - `kubectl` for interacting with API
-resources via the CLI, `kustomize` or `terraform` for configuration management,
-or any other tool compatible with the Kubernetes API.
+Use the tools you're familiar with, but especially `datumctl` for interacting with API
+resources via the CLI. Read more [about datumctl here](https://www.datum.net/docs/datumctl/overview).
 
-[k8s-custom-resources]:
-    https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/
+### AI Edge
+An Envoy-based edge that provides an intelligent HTTPProxy along with a Coraza-based Web Application Firewall (WAF) to protect and route internet traffic to backend services. We support HTTP(S) 1.1, HTTP2, gRPC, and WebSockets.
 
-### Workloads
+### Galactic VPCs
 
-The `Workload` resource provides a provider-agnostic way to manage groups of
-compute instances (VMs or containers). Define instance templates, placement
-rules (where instances should run across locations/providers), scaling behavior,
-network attachments, and volume mounts. The responsible infrastructure provider
-operator handles the provisioning.
+Internet backbones weren't designed for most humans, let alone agents. Our Galactic VPC feature is built for an agentic world to provide policy-driven SRv6 virtual backbones that go anywhere.
 
-### Gateways
+### UFOs
 
-Leveraging the standard Kubernetes Gateway API (`GatewayClass`,
-`Gateway`,`HTTPRoute`, etc.), Datum allows you to define how external or
-internal traffic should connect to your services. Manage TLS certificates,
-configure routing logic, and control network ingress/egress across the
-Datum infrastructure.
+We've partnered with Unikraft to build out a modern edge compute layer that is ideal for agentic and network use cases. "Unikernel Function Offloads" provide 100% isolation, millisecond cold starts, and scale to zero snapshotting.
+
+### Connectors
+
+We plan to support all kinds of connections, from developer-focused (e.g. Tailscale Tailnets, Wireguard VPNs) to low level L2/L3 telco (AWS Direct Connect, Equinix Fabric, Megaport Onramps, etc). We've started with QUIC-based tunnels powered by the [Iroh protocol](https://www.iroh.computer/).
+
+### Essentials
+
+We support a growing collection of features that help make agentic and internet scale applications "go". While these may not be the star of any show, they are necessary ingredients.  
+
+- Authoritative DNS
+- Domain resource tracking
+- Fine grained roles and permissions
+- Secrets & machine accounts
+- Activity logs
 
 ## Components
 
@@ -125,37 +116,21 @@ infrastructure providers. See the [Workloads
 RFC](https://github.com/datum-cloud/enhancements/tree/main/enhancements/compute/workloads)
 for design details.
 
-### Plugins
-
-Datum Plugins interpret resource definitions such as Workloads and Networks to
-drive the management of provider specific resources such as Virtual Machines and
-VPC Networks to meet the declared expectations. Our first example is for [Google
-Cloud Platform (GCP)](https://github.com/datum-cloud/infra-provider-gcp).
-Supported features include:
-
-- Deploying Virtual Machine based workload instances with OS images provided via
-  an image library.
-- Deploying sandboxed container based workload instances with any OCI compliant
-  container image.
-- VPC connectivity and IPAM.
-- Attaching instances to one or more networks.
-
 ---
 
 ## Get Started
 
 The easiest way to understand Datum is to try it! Head over to [Datum
-Cloud](https://cloud.datum.net), sign up, and follow the [Quickstart
-Guide](https://www.datum.net/docs/quickstart/) to begin your journey to a reimagined world of interconnection.
+Cloud](https://cloud.datum.net), sign up, and [check out our docs](https://www.datum.net/docs/platform/setup) to get started.
 
 We hope that you will then come and build with us:
 
 - **General Discussion:** Join us on the [Datum Community
   Discord](https://link.datum.net/discord).
-- **Development Setup:** See the [Development
-  Guide](https://docs.datum.net/docs/developer-guide/).
-- **Roadmap & Enhancements:** Visit our [enhancements
+- **Enhancements:** Visit our [enhancements
   repo](https://link.datum.net/enhancements).
+- **Milestones:** Visit our [planned milestones](https://link.datum.net/enhancements).
+  
 
 ## License
 
