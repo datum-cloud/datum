@@ -26,3 +26,7 @@ spec:
       namespace: milo-system
     - name: notes-editor
       namespace: milo-system
+    - name: identity-machine-account-keys-editor
+      namespace: milo-system
+    - name: iam-machine-accounts-editor
+      namespace: milo-system
