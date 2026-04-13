@@ -3,6 +3,9 @@ kind: Component
 
 resources:
   - user-resourceindexpolicy.yaml
+  - domain-resourceindexpolicy.yaml
+  - dnszone-resourceindexpolicy.yaml
+  - contact-resourceindexpolicy.yaml
 
 # Use explicit sorting options so we can guarantee order in which resources are
 # applied.
