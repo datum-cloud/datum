@@ -3,10 +3,15 @@ kind: ResourceIndexPolicy
 metadata:
   name: contact-resource-index-policy
 spec:
-  conditions:
-  - expression: has(metadata.name)
-    name: has-name
   fields:
+  - path: .metadata.name
+    searchable: true
+  - path: .metadata.namespace
+    searchable: true
+  - path: .metadata.annotations["kubernetes.io/display-name"]
+    searchable: true
+  - path: .metadata.annotations["kubernetes.io/description"]
+    searchable: true
   - path: .spec.givenName
     searchable: true
   - path: .spec.familyName

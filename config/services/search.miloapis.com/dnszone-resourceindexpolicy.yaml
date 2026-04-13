@@ -3,17 +3,16 @@ kind: ResourceIndexPolicy
 metadata:
   name: dnszone-resource-index-policy
 spec:
-  conditions:
-  - expression: has(metadata.name)
-    name: has-name
   fields:
   - path: .metadata.name
     searchable: true
   - path: .metadata.namespace
     searchable: true
-  - path: .spec.domainName
+  - path: .metadata.annotations["kubernetes.io/display-name"]
     searchable: true
-  - path: .spec.dnsZoneClassName
+  - path: .metadata.annotations["kubernetes.io/description"]
+    searchable: true
+  - path: .spec.domainName
     searchable: true
   targetResource:
     group: dns.networking.miloapis.com
