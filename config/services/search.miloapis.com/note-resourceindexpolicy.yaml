@@ -1,0 +1,23 @@
+apiVersion: search.miloapis.com/v1alpha1
+kind: ResourceIndexPolicy
+metadata:
+  name: note-resource-index-policy
+spec:
+  conditions:
+  - expression: has(metadata.name)
+    name: has-name
+  fields:
+  - path: .metadata.name
+    searchable: true
+  - path: .metadata.namespace
+    searchable: true
+  - path: .spec.content
+    searchable: true
+  - path: .spec.nextAction
+    searchable: true
+  - path: .metadata.creationTimestamp
+    searchable: true
+  targetResource:
+    group: notes.miloapis.com
+    kind: Note
+    version: v1alpha1

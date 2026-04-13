@@ -1,0 +1,19 @@
+apiVersion: search.miloapis.com/v1alpha1
+kind: ResourceIndexPolicy
+metadata:
+  name: contact-resource-index-policy
+spec:
+  conditions:
+  - expression: has(metadata.name)
+    name: has-name
+  fields:
+  - path: .spec.givenName
+    searchable: true
+  - path: .spec.familyName
+    searchable: true
+  - path: .spec.email
+    searchable: true
+  targetResource:
+    group: notification.miloapis.com
+    kind: Contact
+    version: v1alpha1
