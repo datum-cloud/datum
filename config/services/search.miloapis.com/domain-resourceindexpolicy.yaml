@@ -6,21 +6,11 @@ spec:
   fields:
   - path: .metadata.name
     searchable: true
-  - path: .metadata.namespace
-    searchable: true
   - path: .metadata.annotations["kubernetes.io/display-name"]
     searchable: true
   - path: .metadata.annotations["kubernetes.io/description"]
     searchable: true
   - path: .spec.domainName
-    searchable: true
-  - path: .status.apex
-    searchable: true
-  - path: .status.nameservers[0].hostname
-    searchable: true
-  - path: .status.registration.registrar.name
-    searchable: true
-  - path: .status.registration.registry.name
     searchable: true
   targetResource:
     group: networking.datumapis.com
