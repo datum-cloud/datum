@@ -3,6 +3,9 @@ kind: ResourceIndexPolicy
 metadata:
   name: dnszone-resource-index-policy
 spec:
+  conditions:
+  - expression: has(metadata.name)
+    name: has-name
   fields:
   - path: .metadata.name
     searchable: true
