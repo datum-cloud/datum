@@ -30,7 +30,7 @@ spec:
       namespace: milo-system
     - name: notes-admin
       namespace: milo-system
-    - name: identity-machine-account-keys-admin
+    - name: identity-service-account-keys-admin
       namespace: milo-system
-    - name: iam-machine-accounts-admin
+    - name: iam-service-accounts-admin
       namespace: milo-system
