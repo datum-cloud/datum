@@ -6,6 +6,8 @@ resources:
   - domain-resourceindexpolicy.yaml
   - dnszone-resourceindexpolicy.yaml
   - contact-resourceindexpolicy.yaml
+  - httpproxy-resourceindexpolicy.yaml
+  - exportpolicy-resourceindexpolicy.yaml
 
 # Use explicit sorting options so we can guarantee order in which resources are
 # applied.
