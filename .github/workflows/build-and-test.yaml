@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - '**'
   pull_request:
   release:
     types:
@@ -15,7 +16,7 @@ jobs:
       id-token: write
       contents: read
       packages: write
-    uses: datum-cloud/actions/.github/workflows/publish-docker.yaml@v1.9.0
+    uses: datum-cloud/actions/.github/workflows/publish-docker.yaml@v1.14.0
     with:
       image-name: datum
     secrets: inherit
@@ -26,7 +27,7 @@ jobs:
       id-token: write
       contents: read
       packages: write
-    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.9.0
+    uses: datum-cloud/actions/.github/workflows/publish-kustomize-bundle.yaml@v1.14.0
     with:
       bundle-name: ghcr.io/datum-cloud/datum-kustomize
       bundle-path: config

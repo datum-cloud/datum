@@ -14,6 +14,8 @@ spec:
       namespace: datum-cloud
     - name: core-admin
       namespace: milo-system
+    - name: iam-organization-admin
+      namespace: milo-system
     - name: networking.datumapis.com-admin
       namespace: milo-system
     - name: telemetry.miloapis.com-admin
@@ -25,6 +27,12 @@ spec:
     - name: dns.networking.miloapis.com-dns-admin
       namespace: milo-system
     - name: iam-user-invitations-admin
+      namespace: milo-system
+    - name: notes-admin
+      namespace: milo-system
+    - name: identity-service-account-keys-admin
+      namespace: milo-system
+    - name: iam-service-accounts-admin
       namespace: milo-system
     - name: compute.datumapis.com-admin
       namespace: milo-system

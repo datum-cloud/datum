@@ -12,3 +12,7 @@ components:
   - resourcemanager.miloapis.com/
   - iam.miloapis.com/
   - dns.networking.miloapis.com/
+  - networking.datumapis.com/
+  - notes.miloapis.com/
+  - core.miloapis.com/
+  - search.miloapis.com/
