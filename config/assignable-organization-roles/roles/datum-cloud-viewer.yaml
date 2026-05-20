@@ -32,3 +32,7 @@ spec:
       namespace: milo-system
     - name: iam-service-accounts-viewer
       namespace: milo-system
+    - name: compute.datumapis.com-viewer
+      namespace: milo-system
+    - name: networking.datumapis.com-location-viewer
+      namespace: milo-system
