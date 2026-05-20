@@ -26,3 +26,5 @@ spec:
       namespace: milo-system
     - name: activity.miloapis.com-viewer
       namespace: milo-system
+    - name: compute.datumapis.com-viewer
+      namespace: milo-system

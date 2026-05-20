@@ -26,3 +26,5 @@ spec:
       namespace: milo-system
     - name: iam-user-invitations-admin
       namespace: milo-system
+    - name: compute.datumapis.com-admin
+      namespace: milo-system
