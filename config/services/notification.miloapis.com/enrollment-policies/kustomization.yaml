@@ -6,3 +6,4 @@ sortOptions:
 
 resources:
   - email-newsletter-enrollment-policy.yaml
+  - all-users-enrollment-policy.yaml
