@@ -1,7 +1,7 @@
 apiVersion: search.miloapis.com/v1alpha1
 kind: ResourceIndexPolicy
 metadata:
-  name: domain-resource-index-policy
+  name: httpproxy-resource-index-policy
 spec:
   conditions:
   - expression: has(metadata.name)
@@ -11,28 +11,22 @@ spec:
     searchable: true
   - path: .metadata.namespace
     searchable: true
-  - path: .metadata.creationTimestamp
-    searchable: false
   - path: .metadata.annotations["kubernetes.io/display-name"]
     searchable: true
   - path: .metadata.annotations["kubernetes.io/description"]
     searchable: true
-  - path: .spec.domainName
-    searchable: true
-  - path: .status.registration.expiresAt
-    searchable: false
-  - path: .status.registration.registrar.name
-    searchable: false
   # NOTE: [*] array-traversal syntax is not currently supported by the
   # ResourceIndexPolicy validator in milo-os/search. The following paths are
   # commented out until that lands. Tracked in milo-os/search#97.
-  # - path: .status.nameservers[*].hostname
-  #   searchable: false
-  # - path: .status.conditions[*].type
-  #   searchable: false
-  # - path: .status.conditions[*].status
-  #   searchable: false
+  # - path: .spec.rules[*].hostnames[*]
+  #   searchable: true
+  # - path: .spec.rules[*].name
+  #   searchable: true
+  # - path: .spec.rules[*].backends[*].endpoint
+  #   searchable: true
+  # - path: .status.addresses[*].value
+  #   searchable: true
   targetResource:
     group: networking.datumapis.com
-    kind: Domain
+    kind: HTTPProxy
     version: v1alpha
