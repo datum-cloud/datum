@@ -7,9 +7,12 @@ import (
 	"encoding/hex"
 	"fmt"
 	"hash/fnv"
+	"time"
 
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/rest"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -40,6 +43,9 @@ type PersonalOrganizationController struct {
 	// The scheme is used to set the controller reference on the personal
 	// organization.
 	Scheme *runtime.Scheme
+
+	// RestConfig is used to create an impersonated client for project creation.
+	RestConfig *rest.Config
 }
 
 // +kubebuilder:rbac:groups=iam.datumapis.com,resources=users,verbs=get;list;watch
@@ -57,7 +63,16 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 	// Get the user.
 	user := &iamv1alpha1.User{}
 	if err := r.Client.Get(ctx, req.NamespacedName, user); err != nil {
+		if apierrors.IsNotFound(err) {
+			logger.Info("User not found, skipping reconciliation", "user", req.NamespacedName)
+			return ctrl.Result{}, nil
+		}
 		return ctrl.Result{}, fmt.Errorf("failed to get user: %w", err)
+	}
+
+	if !user.DeletionTimestamp.IsZero() {
+		logger.Info("User is being deleted, skipping reconciliation", "user", user.Name)
+		return ctrl.Result{}, nil
 	}
 
 	// Automatically create a personal organization for the user. They should not
@@ -115,6 +130,13 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		return ctrl.Result{}, fmt.Errorf("failed to create or update organization membership: %w", err)
 	}
 
+	// If the user is not active, we should not create a personal project,
+	// as the impersonated client will not have the correct permissions.
+	if user.Status.RegistrationApproval != iamv1alpha1.RegistrationApprovalStateApproved {
+		logger.Info("User is not active, skipping personal project creation", "user", user.Name, "state", user.Status.State)
+		return ctrl.Result{RequeueAfter: 5 * time.Second}, nil
+	}
+
 	// Create a default personal project in the personal organization.
 	personalProjectID := hashPersonalOrgName(string(user.UID))
 	personalProject := &resourcemanagerv1alpha1.Project{
@@ -122,23 +144,52 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 			Name: fmt.Sprintf("personal-project-%s", personalProjectID),
 		},
 	}
-	_, err = controllerutil.CreateOrUpdate(ctx, r.Client, personalProject, func() error {
-		logger.Info("Creating or updating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
-		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
-		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
-		if err := controllerutil.SetControllerReference(user, personalProject, r.Scheme); err != nil {
-			return fmt.Errorf("failed to set controller reference: %w", err)
+
+	// Use the controller's own client (cluster-scope RBAC) to check whether
+	// the project already exists. The impersonated user only has org-scoped
+	// permissions and cannot GET projects at the cluster scope.
+	existingProject := &resourcemanagerv1alpha1.Project{}
+	err = r.Client.Get(ctx, client.ObjectKeyFromObject(personalProject), existingProject)
+	if err != nil {
+		if !apierrors.IsNotFound(err) {
+			return ctrl.Result{}, fmt.Errorf("failed to check for existing personal project: %w", err)
 		}
-		personalProject.Spec = resourcemanagerv1alpha1.ProjectSpec{
-			OwnerRef: resourcemanagerv1alpha1.OwnerReference{
-				Kind: "Organization",
-				Name: personalOrg.Name,
+
+		// The project webhook requires parent context in UserInfo.Extra fields,
+		// and also looks up the requesting user by UID to create a PolicyBinding
+		// granting them ownership. We impersonate the actual user so the webhook
+		// sees the correct identity and creates the right PolicyBinding.
+		impersonatedConfig := rest.CopyConfig(r.RestConfig)
+		impersonatedConfig.Impersonate = rest.ImpersonationConfig{
+			UserName: user.Spec.Email,
+			UID:      user.Name,
+			Groups:   []string{"system:authenticated"},
+			Extra: map[string][]string{
+				"iam.miloapis.com/parent-name":      {personalOrg.Name},
+				"iam.miloapis.com/parent-type":      {"Organization"},
+				"iam.miloapis.com/parent-api-group": {"resourcemanager.miloapis.com"},
 			},
 		}
-		return nil
-	})
-	if err != nil {
-		return ctrl.Result{}, fmt.Errorf("failed to create or update personal project: %w", err)
+
+		impersonatedClient, err := client.New(impersonatedConfig, client.Options{Scheme: r.Scheme})
+		if err != nil {
+			return ctrl.Result{}, fmt.Errorf("failed to create impersonated client: %w", err)
+		}
+
+		// Project does not exist — create it via the impersonated client so
+		// the webhook sees the actual user's identity.
+		logger.Info("Creating personal project", "organization", personalOrg.Name, "project", personalProject.Name)
+		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/display-name", "Personal Project")
+		metav1.SetMetaDataAnnotation(&personalProject.ObjectMeta, "kubernetes.io/description", fmt.Sprintf("%s %s's Personal Project", user.Spec.GivenName, user.Spec.FamilyName))
+
+		if err := impersonatedClient.Create(ctx, personalProject); err != nil {
+			if apierrors.IsAlreadyExists(err) {
+				logger.Info("Personal project already exists (race)", "project", personalProject.Name)
+			} else {
+				logger.Error(err, "Failed to create personal project")
+				return ctrl.Result{}, fmt.Errorf("failed to create personal project: %w", err)
+			}
+		}
 	}
 
 	logger.Info("Successfully created or updated personal organization resources", "organization", personalOrg.Name)

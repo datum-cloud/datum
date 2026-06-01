@@ -24,5 +24,11 @@ spec:
       namespace: milo-system
     - name: iam-user-invitations-reader
       namespace: milo-system
-    - name: activity.miloapis.com-audit-log-querier
+    - name: activity.miloapis.com-viewer
+      namespace: milo-system
+    - name: notes-viewer
+      namespace: milo-system
+    - name: identity-service-account-keys-viewer
+      namespace: milo-system
+    - name: iam-service-accounts-viewer
       namespace: milo-system

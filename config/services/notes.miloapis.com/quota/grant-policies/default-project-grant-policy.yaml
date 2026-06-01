@@ -1,0 +1,32 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: GrantCreationPolicy
+metadata:
+  name: default-notes-quota-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: resourcemanager.miloapis.com/v1alpha1
+      kind: Project
+  target:
+    parentContext:
+      apiGroup: "resourcemanager.miloapis.com"
+      kind: "Project"
+      nameExpression: "trigger.metadata.name"
+    resourceGrantTemplate:
+      metadata:
+        name: "default-notes-quota-{{ trigger.metadata.name }}"
+        namespace: milo-system
+        annotations:
+          kubernetes.io/description: "Notes quota allocation for project"
+      spec:
+        consumerRef:
+          apiGroup: resourcemanager.miloapis.com
+          kind: Project
+          name: "{{ trigger.metadata.name }}"
+        allowances:
+          - resourceType: notes.miloapis.com/notes
+            buckets:
+              - amount: 100
