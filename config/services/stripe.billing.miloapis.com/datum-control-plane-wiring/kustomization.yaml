@@ -1,0 +1,67 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Datum-specific volume sources for the upstream
+# milo-os/stripe-provider Deployment. Pairs with the upstream
+# `milo-integration` Component, which declares the matching
+# `volumeMounts` and leaves the `volumes:` for operators to supply.
+#
+#   - `trust-bundle`           — ConfigMap populated by trust-manager
+#                                when the namespace carries the
+#                                `infra.datum.net/inject-datum-control-plane-trust-bundle`
+#                                label.
+#   - `webhook-tls`            — cert-manager CSI volume signed by the
+#                                `datum-control-plane` ClusterIssuer.
+#   - `client-cert`            — cert-manager CSI volume issuing
+#                                `system:control@stripe.billing.miloapis.com`
+#                                so Milo's auth chain recognises the
+#                                controller as the stripe-provider
+#                                service identity.
+#   - `discovery-kubeconfig`   — ConfigMap supplied by the deployment
+#                                overlay; `KUBECONFIG` env var (set by
+#                                `milo-integration`) points at it.
+#
+# Apply this Component on top of a Kustomization that already includes
+# the upstream `milo-integration` Component so the matching
+# `volumeMounts` and env vars are in place.
+
+patches:
+  - target:
+      kind: Deployment
+      name: stripe-provider
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: stripe-provider
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: trust-bundle
+                configMap:
+                  name: datum-control-plane-trust-bundle
+              - name: discovery-kubeconfig
+                configMap:
+                  name: stripe-provider-discovery-kubeconfig
+              - name: webhook-tls
+                csi:
+                  driver: csi.cert-manager.io
+                  readOnly: true
+                  volumeAttributes:
+                    csi.cert-manager.io/issuer-kind: ClusterIssuer
+                    csi.cert-manager.io/issuer-name: datum-control-plane
+                    csi.cert-manager.io/common-name: stripe-provider-webhook
+                    csi.cert-manager.io/dns-names: stripe-provider-webhook.stripe-provider-system.svc,stripe-provider-webhook.stripe-provider-system.svc.cluster.local
+                    csi.cert-manager.io/fs-group: "65532"
+              - name: client-cert
+                csi:
+                  driver: csi.cert-manager.io
+                  readOnly: true
+                  volumeAttributes:
+                    csi.cert-manager.io/issuer-kind: ClusterIssuer
+                    csi.cert-manager.io/issuer-name: datum-control-plane
+                    csi.cert-manager.io/common-name: system:control@stripe.billing.miloapis.com
+                    csi.cert-manager.io/fs-group: "65532"
+                    csi.cert-manager.io/key-usages: client auth
+                    csi.cert-manager.io/organizations: system:masters
