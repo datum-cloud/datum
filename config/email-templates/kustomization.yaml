@@ -6,5 +6,6 @@ resources:
   - userapproved-emailtemplate.yaml
   - userinvitation-emailtemplate.yaml
   - userrejected-emailtemplate.yaml
+  - usersuspicious-emailtemplate.yaml
   - userwaitlist-emailtemplate.yaml
   - userwelcome-emailtemplate.yaml
