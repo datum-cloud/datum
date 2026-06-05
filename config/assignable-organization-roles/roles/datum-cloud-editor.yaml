@@ -30,3 +30,5 @@ spec:
       namespace: milo-system
     - name: iam-service-accounts-editor
       namespace: milo-system
+    - name: billing.miloapis.com-admin
+      namespace: milo-system

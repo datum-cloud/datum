@@ -34,3 +34,5 @@ spec:
       namespace: milo-system
     - name: iam-service-accounts-admin
       namespace: milo-system
+    - name: billing.miloapis.com-admin
+      namespace: milo-system
