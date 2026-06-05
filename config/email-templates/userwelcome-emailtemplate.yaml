@@ -12,30 +12,13 @@ spec:
           rel="preload"
           as="image"
           href="https://www.datum.net/download/eng/logo-datum-light.png" />
-        <link
-          rel="preload"
-          as="image"
-          href="https://www.datum.net/download/eng/social-dt.png" />
-        <link
-          rel="preload"
-          as="image"
-          href="https://www.datum.net/download/eng/social-dc.png" />
-        <link
-          rel="preload"
-          as="image"
-          href="https://www.datum.net/download/eng/social-gh.png" />
-        <link
-          rel="preload"
-          as="image"
-          href="https://www.datum.net/download/eng/social-yt.png" />
-        <link
-          rel="preload"
-          as="image"
-          href="https://www.datum.net/download/eng/social-li.png" />
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
         <meta name="x-apple-disable-message-reformatting" />
+        <title>{{.UserName}} Welcome to Datum!</title>
       </head>
       <body
+        dir="ltr"
+        lang="en"
         style="background-color:rgb(255,255,255);margin-top:0;margin-bottom:0;margin-right:0;margin-left:0">
         <!--$--><!--html--><!--head-->
         <div
@@ -43,7 +26,7 @@ spec:
           data-skip-in-text="true">
           {{.UserName}} Welcome to Datum!
           <div>
-             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
+             ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿
           </div>
         </div>
         <!--body-->
@@ -57,6 +40,8 @@ spec:
           <tbody>
             <tr>
               <td
+                dir="ltr"
+                lang="en"
                 style='margin-right:auto;margin-left:auto;margin-bottom:auto;margin-top:auto;background-color:rgb(255,255,255);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:rgb(12,29,49)'>
                 <table
                   align="center"
@@ -65,10 +50,11 @@ spec:
                   cellpadding="0"
                   cellspacing="0"
                   role="presentation"
-                  style="max-width:600px;margin-right:auto;margin-left:auto;margin-bottom:80px;margin-top:80px;border-radius:0.5rem;border-style:solid;border-width:1px;border-color:rgb(232,231,228);padding-top:36px;padding-bottom:55px;padding-right:52px;padding-left:52px;background-color:rgb(255,255,255)">
+                  style="max-width:570px;margin-right:auto;margin-left:auto;margin-bottom:80px;margin-top:80px;border-radius:0.5rem;border-style:solid;border-width:1px;border-color:rgb(232,231,228);background-color:rgb(255,255,255)">
                   <tbody>
                     <tr style="width:100%">
-                      <td>
+                      <td
+                        style="padding-bottom:40px;padding-top:40px;padding-right:48px;padding-left:48px">
                         <table
                           align="center"
                           width="100%"
@@ -86,7 +72,7 @@ spec:
                                   src="https://www.datum.net/download/eng/logo-datum-light.png"
                                   style="display:block;outline:none;border:none;text-decoration:none;margin-right:auto;margin-left:auto;margin-bottom:0;margin-top:0" />
                                 <hr
-                                  style="width:100%;border:none;border-top:1px solid #eaeaea;margin-right:0;margin-left:0;margin-top:38px;margin-bottom:0;display:block;border-style:solid;border-width:1px;border-color:rgb(232,231,228)" />
+                                  style="width:100%;border:none;border-color:rgb(232,231,228);border-top:1px solid #eaeaea;margin-right:0;margin-left:0;margin-top:38px;margin-bottom:0;display:block;border-style:solid;border-width:1px" />
                               </td>
                             </tr>
                           </tbody>
@@ -98,7 +84,7 @@ spec:
                           cellpadding="0"
                           cellspacing="0"
                           role="presentation"
-                          style="margin-bottom:42px;margin-top:42px">
+                          style="margin-bottom:40px;margin-top:40px">
                           <tbody>
                             <tr>
                               <td>
@@ -206,95 +192,39 @@ spec:
                             <tr>
                               <td>
                                 <hr
-                                  style="width:100%;border:none;border-top:1px solid #eaeaea;margin-right:0;margin-left:0;margin-bottom:37px;margin-top:0;display:block;border-style:solid;border-width:1px;border-color:rgb(232,231,228)" />
-                                <table
-                                  align="center"
-                                  width="100%"
-                                  border="0"
-                                  cellpadding="0"
-                                  cellspacing="0"
-                                  role="presentation"
-                                  style="display:table-cell;height:22px;width:56px">
-                                  <tbody style="width:100%">
-                                    <tr style="width:100%">
-                                      <td
-                                        data-id="__react-email-column"
-                                        style="padding-right:15px">
-                                        <a
-                                          href="https://www.datum.net"
-                                          style="color:#067df7;text-decoration-line:none"
-                                          target="_blank"
-                                          ><img
-                                            alt="Datum"
-                                            height="22"
-                                            src="https://www.datum.net/download/eng/social-dt.png"
-                                            style="display:block;outline:none;border:none;text-decoration:none"
-                                            width="22"
-                                        /></a>
-                                      </td>
-                                      <td
-                                        data-id="__react-email-column"
-                                        style="padding-right:15px">
-                                        <a
-                                          href="https://link.datum.net/discord"
-                                          style="color:#067df7;text-decoration-line:none"
-                                          target="_blank"
-                                          ><img
-                                            alt="Discord"
-                                            height="22"
-                                            src="https://www.datum.net/download/eng/social-dc.png"
-                                            style="display:block;outline:none;border:none;text-decoration:none"
-                                            width="22"
-                                        /></a>
-                                      </td>
-                                      <td
-                                        data-id="__react-email-column"
-                                        style="padding-right:15px">
-                                        <a
-                                          href="https://link.datum.net/github"
-                                          style="color:#067df7;text-decoration-line:none"
-                                          target="_blank"
-                                          ><img
-                                            alt="GitHub"
-                                            height="22"
-                                            src="https://www.datum.net/download/eng/social-gh.png"
-                                            style="display:block;outline:none;border:none;text-decoration:none"
-                                            width="22"
-                                        /></a>
-                                      </td>
-                                      <td
-                                        data-id="__react-email-column"
-                                        style="padding-right:15px">
-                                        <a
-                                          href="https://link.datum.net/youtube"
-                                          style="color:#067df7;text-decoration-line:none"
-                                          target="_blank"
-                                          ><img
-                                            alt="YouTube"
-                                            height="22"
-                                            src="https://www.datum.net/download/eng/social-yt.png"
-                                            style="display:block;outline:none;border:none;text-decoration:none"
-                                            width="22"
-                                        /></a>
-                                      </td>
-                                      <td data-id="__react-email-column">
-                                        <a
-                                          href="https://link.datum.net/linkedin"
-                                          style="color:#067df7;text-decoration-line:none"
-                                          target="_blank"
-                                          ><img
-                                            alt="LinkedIn"
-                                            height="22"
-                                            src="https://www.datum.net/download/eng/social-li.png"
-                                            style="display:block;outline:none;border:none;text-decoration:none"
-                                            width="22"
-                                        /></a>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+                                  style="width:100%;border:none;border-color:rgb(232,231,228);border-top:1px solid #eaeaea;margin-right:0;margin-left:0;margin-bottom:40px;margin-top:0;display:block;border-style:solid;border-width:1px" />
                                 <p
-                                  style="font-size:13px;line-height:20px;margin:0;font-weight:400;margin-top:29px;margin-bottom:0;margin-left:0;margin-right:0">
+                                  style="font-size:14px;line-height:20px;font-weight:400;margin:0;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
+                                  Learn more about how Datum is connecting
+                                  infrastructure for AI at<!-- -->
+                                  <a
+                                    href="https://datum.net"
+                                    style="color:rgb(191,149,149);text-decoration-line:underline"
+                                    target="_blank"
+                                    >datum.net</a
+                                  >
+                                </p>
+                                <p
+                                  style="font-size:14px;line-height:20px;margin:0;margin-top:24px;margin-bottom:24px;margin-left:0;margin-right:0">
+                                  <a
+                                    href="https://www.datum.net/legal/terms"
+                                    style="color:rgb(191,149,149);text-decoration-line:underline"
+                                    target="_blank"
+                                    >Terms of Service</a
+                                  >   |   <a
+                                    href="https://www.datum.net/legal/privacy"
+                                    style="color:rgb(191,149,149);text-decoration-line:underline"
+                                    target="_blank"
+                                    >Privacy Policy</a
+                                  >   |   <a
+                                    href="https://www.datum.net/legal/aup"
+                                    style="color:rgb(191,149,149);text-decoration-line:underline"
+                                    target="_blank"
+                                    >Acceptable Use Policy</a
+                                  >
+                                </p>
+                                <p
+                                  style="font-size:14px;line-height:20px;margin:0;font-weight:400;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">
                                   Datum Technology Inc. <br />120 Broadway, 26th
                                   Floor <br />New York, NY 10271
                                 </p>
@@ -339,7 +269,9 @@ spec:
     
     ----------------------------------------
     
-    https://www.datum.net https://link.datum.net/discord https://link.datum.net/github https://link.datum.net/youtube https://link.datum.net/linkedin
+    Learn more about how Datum is connecting infrastructure for AI at datum.net https://datum.net
+    
+    Terms of Service https://www.datum.net/legal/terms   |   Privacy Policy https://www.datum.net/legal/privacy   |   Acceptable Use Policy https://www.datum.net/legal/aup
     
     Datum Technology Inc.
     120 Broadway, 26th Floor
