@@ -32,3 +32,5 @@ spec:
       namespace: milo-system
     - name: iam-service-accounts-viewer
       namespace: milo-system
+    - name: billing.miloapis.com-viewer
+      namespace: milo-system
