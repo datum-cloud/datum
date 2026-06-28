@@ -7,5 +7,4 @@ sortOptions:
   order: fifo
 
 resources:
-  - personal-org-grant-policy.yaml
-  - standard-org-grant-policy.yaml
+  - organization-project-quota-policy.yaml

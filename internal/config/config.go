@@ -15,8 +15,6 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/metrics/filters"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
-
-	resourcemanagercontroller "go.datum.net/datum/internal/controller/resourcemanager"
 )
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
@@ -27,10 +25,6 @@ type DatumControllerManager struct {
 
 	// MetricsServer is the configuration for the metrics server.
 	MetricsServer MetricsServerConfig `json:"metricsServer"`
-
-	// PersonalOrganizationController is the configuration for the personal
-	// organization controller.
-	PersonalOrganizationController resourcemanagercontroller.PersonalOrganizationControllerConfig `json:"personalOrganizationController"`
 }
 
 // +k8s:deepcopy-gen=true

@@ -1,6 +1,4 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 
-resources:
-  - organization-update-policy.yaml
-  - project-name-validation-policy.yaml
+resources: []

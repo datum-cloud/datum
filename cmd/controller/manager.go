@@ -28,7 +28,6 @@ import (
 	"github.com/spf13/cobra"
 	// +kubebuilder:scaffold:imports
 	"go.datum.net/datum/internal/config"
-	resourcemanagercontroller "go.datum.net/datum/internal/controller/resourcemanager"
 	iamv1alpha1 "go.miloapis.com/milo/pkg/apis/iam/v1alpha1"
 	resourcemanagerv1alpha1 "go.miloapis.com/milo/pkg/apis/resourcemanager/v1alpha1"
 )
@@ -283,16 +282,6 @@ func runControllerManager(
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
-		return err
-	}
-
-	if err = (&resourcemanagercontroller.PersonalOrganizationController{
-		Client:     mgr.GetClient(),
-		Config:     serverConfig.PersonalOrganizationController,
-		Scheme:     mgr.GetScheme(),
-		RestConfig: mgr.GetConfig(),
-	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "PersonalOrganization")
 		return err
 	}
 
