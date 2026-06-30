@@ -16,7 +16,9 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/serializer"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
+	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	cliflag "k8s.io/component-base/cli/flag"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/certwatcher"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
@@ -28,8 +30,13 @@ import (
 	"github.com/spf13/cobra"
 	// +kubebuilder:scaffold:imports
 	"go.datum.net/datum/internal/config"
+	resourcemanagercontroller "go.datum.net/datum/internal/controller/resourcemanager"
+	"go.datum.net/datum/pkg/features"
 	iamv1alpha1 "go.miloapis.com/milo/pkg/apis/iam/v1alpha1"
 	resourcemanagerv1alpha1 "go.miloapis.com/milo/pkg/apis/resourcemanager/v1alpha1"
+
+	// Register Datum feature gates via init().
+	_ "go.datum.net/datum/pkg/features"
 )
 
 var (
@@ -132,6 +139,12 @@ func NewControllerManagerCommand() *cobra.Command {
 	// Convert cobra pflag to standard flag for zap compatibility
 	cmd.Flags().AddGoFlagSet(flag.CommandLine)
 	opts.BindFlags(flag.CommandLine)
+
+	namedFlagSets := cliflag.NamedFlagSets{}
+	utilfeature.DefaultMutableFeatureGate.AddFlag(namedFlagSets.FlagSet("feature gates"))
+	for _, fs := range namedFlagSets.FlagSets {
+		cmd.Flags().AddFlagSet(fs)
+	}
 
 	return cmd
 }
@@ -310,6 +323,20 @@ func runControllerManager(
 	if err := mgr.AddReadyzCheck("readyz", healthz.Ping); err != nil {
 		setupLog.Error(err, "unable to set up ready check")
 		return err
+	}
+
+	if !utilfeature.DefaultFeatureGate.Enabled(features.UnifiedOrganizations) {
+		if err = (&resourcemanagercontroller.PersonalOrganizationController{
+			Client:     mgr.GetClient(),
+			Config:     serverConfig.PersonalOrganizationController,
+			Scheme:     mgr.GetScheme(),
+			RestConfig: mgr.GetConfig(),
+		}).SetupWithManager(mgr); err != nil {
+			setupLog.Error(err, "unable to create controller", "controller", "PersonalOrganization")
+			return err
+		}
+	} else {
+		setupLog.Info("PersonalOrganization controller disabled by UnifiedOrganizations feature gate")
 	}
 
 	setupLog.Info("starting manager")

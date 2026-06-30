@@ -1,0 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Kustomization
+
+resources:
+  - ../../services/resourcemanager.miloapis.com/quota/grant-policies/personal-org-grant-policy.yaml
+  - ../../services/resourcemanager.miloapis.com/quota/grant-policies/standard-org-grant-policy.yaml
