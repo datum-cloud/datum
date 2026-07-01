@@ -2,4 +2,4 @@ $patch: delete
 apiVersion: quota.miloapis.com/v1alpha1
 kind: GrantCreationPolicy
 metadata:
-  name: organization-project-quota-policy
+  name: personal-organization-project-quota-policy

@@ -21,20 +21,21 @@ customize it for Datum Cloud.
 
 ## Quota Limits
 
-Quota grant policies depend on the `UnifiedOrganizations` feature gate:
+The default configuration ships legacy personal/standard quota grant policies:
 
-- **Legacy (`UnifiedOrganizations=false`)**: apply `config/overlays/legacy-organizations`
-  - Personal organizations: 2 projects maximum
-  - Standard organizations: 10 projects maximum
-- **Unified (`UnifiedOrganizations=true`)**: default `organization-project-quota-policy`
-  - All organizations: 10 projects maximum
+- **Personal Organizations**: 2 project maximum
+- **Standard Organizations**: 10 projects maximum
+
+When enabling unified organizations, apply `config/overlays/unified-organizations`
+with `UnifiedOrganizations=true` on milo and datum controller-managers for a
+single 10-project quota policy on all organizations.
 
 ## Deployment
 
 ```bash
-# Deploy entire service (unified quota policy by default)
+# Deploy entire service (legacy quota policies by default)
 kubectl apply -k config/services/resourcemanager.miloapis.com
 
-# Legacy environments: also apply legacy overlay and keep feature gate off
-kubectl apply -k config/overlays/legacy-organizations
+# Unified environments: also apply unified overlay and enable feature gate
+kubectl apply -k config/overlays/unified-organizations
 ```
