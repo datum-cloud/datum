@@ -38,3 +38,5 @@ spec:
       namespace: milo-system
     - name: ipam.miloapis.com-admin
       namespace: milo-system
+    - name: services.miloapis.com-entitlement-admin
+      namespace: milo-system
