@@ -34,3 +34,5 @@ spec:
       namespace: milo-system
     - name: billing.miloapis.com-viewer
       namespace: milo-system
+    - name: services.miloapis.com-entitlement-viewer
+      namespace: milo-system
