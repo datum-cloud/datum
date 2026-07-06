@@ -29,7 +29,7 @@ type DatumControllerManager struct {
 	MetricsServer MetricsServerConfig `json:"metricsServer"`
 
 	// PersonalOrganizationController is the configuration for the personal
-	// organization controller.
+	// organization controller. Only active when UnifiedOrganizations is disabled.
 	PersonalOrganizationController resourcemanagercontroller.PersonalOrganizationControllerConfig `json:"personalOrganizationController"`
 }
 

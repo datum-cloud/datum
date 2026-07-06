@@ -20,7 +20,7 @@ spec:
         name: "default-dns-quota-{{ trigger.metadata.name }}"
         namespace: milo-system
         annotations:
-          kubernetes.io/description: "DNS quota allocation for Personal org project"
+          kubernetes.io/description: "DNS quota allocation for organization project"
       spec:
         consumerRef:
           apiGroup: resourcemanager.miloapis.com
