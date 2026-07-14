@@ -40,3 +40,9 @@ spec:
       namespace: milo-system
     - name: services.miloapis.com-entitlement-admin
       namespace: milo-system
+    - name: compute.datumapis.com-admin
+      namespace: milo-system
+    - name: networking.datumapis.com-locationbinding-viewer
+      namespace: milo-system
+    - name: stripe.billing.miloapis.com-stripe-payment-method-viewer
+      namespace: milo-system

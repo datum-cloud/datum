@@ -32,3 +32,5 @@ spec:
       namespace: milo-system
     - name: billing.miloapis.com-admin
       namespace: milo-system
+    - name: compute.datumapis.com-admin
+      namespace: milo-system
