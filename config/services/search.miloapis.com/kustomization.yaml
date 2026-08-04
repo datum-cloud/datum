@@ -8,6 +8,7 @@ resources:
   - contact-resourceindexpolicy.yaml
   - httpproxy-resourceindexpolicy.yaml
   - exportpolicy-resourceindexpolicy.yaml
+  - workload-resourceindexpolicy.yaml
 
 # Use explicit sorting options so we can guarantee order in which resources are
 # applied.
