@@ -90,7 +90,7 @@ We support a growing collection of features that help make agentic and internet 
 - Authoritative DNS
 - Domain resource tracking
 - Fine grained roles and permissions
-- Secrets & machine accounts
+- Secrets & service accounts
 - Activity logs
 
 ## Components

@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+sortOptions:
+  order: fifo
+
+resources:
+  - email-newsletter-enrollment-policy.yaml
+  - all-users-enrollment-policy.yaml

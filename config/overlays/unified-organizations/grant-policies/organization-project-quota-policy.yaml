@@ -1,0 +1,31 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: GrantCreationPolicy
+metadata:
+  name: organization-project-quota-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: resourcemanager.miloapis.com/v1alpha1
+      kind: Organization
+  target:
+    resourceGrantTemplate:
+      metadata:
+        name: "default-project-quota"
+        namespace: "organization-{{ trigger.metadata.name }}"
+        labels:
+          quota.miloapis.com/auto-created: "true"
+          quota.miloapis.com/policy: "organization-project-quota-policy"
+        annotations:
+          kubernetes.io/description: "Project quota allocation for organization"
+      spec:
+        consumerRef:
+          apiGroup: resourcemanager.miloapis.com
+          kind: Organization
+          name: "{{ trigger.metadata.name }}"
+        allowances:
+          - resourceType: resourcemanager.miloapis.com/projects
+            buckets:
+              - amount: 10

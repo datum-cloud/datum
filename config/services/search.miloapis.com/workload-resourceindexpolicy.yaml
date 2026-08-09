@@ -1,0 +1,32 @@
+apiVersion: search.miloapis.com/v1alpha1
+kind: ResourceIndexPolicy
+metadata:
+  name: workload-resource-index-policy
+spec:
+  conditions:
+  - expression: has(metadata.name)
+    name: has-name
+  fields:
+  - path: .metadata.name
+    searchable: true
+  - path: .metadata.namespace
+    searchable: true
+  - path: .metadata.annotations["kubernetes.io/display-name"]
+    searchable: true
+  - path: .metadata.annotations["kubernetes.io/description"]
+    searchable: true
+  # NOTE: [*] array-traversal syntax is not currently supported by the
+  # ResourceIndexPolicy validator in milo-os/search (milo-os/search#97), so
+  # per-placement region/health (.spec.placements[*], .status.conditions[*])
+  # and container image (.spec.template.spec.containers[*].image) can't be
+  # indexed yet — only the scalar replica counters below are.
+  - path: .status.replicas
+    searchable: true
+  - path: .status.readyReplicas
+    searchable: true
+  - path: .status.desiredReplicas
+    searchable: true
+  targetResource:
+    group: compute.datumapis.com
+    kind: Workload
+    version: v1alpha

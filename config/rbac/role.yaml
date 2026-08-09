@@ -18,3 +18,14 @@ rules:
   - organizations
   verbs:
   - create
+- apiGroups:
+  - resourcemanager.datumapis.com
+  resources:
+  - projects
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch

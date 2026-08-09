@@ -28,7 +28,15 @@ spec:
       namespace: milo-system
     - name: notes-viewer
       namespace: milo-system
-    - name: identity-machine-account-keys-viewer
+    - name: identity-service-account-keys-viewer
       namespace: milo-system
-    - name: iam-machine-accounts-viewer
+    - name: iam-service-accounts-viewer
+      namespace: milo-system
+    - name: billing.miloapis.com-viewer
+      namespace: milo-system
+    - name: services.miloapis.com-entitlement-viewer
+      namespace: milo-system
+    - name: compute.datumapis.com-viewer
+      namespace: milo-system
+    - name: networking.datumapis.com-location-viewer
       namespace: milo-system

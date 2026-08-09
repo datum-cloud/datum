@@ -5,6 +5,10 @@ metadata:
   labels:
     app.kubernetes.io/name: datum
     app.kubernetes.io/component: quota-system
+    services.miloapis.com/owner: resourcemanager.miloapis.com
+  annotations:
+    kubernetes.io/display-name: "Projects"
+    kubernetes.io/description: "Maximum number of projects that can be created within an organization"
 spec:
   # Organization is the consumer of project quota
   consumerType:

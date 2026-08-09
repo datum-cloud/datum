@@ -2,17 +2,18 @@
 
 package resourcemanager
 
-import (
-	. "github.com/onsi/ginkgo/v2"
-)
+import "testing"
 
-var _ = Describe("User Controller", func() {
-	Context("When reconciling a resource", func() {
-
-		It("should successfully reconcile the resource", func() {
-
-			// TODO(user): Add more specific assertions depending on your controller's reconciliation logic.
-			// Example: If you expect a certain status condition after reconciliation, verify it here.
-		})
-	})
-})
+func TestHashPersonalOrgName(t *testing.T) {
+	first := hashPersonalOrgName("uid-123")
+	second := hashPersonalOrgName("uid-123")
+	if first != second {
+		t.Fatalf("hashPersonalOrgName() not stable: %q vs %q", first, second)
+	}
+	if first == "" {
+		t.Fatal("hashPersonalOrgName() returned empty string")
+	}
+	if hashPersonalOrgName("uid-456") == first {
+		t.Fatal("hashPersonalOrgName() returned same value for different inputs")
+	}
+}
