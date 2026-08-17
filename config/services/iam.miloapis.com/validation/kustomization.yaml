@@ -3,3 +3,4 @@ kind: Component
 
 resources:
   - approved-user-policy.yaml
+  - unverified-email-policy.yaml
