@@ -32,11 +32,15 @@ spec:
     #   deletionTimestamp — removing a finalizer is a plain UPDATE, so without
     #   this any finalizer-bearing resource owned by an unverified user would
     #   stick in Terminating. oldObject is null on CREATE, hence the guard.
+    # Deliberately does not start with "(". Milo's chainsaw test applies a copy
+    # of this policy, and chainsaw evaluates any value that opens with "(" and
+    # closes with ")" as a JMESPath expression rather than passing it through.
+    # Kustomize does not care either way; keeping the two identical does.
     - expression: >-
-        (!has(request.userInfo.extra)) ||
-        (!('iam.miloapis.com/emailVerified' in request.userInfo.extra)) ||
-        (request.userInfo.extra['iam.miloapis.com/emailVerified'][0] == 'true') ||
-        (request.resource.group == 'authorization.k8s.io') ||
+        !has(request.userInfo.extra) ||
+        !('iam.miloapis.com/emailVerified' in request.userInfo.extra) ||
+        request.userInfo.extra['iam.miloapis.com/emailVerified'][0] == 'true' ||
+        request.resource.group == 'authorization.k8s.io' ||
         (oldObject != null && has(oldObject.metadata.deletionTimestamp))
       message: "Email address is not verified. Verify your email address before creating or modifying resources."
       reason: Forbidden
