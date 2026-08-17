@@ -41,6 +41,12 @@ spec:
     #   the write would make an unverified account look like it had lost access
     #   entirely, instead of being asked to verify.
     #
+    #   system:masters — milo's convention, matching plugin/projectsuspension.
+    #   Note this is a project choice, not a Kubernetes guarantee: system:masters
+    #   bypasses authorization but admission still runs for it. Present here so
+    #   this policy and the equivalent milo plugin cannot disagree; if one grows
+    #   a carve-out, the other needs it too.
+    #
     #   Objects already being deleted — removing a finalizer is a plain UPDATE.
     #   Without this, any resource with a finalizer owned by an unverified user
     #   would be stuck Terminating forever. oldObject is null on CREATE, hence
@@ -50,6 +56,7 @@ spec:
         (!('iam.miloapis.com/emailVerified' in request.userInfo.extra)) ||
         (request.userInfo.extra['iam.miloapis.com/emailVerified'][0] == 'true') ||
         (request.resource.group == 'authorization.k8s.io') ||
+        ('system:masters' in request.userInfo.groups) ||
         (oldObject != null && has(oldObject.metadata.deletionTimestamp))
       message: "Email address is not verified. Verify your email address before creating or modifying resources."
       reason: Forbidden
