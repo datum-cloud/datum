@@ -1,25 +1,16 @@
 # Denies writes from end users who have not verified their email address.
 #
 # The signal is stamped onto the authenticated identity by zitadel-provider's
-# TokenReview webhook, alongside iam.miloapis.com/registrationApproval. Reading
-# it from userInfo.extra is what makes this expressible as a policy at all: a
-# rule that had to look up the caller's User resource cannot do so from CEL, and
-# the alternative was a compiled-in milo admission plugin carrying an informer
-# cache of ServiceAccount UIDs.
+# TokenReview webhook, alongside iam.miloapis.com/registrationApproval.
 #
-# ABSENCE ADMITS, and that is a contract with the producer, not an oversight.
-# Machine identities carry no email claim, so they get no key and pass here.
-# zitadel-provider guarantees the converse: a human ALWAYS carries the key, set
-# to "true" or "false", never omitted. If that guarantee ever breaks, this
-# policy fails open for humans — so the two sides have to change together.
+# ABSENCE ADMITS. Machine identities carry no email claim and so carry no key.
+# zitadel-provider guarantees a human always carries it, set to "true" or
+# "false" and never omitted; if that breaks, this fails open for humans. The
+# two sides have to change together.
 #
-# It is also why this file is safe to deploy before the producer ships: until
-# zitadel-provider sets the key, nobody carries it and nothing is denied.
-#
-# CREATE and UPDATE only. Reads never route through admission, so this cannot
-# gate them however it is written — restricting what an unverified user can SEE
-# is the portal's job. DELETE is likewise unlisted, so an unverified user can
-# still clean up after themselves.
+# CREATE and UPDATE only. Reads never route through admission, so restricting
+# what an unverified user can see is the portal's job. DELETE is left off so an
+# unverified user can still clean up after themselves.
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicy
 metadata:
@@ -33,24 +24,15 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["*"]
   validations:
-    # Clause order is the reading order: admit the identities this policy has no
-    # opinion about, then admit verified humans, then the two carve-outs.
-    #
+    # Carve-outs, in clause order:
     #   authorization.k8s.io — clients create a SelfSubjectAccessReview to decide
-    #   whether to render an affordance at all. Denying the review rather than
-    #   the write would make an unverified account look like it had lost access
-    #   entirely, instead of being asked to verify.
-    #
-    #   system:masters — milo's convention, matching plugin/projectsuspension.
-    #   Note this is a project choice, not a Kubernetes guarantee: system:masters
-    #   bypasses authorization but admission still runs for it. Present here so
-    #   this policy and the equivalent milo plugin cannot disagree; if one grows
-    #   a carve-out, the other needs it too.
-    #
-    #   Objects already being deleted — removing a finalizer is a plain UPDATE.
-    #   Without this, any resource with a finalizer owned by an unverified user
-    #   would be stuck Terminating forever. oldObject is null on CREATE, hence
-    #   the null guard.
+    #   whether to render an affordance at all. Denying the review would make an
+    #   unverified account look like it lost access, rather than being asked to
+    #   verify.
+    #   system:masters — matches milo's plugin/projectsuspension convention.
+    #   deletionTimestamp — removing a finalizer is a plain UPDATE, so without
+    #   this any finalizer-bearing resource owned by an unverified user would
+    #   stick in Terminating. oldObject is null on CREATE, hence the guard.
     - expression: >-
         (!has(request.userInfo.extra)) ||
         (!('iam.miloapis.com/emailVerified' in request.userInfo.extra)) ||
@@ -61,16 +43,12 @@ spec:
       message: "Email address is not verified. Verify your email address before creating or modifying resources."
       reason: Forbidden
 ---
-# Ships as Warn + Audit, NOT Deny.
+# Ships as Warn + Audit, not Deny: no identity carried this key before the
+# producer shipped, so Deny would gate every human the moment zitadel-provider
+# rolls. Read apiserver_validating_admission_policy_check_total
+# {enforcement_action="audit"} before promoting to [Deny].
 #
-# No identity carried this key before the producer shipped, so going straight to
-# Deny would gate every human the moment zitadel-provider rolls. Audit mode puts
-# the real number in apiserver_validating_admission_policy_check_total
-# {enforcement_action="audit"} first — which is the count that decides whether
-# Deny is safe, and it costs no backfill job to obtain.
-#
-# Promote to [Deny] only after reading that counter, and enable the portal-side
-# gate before this one. Disable in the reverse order.
+# Enable the portal-side gate before this one; disable in the reverse order.
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
 metadata:
