@@ -29,7 +29,6 @@ spec:
     #   whether to render an affordance at all. Denying the review would make an
     #   unverified account look like it lost access, rather than being asked to
     #   verify.
-    #   system:masters — matches milo's plugin/projectsuspension convention.
     #   deletionTimestamp — removing a finalizer is a plain UPDATE, so without
     #   this any finalizer-bearing resource owned by an unverified user would
     #   stick in Terminating. oldObject is null on CREATE, hence the guard.
@@ -38,7 +37,6 @@ spec:
         (!('iam.miloapis.com/emailVerified' in request.userInfo.extra)) ||
         (request.userInfo.extra['iam.miloapis.com/emailVerified'][0] == 'true') ||
         (request.resource.group == 'authorization.k8s.io') ||
-        ('system:masters' in request.userInfo.groups) ||
         (oldObject != null && has(oldObject.metadata.deletionTimestamp))
       message: "Email address is not verified. Verify your email address before creating or modifying resources."
       reason: Forbidden
