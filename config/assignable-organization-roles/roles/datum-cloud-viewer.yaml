@@ -40,3 +40,7 @@ spec:
       namespace: milo-system
     - name: networking.datumapis.com-location-viewer
       namespace: milo-system
+    # Locations moved to their own service. Both roles are listed while both
+    # groups are served; the network-services one goes when that group does.
+    - name: locations.miloapis.com-location-viewer
+      namespace: milo-system
