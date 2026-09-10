@@ -38,6 +38,8 @@ spec:
       namespace: milo-system
     - name: compute.datumapis.com-viewer
       namespace: milo-system
+    - name: assistant.miloapis.com-conversation-viewer
+      namespace: milo-system
     - name: networking.datumapis.com-location-viewer
       namespace: milo-system
     # Locations moved to their own service. Both roles are listed while both
