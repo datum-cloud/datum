@@ -1,0 +1,42 @@
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# Adds the assistant's conversation roles back onto the default organization
+# roles, in environments where the assistant service is actually deployed.
+#
+# The unconditional grant (from #283) broke production: the assistant's
+# conversation-creator/-viewer roles only exist where its apiserver has
+# registered them (assignable-organization-roles is a single shared source
+# applied to every environment), so production's owner/editor/viewer roles
+# sat unresolved and blocked every release behind them (#286). Restore the
+# grant only in environments that opt into this component — see
+# infra's staging overlay for the assistant service — and fold it back into
+# the unconditional base once the assistant ships everywhere.
+patches:
+  - target:
+      kind: Role
+      name: owner
+    patch: |-
+      - op: add
+        path: /spec/inheritedRoles/-
+        value:
+          name: assistant.miloapis.com-conversation-creator
+          namespace: milo-system
+  - target:
+      kind: Role
+      name: editor
+    patch: |-
+      - op: add
+        path: /spec/inheritedRoles/-
+        value:
+          name: assistant.miloapis.com-conversation-creator
+          namespace: milo-system
+  - target:
+      kind: Role
+      name: viewer
+    patch: |-
+      - op: add
+        path: /spec/inheritedRoles/-
+        value:
+          name: assistant.miloapis.com-conversation-viewer
+          namespace: milo-system
