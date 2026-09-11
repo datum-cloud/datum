@@ -34,5 +34,3 @@ spec:
       namespace: milo-system
     - name: compute.datumapis.com-admin
       namespace: milo-system
-    - name: assistant.miloapis.com-conversation-creator
-      namespace: milo-system
