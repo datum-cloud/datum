@@ -1,0 +1,32 @@
+apiVersion: quota.miloapis.com/v1alpha1
+kind: GrantCreationPolicy
+metadata:
+  name: default-user-notes-quota-policy
+  labels:
+    app.kubernetes.io/name: datum
+    app.kubernetes.io/component: quota-system
+spec:
+  trigger:
+    resource:
+      apiVersion: iam.miloapis.com/v1alpha1
+      kind: User
+  target:
+    # No parentContext: notes on contacts, users and organizations are created
+    # in the core control plane, where Users live, so the grant belongs there
+    # too. Creating locally also owns the grant to the User, so it is cleaned
+    # up when the user is deleted.
+    resourceGrantTemplate:
+      metadata:
+        name: "default-user-notes-quota-{{ trigger.metadata.name }}"
+        namespace: milo-system
+        annotations:
+          kubernetes.io/description: "Notes quota allocation for user"
+      spec:
+        consumerRef:
+          apiGroup: iam.miloapis.com
+          kind: User
+          name: "{{ trigger.metadata.name }}"
+        allowances:
+          - resourceType: notes.miloapis.com/user-notes
+            buckets:
+              - amount: 1000
