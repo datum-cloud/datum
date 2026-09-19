@@ -6,4 +6,3 @@ sortOptions:
 
 resources:
   - default-project-grant-policy.yaml
-  - default-user-grant-policy.yaml
