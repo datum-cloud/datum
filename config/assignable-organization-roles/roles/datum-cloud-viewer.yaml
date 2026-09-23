@@ -22,6 +22,8 @@ spec:
       namespace: milo-system
     - name: dns.networking.miloapis.com-dns-viewer
       namespace: milo-system
+    - name: ipam.miloapis.com-viewer
+      namespace: milo-system
     - name: iam-user-invitations-reader
       namespace: milo-system
     - name: activity.miloapis.com-viewer
