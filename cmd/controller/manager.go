@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"flag"
 	"fmt"
+	"net"
 	"os"
 	"path/filepath"
 	"time"
@@ -18,6 +19,7 @@ import (
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
+	"k8s.io/client-go/rest"
 	cliflag "k8s.io/component-base/cli/flag"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/certwatcher"
@@ -114,7 +116,7 @@ func NewControllerManagerCommand() *cobra.Command {
 		"The duration that the acting leader will retry refreshing leadership before giving up.")
 	cmd.Flags().DurationVar(&leaderElectionRetryPeriod, "leader-election-retry-period", 2*time.Second,
 		"The duration the LeaderElector clients should wait between tries of actions.")
-	cmd.Flags().BoolVar(&leaderElectionReleaseOnCancel, "leader-election-release-on-cancel", false,
+	cmd.Flags().BoolVar(&leaderElectionReleaseOnCancel, "leader-election-release-on-cancel", true,
 		"If the leader should step down voluntarily when the Manager ends. "+
 			"This requires the binary to immediately end when the Manager is stopped.")
 
@@ -280,7 +282,8 @@ func runControllerManager(
 		})
 	}
 
-	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
+	restConfig := ctrl.GetConfigOrDie()
+	mgr, err := ctrl.NewManager(restConfig, ctrl.Options{
 		Scheme:                        scheme,
 		Metrics:                       metricsServerOptions,
 		WebhookServer:                 webhookServer,
@@ -288,6 +291,7 @@ func runControllerManager(
 		LeaderElection:                enableLeaderElection,
 		LeaderElectionID:              leaderElectionID,
 		LeaderElectionNamespace:       leaderElectionNamespace,
+		LeaderElectionConfig:          leaderElectionRestConfig(restConfig),
 		LeaseDuration:                 &leaderElectionLeaseDuration,
 		RenewDeadline:                 &leaderElectionRenewDeadline,
 		RetryPeriod:                   &leaderElectionRetryPeriod,
@@ -346,4 +350,21 @@ func runControllerManager(
 	}
 
 	return nil
+}
+
+const (
+	leaderElectionQPS   = 5
+	leaderElectionBurst = 10
+)
+
+func leaderElectionRestConfig(base *rest.Config) *rest.Config {
+	cfg := rest.CopyConfig(base)
+	cfg.RateLimiter = nil
+	cfg.QPS = leaderElectionQPS
+	cfg.Burst = leaderElectionBurst
+	cfg.Dial = (&net.Dialer{
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+	}).DialContext
+	return cfg
 }
