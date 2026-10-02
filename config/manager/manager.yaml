@@ -86,7 +86,7 @@ spec:
           - name: LEADER_ELECTION_RETRY_PERIOD
             value: "2s"
           - name: LEADER_ELECTION_RELEASE_ON_CANCEL
-            value: "false"
+            value: "true"
           - name: METRICS_SECURE
             value: "true"
           - name: WEBHOOK_CERT_PATH
