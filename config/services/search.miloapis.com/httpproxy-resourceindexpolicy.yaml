@@ -41,6 +41,8 @@ spec:
     searchable: true
   - path: .spec.rules[*].backends[*].instance.name
     searchable: true
+  - path: .spec.rules[*].backends[*].networkService.name
+    searchable: true
   - path: .status.conditions[*].type
     searchable: false
   - path: .status.conditions[*].status
