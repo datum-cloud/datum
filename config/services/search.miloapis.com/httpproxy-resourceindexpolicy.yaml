@@ -11,6 +11,8 @@ spec:
     searchable: true
   - path: .metadata.namespace
     searchable: true
+  - path: .metadata.creationTimestamp
+    searchable: false
   # Portals store the ALB name people type as app.kubernetes.io/name
   # (chosenName). kubernetes.io/display-name is kept for older objects.
   - path: .metadata.annotations["app.kubernetes.io/name"]
@@ -19,17 +21,30 @@ spec:
     searchable: true
   - path: .metadata.annotations["kubernetes.io/description"]
     searchable: true
-  # NOTE: [*] array-traversal syntax is not currently supported by the
-  # ResourceIndexPolicy validator in milo-os/search. The following paths are
-  # commented out until that lands. Tracked in milo-os/search#97.
-  # - path: .spec.rules[*].hostnames[*]
-  #   searchable: true
-  # - path: .spec.rules[*].name
-  #   searchable: true
-  # - path: .spec.rules[*].backends[*].endpoint
-  #   searchable: true
-  # - path: .status.addresses[*].value
-  #   searchable: true
+  - path: .metadata.ownerReferences[*].name
+    searchable: true
+  # The canonical <name>.datumproxy.net hostname is what customers paste into
+  # tickets.
+  - path: .status.canonicalHostname
+    searchable: true
+  - path: .spec.hostnames[*]
+    searchable: true
+  - path: .status.hostnameStatuses[*].hostname
+    searchable: true
+  - path: .status.addresses[*].value
+    searchable: true
+  - path: .spec.rules[*].name
+    searchable: true
+  - path: .spec.rules[*].backends[*].endpoint
+    searchable: true
+  - path: .spec.rules[*].backends[*].connector.name
+    searchable: true
+  - path: .spec.rules[*].backends[*].instance.name
+    searchable: true
+  - path: .status.conditions[*].type
+    searchable: false
+  - path: .status.conditions[*].status
+    searchable: false
   targetResource:
     group: networking.datumapis.com
     kind: HTTPProxy
