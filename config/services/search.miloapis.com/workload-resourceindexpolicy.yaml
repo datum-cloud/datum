@@ -15,17 +15,26 @@ spec:
     searchable: true
   - path: .metadata.annotations["kubernetes.io/description"]
     searchable: true
-  # NOTE: [*] array-traversal syntax is not currently supported by the
-  # ResourceIndexPolicy validator in milo-os/search (milo-os/search#97), so
-  # per-placement region/health (.spec.placements[*], .status.conditions[*])
-  # and container image (.spec.template.spec.containers[*].image) can't be
-  # indexed yet — only the scalar replica counters below are.
   - path: .status.replicas
     searchable: true
   - path: .status.readyReplicas
     searchable: true
   - path: .status.desiredReplicas
     searchable: true
+  - path: .spec.placements[*].name
+    searchable: true
+  - path: .spec.placements[*].cityCodes[*]
+    searchable: true
+  - path: .spec.placements[*].locations[*].name
+    searchable: true
+  - path: .spec.template.spec.runtime.class
+    searchable: true
+  - path: .spec.template.spec.runtime.sandbox.containers[*].image
+    searchable: true
+  - path: .status.conditions[*].type
+    searchable: false
+  - path: .status.conditions[*].status
+    searchable: false
   targetResource:
     group: compute.datumapis.com
     kind: Workload

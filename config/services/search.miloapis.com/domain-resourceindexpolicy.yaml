@@ -23,15 +23,12 @@ spec:
     searchable: false
   - path: .status.registration.registrar.name
     searchable: false
-  # NOTE: [*] array-traversal syntax is not currently supported by the
-  # ResourceIndexPolicy validator in milo-os/search. The following paths are
-  # commented out until that lands. Tracked in milo-os/search#97.
-  # - path: .status.nameservers[*].hostname
-  #   searchable: false
-  # - path: .status.conditions[*].type
-  #   searchable: false
-  # - path: .status.conditions[*].status
-  #   searchable: false
+  - path: .status.nameservers[*].hostname
+    searchable: true
+  - path: .status.conditions[*].type
+    searchable: false
+  - path: .status.conditions[*].status
+    searchable: false
   targetResource:
     group: networking.datumapis.com
     kind: Domain
