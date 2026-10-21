@@ -23,9 +23,7 @@ COPY pkg/ pkg/
 # by leaving it empty we can ensure that the container and binary shipped on it will have the same platform.
 RUN CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} go build -a -o datum ./cmd/
 
-# Use distroless as minimal base image to package the manager binary
-# Refer to https://github.com/GoogleContainerTools/distroless for more details
-FROM gcr.io/distroless/static:nonroot
+FROM scratch
 WORKDIR /
 COPY --from=builder /workspace/datum .
 USER 65532:65532
