@@ -92,7 +92,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 		if err := controllerutil.SetControllerReference(user, personalOrg, r.Scheme); err != nil {
 			return fmt.Errorf("failed to set controller reference: %w", err)
 		}
-		personalOrg.Spec.Type = "Personal"
+		personalOrg.Spec.Type = "Personal" //nolint:staticcheck
 		return nil
 	})
 	if err != nil {
