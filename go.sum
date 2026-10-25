@@ -142,8 +142,8 @@ github.com/stretchr/testify v1.11.1 h1:7s2iGBzp5EwR7/aIZr8ao5+dra3wiQyKjjFuvgVKu
 github.com/stretchr/testify v1.11.1/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
 github.com/x448/float16 v0.8.4 h1:qLwI1I70+NjRFUR3zs1JPUCgaCXSh3SW62uAKT1mSBM=
 github.com/x448/float16 v0.8.4/go.mod h1:14CWIYCyZA/cWjXOioeEpHeN/83MdbZDRQHoFcYsOfg=
-go.miloapis.com/milo v0.36.10 h1:sViGWYigPmKhgfGtsM1XWsMVQ8tWagwi4VnSQG4P6qI=
-go.miloapis.com/milo v0.36.10/go.mod h1:cWoX3mFL5XFzASwdILE0oJM1bmBYCVw5CDQnoQwStZg=
+go.miloapis.com/milo v0.36.9 h1:nRZi2/oA1kW5XkVWETWiJmt3NenKMb3x7sPrgcgzk4Y=
+go.miloapis.com/milo v0.36.9/go.mod h1:cWoX3mFL5XFzASwdILE0oJM1bmBYCVw5CDQnoQwStZg=
 go.opentelemetry.io/auto/sdk v1.2.1 h1:jXsnJ4Lmnqd11kwkBV2LgLoFMZKizbCi5fNZ/ipaZ64=
 go.opentelemetry.io/auto/sdk v1.2.1/go.mod h1:KRTj+aOaElaLi+wW1kO/DZRXwkF4C5xPbEe3ZiIhN7Y=
 go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.69.0 h1:8tvICD4vSTOOsNrsI4Ljf6C+6UKvpTEH5XY3JMoyPoo=
