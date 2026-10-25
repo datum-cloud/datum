@@ -42,6 +42,12 @@ spec:
           - resourceType: networking.datumapis.com/connectoradvertisements
             buckets:
               - amount: 10
+          - resourceType: networking.datumapis.com/networkloadbalancers
+            buckets:
+              - amount: 5
+          - resourceType: networking.datumapis.com/networkloadbalancerroutes
+            buckets:
+              - amount: 25
           - resourceType: gateway.networking.k8s.io/gateways
             buckets:
               - amount: 10
