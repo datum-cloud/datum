@@ -132,7 +132,7 @@ func (r *PersonalOrganizationController) Reconcile(ctx context.Context, req ctrl
 
 	// If the user is not active, we should not create a personal project,
 	// as the impersonated client will not have the correct permissions.
-	if user.Status.RegistrationApproval != iamv1alpha1.RegistrationApprovalStateApproved {
+	if user.Status.PlatformAccess != iamv1alpha1.PlatformAccessStateApproved {
 		logger.Info("User is not active, skipping personal project creation", "user", user.Name, "state", user.Status.State)
 		return ctrl.Result{RequeueAfter: 5 * time.Second}, nil
 	}
