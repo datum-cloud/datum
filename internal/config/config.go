@@ -160,7 +160,3 @@ func SetDefaults_TLSConfig(obj *TLSConfig) {
 		obj.KeyName = "tls.key"
 	}
 }
-
-func init() {
-	SchemeBuilder.Register(&DatumControllerManager{})
-}
