@@ -11,6 +11,7 @@ resources:
   - workload-resourceindexpolicy.yaml
   - organization-resourceindexpolicy.yaml
   - project-resourceindexpolicy.yaml
+  - billingaccount-resourceindexpolicy.yaml
 
 # Use explicit sorting options so we can guarantee order in which resources are
 # applied.
