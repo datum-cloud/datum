@@ -1,0 +1,25 @@
+apiVersion: search.miloapis.com/v1alpha1
+kind: ResourceIndexPolicy
+metadata:
+  name: billingaccount-resource-index-policy
+spec:
+  conditions:
+  - expression: has(metadata.name)
+    name: has-name
+  fields:
+  - path: .metadata.name
+    searchable: true
+  - path: .metadata.annotations["kubernetes.io/display-name"]
+    searchable: true
+  - path: .spec.contactInfo.email
+    searchable: true
+  - path: .spec.contactInfo.invoiceEmails[*]
+    searchable: true
+  - path: .status.paymentArrangement.invoice.purchaseOrderNumber
+    searchable: true
+  - path: .status.paymentArrangement.invoice.agreementReference
+    searchable: true
+  targetResource:
+    group: billing.miloapis.com
+    kind: BillingAccount
+    version: v1alpha1
