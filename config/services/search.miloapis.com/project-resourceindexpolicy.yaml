@@ -1,7 +1,7 @@
 apiVersion: search.miloapis.com/v1alpha1
 kind: ResourceIndexPolicy
 metadata:
-  name: project-resource-index-policy
+  name: project-index-policy
 spec:
   conditions:
   - expression: has(metadata.name)
